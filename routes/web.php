@@ -3,7 +3,7 @@ namespace App\Http\Controllers\Backend;
 use App\Http\Controllers\Backend\DashboardController;
 use App\Http\Controllers\Backend\AuthController;
 use Illuminate\Support\Facades\Route;
-use App\Http\Middleware\AuthenticateMiddleware;
+use App\Http\Controllers\Backend\UploadController;
 
 
 
@@ -20,7 +20,7 @@ use App\Http\Middleware\AuthenticateMiddleware;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('wellcome');
 });
 
 //Route::prefix('admin')->group(function () {
@@ -39,3 +39,9 @@ Route::get('admin', [AuthController::class, 'index'])->name('auth.admin');
 Route::post('logout', [AuthController::class, 'logout'])->name('auth.logout');
 
 Route::post('login', [AuthController::class, 'login'])->name('auth.login');
+
+Route::get('upload', function () {
+    return view('upload');
+});
+
+Route::post('upload', [UploadController::class, 'upload'])->name('upload');
