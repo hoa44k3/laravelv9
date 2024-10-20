@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Storage;
 class Image extends Model
 {
     use HasFactory;
-    protected $fillable = ['path'];
+    protected $fillable = ['path', 'type'];
     
     // Nếu bạn muốn sử dụng đường dẫn đầy đủ thay vì đường dẫn tương đối
     public function getUrlAttribute()

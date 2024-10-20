@@ -4,6 +4,7 @@ use App\Http\Controllers\Backend\DashboardController;
 use App\Http\Controllers\Backend\AuthController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Backend\UploadController;
+use App\Http\Controllers\Backend\CustomersController;
 
 
 
@@ -19,9 +20,9 @@ use App\Http\Controllers\Backend\UploadController;
 |
 */
 
-Route::get('/', function () {
-    return view('wellcome');
-});
+// Route::get('/', function () {
+//     return view('');
+// });
 
 //Route::prefix('admin')->group(function () {
 // Route::get('/', [DashBoardController::class, 'index'])->name('user.index');
@@ -45,3 +46,9 @@ Route::get('upload', function () {
 });
 
 Route::post('upload', [UploadController::class, 'upload'])->name('upload');
+Route::get('customers', function (){
+    return view('backend.customers.index');
+});
+// Route::get('customers', function () {
+//     return view('index');
+// });

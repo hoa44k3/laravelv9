@@ -10,19 +10,22 @@ class UploadController extends Controller
 {
     public function upload(Request $request)
     {
-        // Validate the uploaded file
+        // Validate the uploaded file (chấp nhận cả hình ảnh và video)
         $request->validate([
-            'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048', // Chỉ cho phép các định dạng ảnh
+            'file' => 'required|mimes:jpeg,png,jpg,gif,mp4,mov,avi|max:10240', // Cho phép các định dạng hình ảnh và video với dung lượng tối đa 10MB
         ]);
-
-        // Lưu ảnh vào thư mục 'public/images'
-        $path = $request->file('image')->store('public/images');
-
-        // Lưu đường dẫn ảnh vào CSDL
-        $image = new Image();
-        $image->path = $path;
-        $image->save();
-
-        return back()->with('success', 'Image uploaded successfully')->with('image', $path);
+    
+        // Lưu file vào thư mục 'public/uploads'
+        $path = $request->file('file')->store('public/uploads');
+    
+        // Kiểm tra loại file và lưu vào CSDL
+        $fileType = $request->file('file')->getMimeType();
+        $file = new Image(); // Bạn có thể đổi tên Model `Image` thành `Media` nếu muốn tổng quát hóa
+        $file->path = $path;
+        $file->type = $fileType; // Lưu loại tệp (image/video)
+        $file->save();
+    
+        return back()->with('success', 'File uploaded successfully')->with('file', $file);
     }
+    
 }
