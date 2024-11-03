@@ -13,16 +13,22 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('images', function (Blueprint $table) {
+        Schema::create('categories', function (Blueprint $table) {
             $table->id();
-            $table->string('path'); // Cột để lưu đường dẫn ảnh
-            $table->string('type');
+            $table->string('name');
+            $table->string('image_path')->nullable();
+            $table->integer('comment_count')->default(0);
             $table->timestamps();
         });
     }
 
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
     public function down()
     {
-        Schema::dropIfExists('images');
+        Schema::dropIfExists('categories');
     }
 };

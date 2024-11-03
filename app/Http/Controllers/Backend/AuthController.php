@@ -4,7 +4,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Http\Requests\AuthRequest;
 use Illuminate\Support\Facades\Auth;
-
+use Illuminate\Support\Facades\Hash;
+use App\Models\User;
 
 class AuthController extends Controller
 {
@@ -14,28 +15,32 @@ class AuthController extends Controller
     }
     public function index()
     {
-        //if (Auth::check()) {
-          //  return redirect()->route('dashboard.index');
-        //}
 
         return view('backend.auth.login');
     }
+    public function register(AuthRequest $request)
+    {
+        
+     if (User::where('email', $request->input('email'))->exists()) {
+         return redirect()->back()->with('error', 'Email đã tồn tại');
+     }
+
+    $user = new User();
+    $user->email = $request->input('email');
+    $user->password = Hash::make($request->input('password'));
+    $user->save();
+
+
+
+    // return redirect()->route('auth.admin')->with('success', 'Đăng ký thành công');
+    }
     public function login(AuthRequest $request)
     {
-        //$credentials = [
-        //    'email' => $request->input('email'),
-       //     'password' => $request->input('password')
-       // ];
-       // if (Auth::attempt($credentials)) {
-        //    return redirect()->route('dashboard.index')->with('success', 'Đăng nhập thành công');
-        //}
-
-       // return redirect()->route('auth.admin')->with('error', 'Email hoặc Mật khẩu không chính xác');
-
-       $credentials = $request->only('email', 'password');
-
-        if (Auth::attempt($credentials, $request->filled('remember'))) {
-            return redirect()->route('dashboard.index')->with('success', 'Đăng nhập thành công');
+    
+        if(Auth::attempt(["email"=>$request->email,"password"=>$request->password])){
+           // $request->session()->put("messenge", ["style"=>"success","msg"=>"Đăng nhập quyền quản trị thành công"]);
+            return redirect()->route("dashboard.index");
+          
         }
 
         return redirect()->route('auth.admin')->with('error', 'Email hoặc Mật khẩu không chính xác');

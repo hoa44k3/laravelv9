@@ -34,7 +34,6 @@
                 <a class="text-blue-500" href="#">thêm địa chỉ tài nguyên</a>.
             </p>
 
-            <!-- Input chọn file (cả ảnh và video) -->
             <label for="file">Choose an image or video:</label>
             <input type="file" name="file" id="file" required accept="image/*,video/*">
 

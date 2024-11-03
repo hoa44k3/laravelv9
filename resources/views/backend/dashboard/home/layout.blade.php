@@ -36,7 +36,7 @@
                 <p class="card-text">Sử dụng các nút dưới đây để truy cập các chức năng quản lý khác nhau.</p>
                 <div class="d-flex justify-content-start flex-wrap">
                     <a href="/backend/user" class="btn btn-primary me-2 mb-2">Quản lý người dùng</a>
-                    <a href="/backend/product" class="btn btn-info me-2 mb-2">Quản lý sản phẩm</a>
+                    <a href="/backend/blogs" class="btn btn-info me-2 mb-2">Quản lý bài viết</a>
                     <a href="/backend/order" class="btn btn-success me-2 mb-2">Quản lý đơn hàng</a>
                     <a href="/backend/report" class="btn btn-warning me-2 mb-2">Báo cáo</a>
                     <a href="/backend/settings" class="btn btn-secondary mb-2">Cài đặt</a>

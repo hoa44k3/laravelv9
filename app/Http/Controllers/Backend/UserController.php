@@ -33,7 +33,10 @@ class UserController extends Controller
             'address' => 'required|string',
             'birthday' => 'required|date|date_format:Y-m-d',
             'description' => 'required|string',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            
         ]);
+        
 
         // Tạo người dùng mới sau khi đã validate
         $user = new User();
@@ -44,6 +47,11 @@ class UserController extends Controller
         $user->address = $request->address;
         $user->birthday = Carbon::createFromFormat('Y-m-d', $request->birthday); // Chuyển đổi thành đối tượng Carbon
         $user->description = $request->description;
+
+        if ($request->hasFile('image')) {
+            $imagePath = $request->file('image')->store('image', 'public');
+            $user->image = $imagePath;
+        }
         $user->save();
 
         return redirect()->route('backend.user.index')->with('success', 'Người dùng đã được thêm thành công.');
@@ -64,6 +72,8 @@ class UserController extends Controller
             'address' => 'required|string',
             'birthday' => 'required|date|date_format:Y-m-d',
             'description' => 'required|string',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+
         ]);
 
         $user = User::findOrFail($id);
@@ -78,6 +88,12 @@ class UserController extends Controller
         if ($request->filled('password')) {
             $user->password = bcrypt($request->password);
         }
+        // Nếu có tải lên ảnh mới, lưu vào storage
+    if ($request->hasFile('image')) {
+        $imagePath = $request->file('image')->store('image', 'public');
+        $user->image = $imagePath;
+    }
+
 
         $user->save();
 

@@ -48,7 +48,7 @@
                   </a>
                 </li>
                 <li>
-                  <a href="components/buttons.html">
+                  <a href="{{route('backend.statistics.index')}}">
                     <span class="sub-item">Thống kê</span>
                   </a>
                 </li>
@@ -58,21 +58,36 @@
           </li>
           <li class="nav-item">
             <a data-bs-toggle="collapse" href="#sidebarLayouts">
-              <i class="fas fa-th-list"></i>
-              <p>Quản lý bài viết</p>
-              <span class="caret"></span>
+                <i class="fas fa-th-list"></i>
+                <p>Quản lý chung</p>
+                <span class="caret"></span>
             </a>
             <div class="collapse" id="sidebarLayouts">
-              <ul class="nav nav-collapse">
-                <li>
-                  <a href="sidebar-style-2.html">
-                    <span class="sub-item">Quản lý danh mục</span>
-                  </a>
+                <ul class="nav nav-collapse">
+                    <li>
+                        <a href="{{ route('backend.blog.index') }}">
+                            <span class="sub-item">Quản lý bài viết</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ route('backend.category.index') }}">
+                            <span class="sub-item">Quản lý danh mục</span>
+                        </a>
+                    </li>
+                    <li>
+                      <a href="{{ route('backend.comment.indexAll') }}">
+                          <span class="sub-item">Quản lý bình luận</span>
+                      </a>
+                  </li>
+                  <li>
+                    <a href="{{ route('backend.likes.index') }}">
+                        <span class="sub-item">Quản lý lượt thích</span>
+                    </a>
                 </li>
-                
-              </ul>
+                </ul>
             </div>
-          </li>
+        </li>
+        
           <li class="nav-item">
             <a data-bs-toggle="collapse" href="#forms">
               <i class="fas fa-pen-square"></i>
@@ -89,71 +104,6 @@
               </ul>
             </div>
           </li>
-          <li class="nav-item">
-            <a data-bs-toggle="collapse" href="#tables">
-              <i class="fas fa-table"></i>
-              <p>Quản lý lượt thích</p>
-              <span class="caret"></span>
-            </a>
-            <div class="collapse" id="tables">
-              <ul class="nav nav-collapse">
-                <li>
-                  <a href="tables/tables.html">
-                    <span class="sub-item">Basic Table</span>
-                  </a>
-                </li>
-                <li>
-                  <a href="tables/datatables.html">
-                    <span class="sub-item">Datatables</span>
-                  </a>
-                </li>
-              </ul>
-            </div>
-          </li>
-          <li class="nav-item">
-            <a data-bs-toggle="collapse" href="#maps">
-              <i class="fas fa-map-marker-alt"></i>
-              <p>Quản lý thông báo</p>
-              <span class="caret"></span>
-            </a>
-            <div class="collapse" id="maps">
-              <ul class="nav nav-collapse">
-                <li>
-                  <a href="maps/googlemaps.html">
-                    <span class="sub-item">Google Maps</span>
-                  </a>
-                </li>
-                <li>
-                  <a href="maps/jsvectormap.html">
-                    <span class="sub-item">Jsvectormap</span>
-                  </a>
-                </li>
-              </ul>
-            </div>
-          </li>
-          <li class="nav-item">
-            <a data-bs-toggle="collapse" href="#charts">
-              <i class="far fa-chart-bar"></i>
-              <p>Quản lý bình luận</p>
-              <span class="caret"></span>
-            </a>
-            <div class="collapse" id="charts">
-              <ul class="nav nav-collapse">
-                <li>
-                  <a href="charts/charts.html">
-                    <span class="sub-item">Chart Js</span>
-                  </a>
-                </li>
-                <li>
-                  <a href="charts/sparkline.html">
-                    <span class="sub-item">Sparkline</span>
-                  </a>
-                </li>
-              </ul>
-            </div>
-          </li>
-          
-        
         </ul>
       </div>
     </div>

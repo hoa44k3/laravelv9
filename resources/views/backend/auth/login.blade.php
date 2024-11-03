@@ -5,94 +5,92 @@
       <title>HTML Login Form</title>
       <link rel="stylesheet" href="style.css">
       <link href="assets/css/customize.css" rel="stylesheet">
-      
 </head>
 <style>
     /* Đặt nền và căn giữa nội dung chính */
-body {
-    font-family: Arial, sans-serif;
-    background-color: #f4f4f4;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    margin: 0;
-}
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f4;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+    }
 
-/* Định dạng cho phần bao ngoài */
-.main {
-    background-color: #fff;
-    padding: 30px;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    text-align: center;
-    width: 300px;
-}
+    /* Định dạng cho phần bao ngoài */
+    .main {
+        background-color: #fff;
+        padding: 30px;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        text-align: center;
+        width: 300px;
+    }
 
-/* Định dạng tiêu đề chính */
-h1 {
-    color: #4CAF50;
-    font-size: 24px;
-    margin-bottom: 10px;
-}
+    /* Định dạng tiêu đề chính */
+    h1 {
+        color: #4CAF50;
+        font-size: 24px;
+        margin-bottom: 10px;
+    }
 
-/* Định dạng tiêu đề phụ */
-h3 {
-    font-size: 16px;
-    margin-bottom: 20px;
-    color: #555;
-}
+    /* Định dạng tiêu đề phụ */
+    h3 {
+        font-size: 16px;
+        margin-bottom: 20px;
+        color: #555;
+    }
 
-/* Định dạng các nhãn (labels) */
-label {
-    display: block;
-    text-align: left;
-    margin: 10px 0 5px;
-    font-size: 14px;
-    color: #333;
-}
+    /* Định dạng các nhãn (labels) */
+    label {
+        display: block;
+        text-align: left;
+        margin: 10px 0 5px;
+        font-size: 14px;
+        color: #333;
+    }
 
-/* Định dạng input cho người dùng nhập */
-input[type="text"],
-input[type="password"] {
-    width: 100%;
-    padding: 8px;
-    margin-bottom: 15px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    box-sizing: border-box;
-}
+    /* Định dạng input cho người dùng nhập */
+    input[type="text"],
+    input[type="password"] {
+        width: 100%;
+        padding: 8px;
+        margin-bottom: 15px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-sizing: border-box;
+    }
 
-/* Định dạng nút bấm */
-button {
-    background-color: #4CAF50;
-    color: white;
-    border: none;
-    padding: 10px;
-    width: 100%;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 16px;
-}
+    /* Định dạng nút bấm */
+    button {
+        background-color: #4CAF50;
+        color: white;
+        border: none;
+        padding: 10px;
+        width: 100%;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 16px;
+    }
 
-button:hover {
-    background-color: #45a049;
-}
+    button:hover {
+        background-color: #45a049;
+    }
 
-/* Định dạng cho link "Create an account" */
-p {
-    margin-top: 20px;
-    font-size: 14px;
-}
+    /* Định dạng cho link "Create an account" */
+    p {
+        margin-top: 20px;
+        font-size: 14px;
+    }
 
-a {
-    color: #4CAF50;
-}
-
-/* Định dạng thêm cho phần bao ngoài của nút */
-.wrap {
-    text-align: center;
-}
+    a {
+        color: #4CAF50;
+    }
+    
+    .wrap {
+        text-align: center;
+    }
 
 </style>
 <body>
@@ -108,9 +106,9 @@ a {
                      </ul>
                  </div>
             @endif
-            <form method="post" action="{{route('auth.login')}}">
+            <form method="post" action="{{ route('auth.login') }}">
                 @csrf
-                  <label for="first">
+                <label for="email">
                         Email:
                   </label>
                   <input type="text" 
@@ -138,8 +136,7 @@ a {
                   @endif
 
                   <div class="wrap">
-                        <button type="submit"
-                                onclick="solve()">
+                        <button type="submit">
                               Đăng nhập
                         </button>
                   </div>

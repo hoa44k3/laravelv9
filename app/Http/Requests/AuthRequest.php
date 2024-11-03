@@ -25,16 +25,18 @@ class AuthRequest extends FormRequest
     {
         return [
 
-            'email' => 'required|email',
-            'password' => 'required',
+            'email' => 'required|email|exists:users,email',
+            'password' => 'required|string|min:6',
         ];
     }
     public function messages(): array
     {
         return [
-            'email.required' => 'Bạn chưa nhập vào email.',
-            'email.email' => 'Email chưa đúng định dạng. vd: abc@gmail.com',
-            'password.required' => 'Bạn chưa nhập vào mật khẩu.'
+            'email.required' => 'Email là bắt buộc.',
+            'email.email' => 'Email không hợp lệ.',
+            'email.exists' => 'Email không tồn tại.',
+            'password.required' => 'Mật khẩu là bắt buộc.',
+            'password.min' => 'Mật khẩu phải có ít nhất 6 ký tự.',
         ];
     }
 }
