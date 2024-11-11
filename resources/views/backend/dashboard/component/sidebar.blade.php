@@ -26,84 +26,68 @@
     </div>
     <div class="sidebar-wrapper scrollbar scrollbar-inner">
       <div class="sidebar-content">
-        <ul class="nav nav-secondary">
-          
+        <ul class="nav nav-secondary">  
           <li class="nav-section">
             <span class="sidebar-mini-icon">
               <i class="fa fa-ellipsis-h"></i>
             </span>
-            <h4 class="text-section">Components</h4>
           </li>
           <li class="nav-item">
-            <a data-bs-toggle="collapse" href="#base">
-              <i class="fas fa-layer-group"></i>
-              <p>Quản trị viên</p>
-              <span class="caret"></span>
-            </a>
             <div class="collapse" id="base">
-              <ul class="nav nav-collapse">
-                <li>
-                  <a href="{{route('backend.user.index')}}">
-                    <span class="sub-item">Quản lý người dùng</span>
-                  </a>
-                </li>
-                <li>
-                  <a href="{{route('backend.statistics.index')}}">
-                    <span class="sub-item">Thống kê</span>
-                  </a>
-                </li>
-               
+              <ul class="nav nav-collapse">          
               </ul>
             </div>
           </li>
           <li class="nav-item">
-            <a data-bs-toggle="collapse" href="#sidebarLayouts">
-                <i class="fas fa-th-list"></i>
-                <p>Quản lý chung</p>
-                <span class="caret"></span>
-            </a>
             <div class="collapse" id="sidebarLayouts">
                 <ul class="nav nav-collapse">
-                    <li>
-                        <a href="{{ route('backend.blog.index') }}">
-                            <span class="sub-item">Quản lý bài viết</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="{{ route('backend.category.index') }}">
-                            <span class="sub-item">Quản lý danh mục</span>
-                        </a>
-                    </li>
-                    <li>
-                      <a href="{{ route('backend.comment.indexAll') }}">
-                          <span class="sub-item">Quản lý bình luận</span>
-                      </a>
-                  </li>
-                  <li>
-                    <a href="{{ route('backend.likes.index') }}">
-                        <span class="sub-item">Quản lý lượt thích</span>
-                    </a>
-                </li>
                 </ul>
             </div>
-        </li>
-        
-          <li class="nav-item">
-            <a data-bs-toggle="collapse" href="#forms">
-              <i class="fas fa-pen-square"></i>
-              <p>Quản lý thẻ</p>
-              <span class="caret"></span>
-            </a>
-            <div class="collapse" id="forms">
-              <ul class="nav nav-collapse">
-                <li>
-                  <a href="forms/forms.html">
-                    <span class="sub-item">Basic Form</span>
-                  </a>
-                </li>
-              </ul>
-            </div>
           </li>
+        <li class="nav-item">
+          <a href="{{ route('blogs.home') }}">
+              <i class="fas fa-table"></i>
+              <p>Quản lý bài viết</p>
+              <span class="caret"></span>
+          </a>
+          
+        </li>
+        <li class="nav-item">
+        <a href="{{ route('likes.index') }}">
+            <i class="fas fa-table"></i>
+            <p>Quản lý lượt thích</p>
+            <span class="caret"></span>
+        </a>
+       </li>
+      <li class="nav-item">
+      <a href="{{ route('category.home') }}">
+          <i class="fas fa-table"></i>
+          <p>Quản lý danh mục</p>
+          <span class="caret"></span>
+      </a>
+       </li>
+       <li class="nav-item">
+          <a href="{{ route('comment.index') }}">
+          <i class="fas fa-table"></i>
+          <p>Quản lý bình luận</p>
+          <span class="caret"></span>
+           </a>
+      </li>
+      <li class="nav-item">
+        <a href="{{ route('users.index') }}">
+      <i class="fas fa-table"></i>
+      <p>Quản lý người dùng</p>
+      <span class="caret"></span>
+      </a>
+      </li>
+
+      <li class="nav-item">
+        <a href="{{ route('statistics.index') }}">
+      <i class="fas fa-table"></i>
+      <p> Thống kê</p>
+      <span class="caret"></span>
+      </a>
+      </li>
         </ul>
       </div>
     </div>

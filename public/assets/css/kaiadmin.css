@@ -351,6 +351,8 @@ body {
   min-height: 100%;
   float: right;
   transition: all .3s; }
+ 
+
   .main-panel > .container {
     min-height: calc(100% - 123px);
     margin-top: 69px;
@@ -452,6 +454,7 @@ body {
   height: calc(100% - 57px);
   display: flex;
   flex-direction: column; }
+
 
 .page-sidebar {
   position: absolute;

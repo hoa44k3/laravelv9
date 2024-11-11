@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('image_path')->nullable();
-            $table->integer('comment_count')->default(0);
+            $table->string('comment')->nullable();
             $table->timestamps();
         });
     }

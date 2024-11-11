@@ -2,64 +2,67 @@
 
 namespace App\Http\Controllers\Backend;
 use App\Models\Blog;
+use App\Models\User;
+use App\Models\Category;
 use App\Models\Comment;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
 class CommentController extends Controller
 {
-    public function index($blog_id)
-    {
-        // $comments = Comment::with(['user', 'blog.category'])->where('blog_id', $blog_id)->get();
-        $comments = Comment::with(['user', 'blog.category'])->get();
+    public function index($blog_id = null)
+    {  
+    //     $comments = Comment::with(['user', 'blog.category'])->get();
+    //    $blog = Blog::with('category')->findOrFail($blog_id);
+    //    if (!$blog) {
+    //          return redirect()->route('backend.blog.index')->withErrors('Bài viết không tồn tại.');
+    //     }
+    //     $comments = Comment::where('blog_id', $blog_id)->with('user')->get();
+    //     return view('backend.comment.index', compact('comments', 'blog'));
 
-       $blog = Blog::with('category')->findOrFail($blog_id);
-       if (!$blog) {
-        // Xử lý khi không tìm thấy blog, có thể redirect hoặc thông báo lỗi
+    $blog = $blog_id ? Blog::with('category')->find($blog_id) : null;
+
+    if ($blog_id && !$blog) {
         return redirect()->route('backend.blog.index')->withErrors('Bài viết không tồn tại.');
     }
-      // $comments = Comment::where('blog_id', $blog_id)->with(['blog', 'blog.category'])->get();
-      $comments = Comment::where('blog_id', $blog_id)->with('user')->get();
-        // Trả về view với dữ liệu
-        return view('backend.comment.index', compact('comments', 'blog'));
+
+    $comments = $blog ? $blog->comments()->with('user')->get() : Comment::with(['user', 'blog.category'])->get();
+
+    return view('backend.comments.index', compact('blog', 'comments'));
+
     }
     public function indexAll()
     {
-         $comments = Comment::with(['blog', 'blog.category'])->get();
+         $comments = Comment::with(['blog', 'blog.category','user'])->get();
         return view('backend.comment.index', compact('comments'));
     }
 
     public function createComment($blog_id)
 {
    $blog = Blog::with('category')->findOrFail($blog_id);
-    return view('backend.comment.create', compact('blog'));
+   $users = User::all(); 
+   $categories = Category::all();
+    return view('backend.comment.create', compact('blog','users','categories'));
 }
     public function store(Request $request, $blog_id)
     {
-        //  $data = $request->validate([
-        //       'author' => 'required|string|max:255',
-        //      'content' => 'required|string',
-        //      'blog_id' => 'required|exists:blogs,id',
-        // ]);
-        $validated = $request->validate([
-            'author' => 'required|string|max:255',
-            'content' => 'required|string',
-            'blog_id' => 'required|exists:blogs,id',
-        ]);
+          $validated = $request->validate([
+              'content' => 'required|string',
+             'user_id' => 'required|exists:users,id',
+             ]);
 
-        // $blog = Blog::findOrFail($blog_id);
-        // $blog->comments()->create($data);
+    // Tạo bình luận mới với blog_id, user_id và nội dung đã xác thực
+    Comment::create([
+        'blog_id' => $blog_id,
+        'user_id' => $validated['user_id'],
+        'content' => $validated['content'],
+        'created_at' => now(), // Thêm thời gian hiện tại
+    ]);
 
-        $comment = Comment::create([
-            'author' => $validated['author'],
-            'content' => $validated['content'],
-            'blog_id' => $validated['blog_id'],
-            'created_at' => now(), // Thêm thời gian hiện tại
-        ]);
-        return redirect()->route('backend.comment.index', ['blog' => $validated['blog_id']])
+    return redirect()->route('backend.comment.index', ['blog' => $blog_id])
         ->with('success', 'Bình luận đã được thêm thành công!');
-        //  return redirect()->route('backend.comment.index', ['blog' => $blog_id])->with('success', 'Comment added successfully.');
-    }
+}
+
 
     public function edit($blogId, $commentId)
     {   

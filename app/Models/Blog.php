@@ -8,10 +8,11 @@ use Illuminate\Database\Eloquent\Model;
 class Blog extends Model
 {
     use HasFactory;
-    protected $fillable = ['title', 'content', 'image_path', 'user_id', 'status','likes', 'comment_count'];
+    protected $fillable = ['title', 'content', 'image_path', 'user_id', 'status','likes', 'comment_count','category_id'];
 
-    public function user() {
-        return $this->belongsTo(User::class);
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id');
     }
     public function likes()
     {

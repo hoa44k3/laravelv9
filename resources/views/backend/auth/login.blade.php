@@ -7,7 +7,6 @@
       <link href="assets/css/customize.css" rel="stylesheet">
 </head>
 <style>
-    /* Đặt nền và căn giữa nội dung chính */
     body {
         font-family: Arial, sans-serif;
         background-color: #f4f4f4;
@@ -18,7 +17,6 @@
         margin: 0;
     }
 
-    /* Định dạng cho phần bao ngoài */
     .main {
         background-color: #fff;
         padding: 30px;
@@ -28,21 +26,18 @@
         width: 300px;
     }
 
-    /* Định dạng tiêu đề chính */
     h1 {
         color: #4CAF50;
         font-size: 24px;
         margin-bottom: 10px;
     }
 
-    /* Định dạng tiêu đề phụ */
     h3 {
         font-size: 16px;
         margin-bottom: 20px;
         color: #555;
     }
 
-    /* Định dạng các nhãn (labels) */
     label {
         display: block;
         text-align: left;
@@ -51,7 +46,6 @@
         color: #333;
     }
 
-    /* Định dạng input cho người dùng nhập */
     input[type="text"],
     input[type="password"] {
         width: 100%;
@@ -62,7 +56,6 @@
         box-sizing: border-box;
     }
 
-    /* Định dạng nút bấm */
     button {
         background-color: #4CAF50;
         color: white;
@@ -78,7 +71,6 @@
         background-color: #45a049;
     }
 
-    /* Định dạng cho link "Create an account" */
     p {
         margin-top: 20px;
         font-size: 14px;

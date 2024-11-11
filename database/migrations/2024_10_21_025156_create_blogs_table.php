@@ -26,8 +26,7 @@ return new class extends Migration
             $table->enum('status', ['pending', 'approved'])->default('pending'); 
             $table->integer('likes_count')->default(0);
             $table->timestamps();
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-            
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');    
             $table->foreign('category_id')->references('id')->on('categories')->onDelete('set null');
         });
     }
@@ -38,13 +37,7 @@ return new class extends Migration
      * @return void
      */
     public function down()
-    {
-        // Schema::table('blogs', function (Blueprint $table) {
-        //     // Xóa khóa ngoại trước khi xóa cột
-        //     $table->dropForeign(['category_id']);
-        //     $table->dropColumn('category_id');
-        // });
-        
+    {   
         Schema::dropIfExists('blogs');
     }
 };

@@ -10,25 +10,28 @@ class Comment extends Model
     use HasFactory;
    
     protected $fillable = [
+        'name',
         'author',
         'content',
         'blog_id',
         'category_id',
+        'user_id',
+   
         
         
     ];
-    public $timestamps = true; 
+    public $timestamps = false; 
+
+    public function category()
+    {
+        return $this->blog ? $this->blog->category : null;
+    }
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
     public function blog()
-    {
-        return $this->belongsTo(Blog::class, 'blog_id');
-       // return $this->belongsTo(Blog::class);
-    }
-public function category()
 {
-    return $this->blog ? $this->blog->category : null;
+    return $this->belongsTo(Blog::class);
 }
-public function user()
-    {
-        return $this->belongsTo(User::class); // Hoặc sử dụng tên model mà bạn đang sử dụng
-    }
 }

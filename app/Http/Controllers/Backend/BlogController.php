@@ -24,7 +24,7 @@ class BlogController extends Controller
     public function create()
     {
         $categories = Category::all();
-        $users = User::all(); // Lấy danh sách người dùng
+        $users = User::all(); 
         return view('backend.blog.create', compact('categories','users'));
     }
 
@@ -40,6 +40,11 @@ class BlogController extends Controller
             'category_id' => 'required|exists:categories,id',
             'image_path' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
+        
+        $imagePath = null;
+        if ($request->hasFile('image_path')) {
+            $imagePath = $request->file('image_path')->store('images', 'public');
+        }
     Blog::create([
         'title' => $request->title,
         'content' => $request->content,
@@ -48,11 +53,9 @@ class BlogController extends Controller
         'likes' => $request->likes,
         'comment_count' => $request->comment_count,
         'status' => $request->status,
-        'image_path' => $imagePath ?? null, // Nếu không có ảnh, gán là null
+        'image_path' => $imagePath, // Nếu không có ảnh, gán là null
     ]);
-    if ($request->hasFile('image_path')) {
-        $imagePath = $request->file('image_path')->store('images', 'public');
-    }
+   
         return redirect()->route('backend.blog.index')->with('success', 'Bài viết đã được tạo thành công!');
     }
 
