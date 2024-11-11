@@ -1,5 +1,5 @@
 <?php
-namespace App\Http\Controllers\Backend;
+namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Http\Requests\AuthRequest;
@@ -16,7 +16,7 @@ class AuthController extends Controller
     public function index()
     {
 
-        return view('backend.auth.login');
+        return view('auth.login');
     }
     public function register(AuthRequest $request)
     {
@@ -30,7 +30,10 @@ class AuthController extends Controller
     $user->password = Hash::make($request->input('password'));
     $user->save();
 
+    Auth::login($user);
 
+    // Chuyển hướng về trang dashboard
+    return redirect()->route('dashboard.index')->with('success', 'Đăng ký thành công');
 
     // return redirect()->route('auth.admin')->with('success', 'Đăng ký thành công');
     }
@@ -38,7 +41,6 @@ class AuthController extends Controller
     {
     
         if(Auth::attempt(["email"=>$request->email,"password"=>$request->password])){
-           // $request->session()->put("messenge", ["style"=>"success","msg"=>"Đăng nhập quyền quản trị thành công"]);
             return redirect()->route("dashboard.index");
           
         }
@@ -50,7 +52,7 @@ class AuthController extends Controller
     {
         Auth::logout();
         $request->session()->invalidate();
-        $request->session()->regenerate();
+        $request->session()->regenerateToken();
         return redirect()->route('auth.admin')->with('success', 'Bạn đã đăng xuất thành công');
     }
 }

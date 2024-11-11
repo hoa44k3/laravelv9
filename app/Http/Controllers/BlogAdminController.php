@@ -32,11 +32,17 @@ class BlogAdminController extends Controller
         $create->comment_count = $request->comment_count;   
         $create->user_id =$request->user_id;
         $create->category_id = $request->category_id;   
-        
+
+        $image_path = null;
+        // if ($request->hasFile('image_path')) {
+        //     $image_path = $request->file('image_path')->store('blogs', 'public');
+        //     $create->image_path = $image_path; 
+        // }
         if ($request->hasFile('image_path')) {
             $image_path = $request->file('image_path')->store('blogs', 'public');
-            $create->image_path = $image_path; 
         }
+
+        
         $create->save();
         return redirect()->route('blogs.home')->with('success', 'Bài viết đã được tạo thành công!');
     }
@@ -46,6 +52,19 @@ class BlogAdminController extends Controller
         $categories = Category::all();
         $users = User::all();
         return view('blogs.edit', compact('blog', 'categories','users'));
+    }
+    public function destroy($id)
+    {
+        $blog = Blog::findOrFail($id);
+
+            if ($blog->image_path) {
+                //Storage::disk('public')->delete($blog->image_path);
+                Storage::disk('public')->delete('blog/' . $blog->image_path);
+             }
+
+            $blog->delete();
+            return response()->json(['status' => 'success']);
+            //return response()->json(['success' => 'Bài viết đã được xóa thành công.']);
     }
 
     public function update(Request $request, $id)
@@ -67,32 +86,42 @@ class BlogAdminController extends Controller
     }
         return redirect()->route('blogs.home')->with('success', 'Bài viết đã được cập nhật thành công!');
     }
-    public function destroy($id)
-    {
-        $blog = Blog::findOrFail($id);
-
-    if ($blog->image_path) {
-        Storage::disk('public')->delete($blog->image_path);
-    }
-
-    $blog->delete();
-
-    return response()->json(['success' => 'Bài viết đã được xóa thành công.']);
-    }
+   
     public function statistics()
     {
         $totalBlogs = Blog::count();
         $approvedBlogs = Blog::where('status', 'approved')->count();
         $pendingBlogs = Blog::where('status', 'pending')->count();
         $totalComments = Comment::count();
-        $likesCount = Blog::sum('likes_count');
-
+        $totalUsers = User::count();
+        $likesCount = Blog::withCount('likes')->get();
         return view('statistics.index', [
             'totalBlogs' => $totalBlogs,
             'approvedBlogs' => $approvedBlogs,
             'pendingBlogs' => $pendingBlogs,
             'totalComments' => $totalComments,
             'likesCount' => $likesCount,
+            'totalUsers' => $totalUsers,
         ]);
     }
+
+    public function toggleApproval($id)
+{
+    $blog = Blog::find($id);
+    
+    if (!$blog) {
+        return response()->json(['error' => 'Không tìm thấy bài viết'], 404);
+    }
+
+    // Đổi trạng thái phê duyệt
+    $blog->status = $blog->status === 'approved' ? 'pending' : 'approved';
+    $blog->save();
+
+    return response()->json([
+        'success' => true,
+        'message' => 'Trạng thái đã được cập nhật thành công',
+        'status' => $blog->status
+    ]);
+}
+
 }

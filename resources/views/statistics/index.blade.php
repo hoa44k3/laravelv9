@@ -23,6 +23,12 @@
                                 <p class="display-4 text-primary">{{ $totalComments }}</p>
                             </div>
                         </div>
+                        <div class="col-lg-4 col-md-6 mb-3">
+                            <div class="card shadow-sm p-3">
+                                <h4>Tổng người dùng đăng ký</h4>
+                                <p class="display-4 text-primary">{{ $totalUsers }}</p>
+                            </div>
+                        </div>
                     </div>
 
                     <h3 class="text-center mb-4">Tổng số lượt thích của từng bài viết:</h3>
@@ -37,7 +43,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @if (is_array($likesCount) || is_object($likesCount))
+                                    {{-- @if (is_array($likesCount) || is_object($likesCount)) --}}
                                         @foreach ($likesCount as $blog)
                                             <tr>
                                                 <td>{{ $blog->id }}</td>
@@ -45,11 +51,11 @@
                                                 <td>{{ $blog->likes_count }}</td>
                                             </tr>
                                         @endforeach
-                                    @else
+                                    {{-- @else
                                         <tr>
                                             <td colspan="3" class="text-center text-muted">Không có dữ liệu</td>
                                         </tr>
-                                    @endif
+                                    @endif --}}
                                 </tbody>
                             </table>
                         </div>

@@ -36,6 +36,10 @@ class Blog extends Model
     {
          return $this->comments()->count(); // Tổng số bình luận
     }
+    public function totalUsers()
+    {
+         return $this->users()->count(); // Tổng số người dùng đăng ký
+    }
     public function getImagePathAttribute($value)
     {
         return $value ? asset($value) : null; // Trả về đường dẫn chính xác

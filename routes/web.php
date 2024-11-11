@@ -1,17 +1,13 @@
 <?php
 namespace App\Http\Controllers\Backend;
 use App\Http\Controllers\Backend\DashboardController;
-use App\Http\Controllers\Backend\AuthController;
+use App\Http\Controllers\AuthController;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Backend\UploadController;
-use App\Http\Controllers\Backend\CategoryController;
 use App\Http\Controllers\CommentController;
-use App\Http\Controllers\Backend\LikeController;
 use App\Models\Category;
 use App\Http\Controllers\BlogAdminController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\UserController;
-use App\Http\Controllers\Backend\ImageUploadController;
 use App\Http\Controllers\CategoryAdminController;
 use App\Http\Controllers\LikeAdminController;
 
@@ -19,22 +15,13 @@ Route::get('dashboard.index', [DashboardController::class, 'index'])->name
 ('dashboard.index')->middleware('admin');
 
 
-Route::group(['prefix' => 'backend', 'as' => 'backend.'], function () {
-    Route::resource('user', \App\Http\Controllers\Backend\UserController::class);
-});
-
 Route::get('admin', [AuthController::class, 'index'])->name('auth.admin');
 Route::post('logout', [AuthController::class, 'logout'])->name('auth.logout');
-
 Route::post('login', [AuthController::class, 'login'])->name('auth.login');
 
-Route::get('upload', function () {
-    return view('upload');
-});
 
-Route::post('upload', [UploadController::class, 'upload'])->name('upload');
 
-//Route::get('/',[HomeController::class,'customers.index']);
+Route::get('/', [HomeController::class, 'index']);
 
 Route::prefix('backend')->group(function () {
     Route::resource('blogs', BlogController::class)->names([
@@ -51,25 +38,6 @@ Route::prefix('backend')->group(function () {
 });
 Route::get('/statistics', [BlogAdminController::class, 'statistics'])->name('statistics.index');
 
-Route::get('backend/categories', [CategoryController::class, 'index'])->name('backend.category.index');
-Route::get('backend/categories/create', [CategoryController::class, 'create'])->name('backend.category.create');  // Show form to create a new category
-Route::post('backend/categories', [CategoryController::class, 'store'])->name('backend.category.store');     // Store a new category
-Route::get('backend/categories/{category}/edit', [CategoryController::class, 'edit'])->name('backend.category.edit');  // Show form to edit a category
-Route::put('backend/categories/{category}', [CategoryController::class, 'update'])->name('backend.category.update');  // Update a category
-Route::delete('backend/categories/{category}', [CategoryController::class, 'destroy'])->name('backend.category.destroy');  // Delete a category
-Route::get('/backend/category/{id}', [CategoryController::class, 'show'])->name('backend.category.show');
-
-Route::prefix('backend')->group(function () {
-    Route::resource('likes', LikeController::class)->names([
-        'index' => 'backend.likes.index',
-        'create' => 'backend.likes.create',
-        'store' => 'backend.likes.store',
-        'edit' => 'backend.likes.edit',
-        'update' => 'backend.likes.update',
-        'destroy' => 'backend.likes.destroy'
-    ]);
-});
-
 Route::prefix('admin')->group(function () {
     Route::get('blogs', [BlogAdminController::class, 'home'])->name('blogs.home');
     Route::get('blog/create', [BlogAdminController::class, 'create'])->name('blogs.create');
@@ -77,6 +45,8 @@ Route::prefix('admin')->group(function () {
     Route::get('blog/{id}/edit', [BlogAdminController::class, 'edit'])->name('blogs.edit');
     Route::put('blog/{id}', [BlogAdminController::class, 'update'])->name('blog.update');
     Route::delete('blog/{id}', [BlogAdminController::class, 'destroy'])->name('blog.destroy');
+    Route::post('/blog/toggle-approval/{id}', [BlogAdminController::class, 'toggleApproval'])->name('blog.toggleApproval');
+    
 });
 
 Route::prefix('admin')->group(function () {
