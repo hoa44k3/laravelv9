@@ -6,7 +6,6 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CommentController;
 use App\Models\Category;
 use App\Http\Controllers\BlogAdminController;
-use App\Http\Controllers\HomeController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\CategoryAdminController;
 use App\Http\Controllers\LikeAdminController;
@@ -19,23 +18,25 @@ Route::get('admin', [AuthController::class, 'index'])->name('auth.admin');
 Route::post('logout', [AuthController::class, 'logout'])->name('auth.logout');
 Route::post('login', [AuthController::class, 'login'])->name('auth.login');
 
+// // Route trang đăng ký (GET)
+// Route::get('admin/register', [AuthController::class, 'registerForm'])->name('auth.register');
 
 
-Route::get('/', [HomeController::class, 'index']);
+// // Route đăng ký (POST)
+// Route::post('admin/register', [AuthController::class, 'register'])->name('auth.register.submit');
 
-Route::prefix('backend')->group(function () {
-    Route::resource('blogs', BlogController::class)->names([
-        'index' => 'backend.blog.index',
-        'create' => 'backend.blog.create',
-        'store' => 'backend.blog.store',
-        'show' => 'backend.blog.show',
-        'edit' => 'backend.blog.edit',
-        'update' => 'backend.blog.update',
-        'destroy' => 'backend.blog.destroy',
-    ]);
-    Route::post('blogs/{blog}/approve', [BlogController::class, 'approve'])->name('backend.blog.approve');
-    Route::get('blogs/{blog}/comments', [CommentController::class, 'index'])->name('backend.comment.index');
-});
+// // Route trang đăng nhập (GET)
+// Route::get('admin/login', [AuthController::class, 'index'])->name('auth.login');
+
+// // Route đăng nhập (POST)
+// Route::post('admin/login', [AuthController::class, 'login'])->name('auth.login');
+
+// // Route đăng xuất (POST)
+// Route::post('admin/logout', [AuthController::class, 'logout'])->name('auth.logout');
+
+
+
+
 Route::get('/statistics', [BlogAdminController::class, 'statistics'])->name('statistics.index');
 
 Route::prefix('admin')->group(function () {
@@ -60,13 +61,16 @@ Route::prefix('admin')->group(function () {
 
 
 Route::prefix('admin')->group(function () {
-    Route::get('categorie', [CategoryAdminController::class, 'home'])->name('category.home');
+    Route::get('categories', [CategoryAdminController::class, 'home'])->name('category.home');
+ 
     Route::get('category/create', [CategoryAdminController::class, 'create'])->name('category.create');
     Route::get('category/{id}/edit', [CategoryAdminController::class, 'edit'])->name('category.edit');
     Route::put('category/{id}', [CategoryAdminController::class, 'update'])->name('category.update'); 
     Route::post('category/store', [CategoryAdminController::class, 'store'])->name('category.store');
     Route::delete('/category/{id}', [CategoryAdminController::class, 'destroy'])->name('category.destroy');
 });
+
+
 
 Route::get('/comment', [CommentController::class, 'index'])->name('comment.index');
 
@@ -85,3 +89,10 @@ Route::prefix('comments')->name('comment.')->group(function () {
     Route::put('/{blog}/update/{comment}', [CommentController::class, 'update'])->name('update');
     Route::delete('/delete/{id}', [CommentController::class, 'destroy'])->name('destroy');
 });
+
+use App\Http\Controllers\Customer\HomeController;
+
+Route::get('/', [HomeController::class, 'index'])->name('index');
+Route::get('/blog', [HomeController::class, 'blog'])->name('blog');
+Route::get('/contact', [HomeController::class, 'contact'])->name('contact');
+Route::get('/post', [HomeController::class, 'post'])->name('post');

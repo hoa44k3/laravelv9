@@ -133,12 +133,12 @@
                         </button>
                   </div>
             </form>
-            <p>Not registered?
-                  <a href="#"
-                     style="text-decoration: none;">
-                        Create an account
-                  </a>
+            <p>Chưa có tài khoản?
+                <a href="#" style="text-decoration: none;">
+                    Tạo tài khoản
+                </a>
             </p>
+            
       </div>
 </body>
 

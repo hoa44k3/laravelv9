@@ -8,7 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 class Category extends Model
 {
     use HasFactory;
-    // The attributes that are mass assignable.
     protected $fillable = ['name', 'image_path','comment'];
     public function comments()
     {

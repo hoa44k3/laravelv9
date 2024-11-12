@@ -11,17 +11,16 @@ use Illuminate\Support\Facades\Storage;
 
 class CategoryAdminController extends Controller
 {
-    // Hiển thị danh sách danh mục với DataTables
     public function home(Request $request)
     {     
-        $categories = Category::all(); // Lấy tất cả danh mục
+        $categories = Category::all(); 
          return view('category.home', compact('categories')); 
     }
-// Phương thức tạo mới danh mục
-public function create()
-{
-    return view('category.create');  // Trả về trang tạo mới
-}
+
+    public function create()
+    {
+        return view('category.create');  
+    }
 
     // Phương thức tạo và cập nhật danh mục
     public function store(Request $request)

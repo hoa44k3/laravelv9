@@ -18,24 +18,28 @@ class AuthController extends Controller
 
         return view('auth.login');
     }
+    public function registerForm()
+    {
+      return view('auth.register'); 
+    }
+
     public function register(AuthRequest $request)
     {
         
-     if (User::where('email', $request->input('email'))->exists()) {
-         return redirect()->back()->with('error', 'Email đã tồn tại');
-     }
+            if (User::where('email', $request->input('email'))->exists()) {
+                return redirect()->back()->with('error', 'Email đã tồn tại');
+            }
 
-    $user = new User();
-    $user->email = $request->input('email');
-    $user->password = Hash::make($request->input('password'));
-    $user->save();
+            $user = new User();
+            $user->email = $request->input('email');
+            $user->password = Hash::make($request->input('password'));
+            $user->save();
 
-    Auth::login($user);
+            Auth::login($user);
 
-    // Chuyển hướng về trang dashboard
-    return redirect()->route('dashboard.index')->with('success', 'Đăng ký thành công');
+            // Chuyển hướng về trang dashboard
+            return redirect()->route('dashboard.index')->with('success', 'Đăng ký thành công');
 
-    // return redirect()->route('auth.admin')->with('success', 'Đăng ký thành công');
     }
     public function login(AuthRequest $request)
     {
