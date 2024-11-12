@@ -86,7 +86,33 @@ class BlogAdminController extends Controller
     }
         return redirect()->route('blogs.home')->with('success', 'Bài viết đã được cập nhật thành công!');
     }
-   
+    // public function show($id)
+    // {
+    //     $blog = Blog::with('user')->findOrFail($id); // Lấy bài viết và thông tin tác giả
+    //         $comments = Comment::with('user')->where('blog_id', $id)->get(); // Lấy bình luận và thông tin tác giả bình luận
+
+    //         $totalLikes = $blog->likes_count; // Tổng lượt thích
+    //         $totalComments = $comments->count(); // Tổng bình luận
+    //             return view('backend.blog.show', compact('blog', 'totalLikes', 'totalComments','comments'));
+    // }
+    public function show($id)
+    {
+        // Lấy thông tin bài viết
+        $blog = Blog::findOrFail($id);
+    
+        // Lấy tổng số lượt thích
+        $totalLikes = $blog->likes()->count();
+    
+        // Lấy tổng số bình luận
+        $totalComments = $blog->comments()->count();
+    
+        // Lấy các bình luận
+        $comments = $blog->comments;
+        $blog = Blog::with('comments.user')->find($id);
+
+        return view('blogs.show', compact('blog', 'totalLikes', 'totalComments', 'comments'));
+    }
+    
     public function statistics()
     {
         $totalBlogs = Blog::count();

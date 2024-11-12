@@ -131,12 +131,6 @@ public function update(Request $request, Blog $blog)
     }
     public function show($id)
     {
-
-          // Lấy tổng số lượt thích và bình luận
-        //  $totalLikes = $blog->totalLikes();
-        //  $totalComments = $blog->totalComments();
-
-        //  $comments = $blog->comments()->with('user')->get(); // Lấy bình luận và có thể load thêm thông tin tác giả
 $blog = Blog::with('user')->findOrFail($id); // Lấy bài viết và thông tin tác giả
     $comments = Comment::with('user')->where('blog_id', $id)->get(); // Lấy bình luận và thông tin tác giả bình luận
 

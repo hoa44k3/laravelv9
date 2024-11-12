@@ -1,11 +1,10 @@
-
 <div class="main-panel">
     <div class="main-header">
         <div class="main-header-logo">
             <!-- Logo Header -->
             <div class="logo-header" data-background-color="dark">
                 <a href="index.html" class="logo">
-                    <img src="assets/img/kaiadmin/logo_light.svg" alt="navbar brand" class="navbar-brand" height="20" />
+                    <img src="assets/img/avt1.jpg" alt="navbar brand" class="navbar-brand" height="20" />
                 </a>
                 <div class="nav-toggle">
                     <button class="btn btn-toggle toggle-sidebar">
@@ -21,6 +20,7 @@
             </div>
             <!-- End Logo Header -->
         </div>
+
         <!-- Navbar Header -->
         <nav class="navbar navbar-header navbar-header-transparent navbar-expand-lg border-bottom">
             <div class="container-fluid">
@@ -34,11 +34,10 @@
                         <input type="text" placeholder="Search ..." class="form-control" />
                     </div>
                 </nav>
-        
+
                 <ul class="navbar-nav topbar-nav ms-md-auto align-items-center">
                     <li class="nav-item topbar-icon dropdown hidden-caret d-flex d-lg-none">
-                        <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button"
-                            aria-expanded="false" aria-haspopup="true">
+                        <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false" aria-haspopup="true">
                             <i class="fa fa-search"></i>
                         </a>
                         <ul class="dropdown-menu dropdown-search animated fadeIn">
@@ -49,57 +48,55 @@
                             </form>
                         </ul>
                     </li>
-        
+
                     <li class="nav-item topbar-user dropdown hidden-caret">
                         <a class="dropdown-toggle profile-pic" data-bs-toggle="dropdown" href="#" aria-expanded="false">
                             <div class="avatar-sm">
-                                <img src="assets/img/profile.jpg" alt="..." class="avatar-img rounded-circle" />
+                                <img src="{{ auth()->user()->image ? asset('storage/' . auth()->user()->image) : asset('assets/img/avt1.jpg') }}" alt="Avatar" class="avatar-img rounded-circle" />
                             </div>
                             <span class="profile-username">
-                                <span class="op-7">{{ auth()->user()->name }}</span> <!-- Hiển thị tên người dùng -->
+                                <span class="op-7">{{ auth()->user()->name }}</span>
                             </span>
                         </a>
+                        
                         <ul class="dropdown-menu dropdown-user animated fadeIn">
                             <div class="dropdown-user-scroll scrollbar-outer">
                                 <li>
                                     <div class="user-box">
                                         <div class="avatar-lg">
-                                            <img src="assets/img/profile.jpg" alt="image profile"
-                                                class="avatar-img rounded" />
+                                            <img src="{{ auth()->user()->image ? asset('storage/' . auth()->user()->image) : asset('assets/img/avt1.jpg') }}" alt="Avatar" class="avatar-img rounded" />
                                         </div>
                                         <div class="u-text">
-                                            <h4>{{ auth()->user()->name }}</h4> <!-- Hiển thị tên người dùng -->
-                                            <p class="text-muted">{{ auth()->user()->email }}</p> <!-- Hiển thị email -->
-                                            <a href="profile.html" class="btn btn-xs btn-secondary btn-sm">View Profile</a>
+                                            <h4>{{ auth()->user()->name }}</h4>
+                                            <p class="text-muted">{{ auth()->user()->email }}</p>
                                         </div>
                                     </div>
                                 </li>
                                 <li>
                                     <div class="dropdown-divider"></div>
-                                    <a class="dropdown-item" href="#">My Profile</a>
-                                    <a class="dropdown-item" href="#">My Balance</a>
-                                    <a class="dropdown-item" href="#">Inbox</a>
+                    
+                                    <!-- Link xem thông tin người dùng -->
+                                    <a class="dropdown-item" href="{{ route('users.show', auth()->user()->id) }}">Xem thông tin</a>
+
                                     <div class="dropdown-divider"></div>
-                                    <a class="dropdown-item" href="#">Account Setting</a>
-                                    <div class="dropdown-divider"></div>
-        
+                    
                                     <!-- Logout Form -->
                                     <form id="logout-form" action="{{ route('auth.logout') }}" method="POST" style="display: none;">
                                         @csrf
                                     </form>
-        
-                                    <!-- Logout Link -->
+                                    
+                                    <!-- Link Đăng xuất -->
                                     <a class="dropdown-item" href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                                        Logout
-                                    </a>    
+                                        Đăng xuất
+                                    </a>
                                 </li>
                             </div>
                         </ul>
                     </li>
+                    
                 </ul>
             </div>
         </nav>
-        
         <!-- End Navbar -->
     </div>
 
@@ -110,15 +107,13 @@
             <nav class="pull-left">
                 <ul class="nav">
                     <li class="nav-item">
-                        <a class="nav-link" href="http://www.themekita.com">
-                            ThemeKita
-                        </a>
+                        <a class="nav-link" href="http://www.themekita.com">ThemeKita</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#"> Help </a>
+                        <a class="nav-link" href="#">Help</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#"> Licenses </a>
+                        <a class="nav-link" href="#">Licenses</a>
                     </li>
                 </ul>
             </nav>

@@ -30,7 +30,6 @@
                             </div>
                         </div>
                     </div>
-
                     <h3 class="text-center mb-4">Tổng số lượt thích của từng bài viết:</h3>
                     <div class="card-body">
                         <div class="table-responsive">
@@ -43,7 +42,6 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {{-- @if (is_array($likesCount) || is_object($likesCount)) --}}
                                         @foreach ($likesCount as $blog)
                                             <tr>
                                                 <td>{{ $blog->id }}</td>
@@ -51,15 +49,11 @@
                                                 <td>{{ $blog->likes_count }}</td>
                                             </tr>
                                         @endforeach
-                                    {{-- @else
-                                        <tr>
-                                            <td colspan="3" class="text-center text-muted">Không có dữ liệu</td>
-                                        </tr>
-                                    @endif --}}
                                 </tbody>
                             </table>
                         </div>
-                    </div>        
+                    </div>
+                </div>        
             </div>
         </div>
     </div>

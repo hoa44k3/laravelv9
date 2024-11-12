@@ -81,4 +81,9 @@ class UserController extends Controller
 
         return response()->json(['success' => 'Người dùng đã được xóa thành công.']);
     }
+    public function show($id)
+    {
+        $user = User::findOrFail($id);
+        return view('user.show', compact('users'));
+    }
 }

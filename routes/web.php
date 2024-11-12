@@ -47,7 +47,7 @@ Route::prefix('admin')->group(function () {
     Route::put('blog/{id}', [BlogAdminController::class, 'update'])->name('blog.update');
     Route::delete('blog/{id}', [BlogAdminController::class, 'destroy'])->name('blog.destroy');
     Route::post('/blog/toggle-approval/{id}', [BlogAdminController::class, 'toggleApproval'])->name('blog.toggleApproval');
-    
+    Route::get('blog/{id}', [BlogAdminController::class, 'show'])->name('blogs.show');
 });
 
 Route::prefix('admin')->group(function () {
@@ -80,6 +80,9 @@ Route::post('/users/store', [UserController::class, 'store'])->name('users.store
 Route::get('/users/edit/{id}', [UserController::class, 'edit'])->name('users.edit');
 Route::put('/users/update/{id}', [UserController::class, 'update'])->name('users.update');
 Route::delete('/users/delete/{id}', [UserController::class, 'destroy'])->name('users.destroy');
+Route::get('/users/{id}', [UserController::class, 'show'])->name('users.show');
+
+
 
 Route::prefix('comments')->name('comment.')->group(function () {
     Route::get('/{blog?}', [CommentController::class, 'index'])->name('index');
