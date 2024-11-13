@@ -104,13 +104,13 @@
                                     </div>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" href="#">Categories</a>
+                                    <a class="nav-link" href="{{route('category')}}">Categories</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" href="{{route('blog')}}">Bài viết</a>
+                                    <a class="nav-link" href="{{route('blog')}}">Blog</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" href="#">About</a>
+                                    <a class="nav-link" href="{{route('post')}}">Post</a>
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link" href="{{route('contact')}}">Contact</a>
@@ -123,8 +123,6 @@
         </div>
     </header>
     <!-- ****** Header Area End ****** -->
-
-   
 
     @yield('body')
 

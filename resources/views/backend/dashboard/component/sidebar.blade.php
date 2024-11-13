@@ -74,12 +74,19 @@
            </a>
       </li>
       <li class="nav-item">
-        <a href="{{ route('users.index') }}">
-      <i class="fas fa-table"></i>
-      <p>Quản lý người dùng</p>
-      <span class="caret"></span>
-      </a>
+         <a href="{{ route('users.index') }}">
+          <i class="fas fa-table"></i>
+          <p>Quản lý người dùng</p>
+          <span class="caret"></span>
+         </a>
       </li>
+      <li class="nav-item">
+        <a href="{{ route('contacts.index') }}">
+         <i class="fas fa-table"></i>
+         <p>Danh sách liên hệ</p>
+         <span class="caret"></span>
+        </a>
+     </li>
 
       <li class="nav-item">
         <a href="{{ route('statistics.index') }}">

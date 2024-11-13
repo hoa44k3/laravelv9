@@ -80,7 +80,7 @@ Route::post('/users/store', [UserController::class, 'store'])->name('users.store
 Route::get('/users/edit/{id}', [UserController::class, 'edit'])->name('users.edit');
 Route::put('/users/update/{id}', [UserController::class, 'update'])->name('users.update');
 Route::delete('/users/delete/{id}', [UserController::class, 'destroy'])->name('users.destroy');
-Route::get('/users/{id}', [UserController::class, 'show'])->name('users.show');
+Route::get('/users/{user}', [UserController::class, 'show'])->name('users.show');
 
 
 
@@ -99,3 +99,9 @@ Route::get('/', [HomeController::class, 'index'])->name('index');
 Route::get('/blog', [HomeController::class, 'blog'])->name('blog');
 Route::get('/contact', [HomeController::class, 'contact'])->name('contact');
 Route::get('/post', [HomeController::class, 'post'])->name('post');
+Route::get('/category', [HomeController::class, 'category'])->name('category');
+
+use App\Http\Controllers\ContactController;
+
+Route::get('/contacts', [ContactController::class, 'index'])->name('contacts.index');
+

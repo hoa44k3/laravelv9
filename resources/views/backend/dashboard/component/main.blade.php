@@ -50,7 +50,7 @@
                     </li>
 
                     <li class="nav-item topbar-user dropdown hidden-caret">
-                        <a class="dropdown-toggle profile-pic" data-bs-toggle="dropdown" href="#" aria-expanded="false">
+                        <a class="dropdown-toggle profile-pic" data-bs-toggle="dropdown" href="{{ route('users.show', ['user' => auth()->user()->id]) }}" aria-expanded="false">
                             <div class="avatar-sm">
                                 <img src="{{ auth()->user()->image ? asset('storage/' . auth()->user()->image) : asset('assets/img/avt1.jpg') }}" alt="Avatar" class="avatar-img rounded-circle" />
                             </div>
