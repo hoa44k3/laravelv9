@@ -13,29 +13,32 @@ class CommentController extends Controller
     {
         $blog = $blogId ? Blog::find($blogId) : null;
         $comments = $blog ? $blog->comments : Comment::with(['blog', 'user'])->get();
-
         return view('comment.index', compact('comments', 'blog'));
     }
 
     public function create($blogId)
     {
         $blog = Blog::findOrFail($blogId);
-        return view('comment.create', compact('blog'));
+        $users = User::all();
+        return view('comment.create', compact('blog','users'));
     }
 
     public function store(Request $request, $blogId)
     {
         $request->validate([
+            'user_id' => 'required|exists:users,id',
             'content' => 'required|string',
         ]);
 
-        $blog = Blog::findOrFail($blogId);
-        $blog->comments()->create([
-            'content' => $request->content,
-            'user_id' => auth()->id(),
+         $blog = Blog::findOrFail($blogId);
+
+    $blog->comments()->create([
+        'user_id' => $request->user_id,
+        'content' => $request->content,
     ]);
 
-        return redirect()->route('comment.index', ['blog' => $blogId])->with('success', 'Bình luận đã được thêm thành công!');
+    return redirect()->route('comment.index', ['blog' => $blogId])
+        ->with('success', 'Bình luận đã được thêm thành công!');
     }
 
     public function edit($blogId, $commentId)
@@ -48,24 +51,35 @@ class CommentController extends Controller
 
     public function update(Request $request, $blogId, $commentId)
     {
+
         $request->validate([
+            'user_id' => 'required|exists:users,id',
             'content' => 'required|string',
         ]);
-
-        $comment = Comment::findOrFail($commentId);
-        $comment->update(['content' => $request->content]);
+    
         $blog = Blog::findOrFail($blogId);
-        $comments = $blog->comments;
-      return redirect()->route('comment.index', ['blog' => $blogId])
-                     ->with('success', 'Bình luận đã được cập nhật thành công!')
-                     ->with(compact('comments', 'blog'));
+        $comment = Comment::findOrFail($commentId);
+    
+        $comment->update([
+            'user_id' => $request->user_id,
+            'content' => $request->content,
+        ]);
+    
+        return redirect()->route('comment.index', ['blog' => $blogId])
+            ->with('success', 'Cập nhật bình luận thành công.');
+
     }
     public function destroy($commentId)
     {
-        $comment = Comment::findOrFail($commentId);
-        $comment->delete();
+        $comment = Comment::find($commentId);
 
-         return response()->json(['success' => 'Bình luận đã được xóa thành công.']);
+        if (!$comment) {
+            return response()->json(['error' => 'Bình luận không tồn tại.'], 404);
+        }
+    
+        $comment->delete();
+    
+        return response()->json(['success' => 'Bình luận đã được xóa thành công.']);
     }
 
 }

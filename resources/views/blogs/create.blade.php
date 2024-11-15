@@ -37,6 +37,7 @@
                         @endforeach
                         </select>
                     </div>
+                    
                     <div class="form-group">
                         <label for="image_path">Hình ảnh</label>
                         <input type="file" class="form-control" name="image_path"class="form-control">

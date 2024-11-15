@@ -32,16 +32,19 @@
                                                     @foreach ($blogs as $blog)
                                                     <tr id="blog-{{ $blog->id }}">
                                                         <td>{{ $blog->title }}</td>
-                                                        <td>{{ $blog->user ? $blog->user->name : 'Không có tác giả' }}</td>
-                                                        {{-- <td><img src="{{ asset('storage/' . $blog->image_path) }}" alt="Image" style="width: 80px; height: 70px;"></td> --}}
+                                                        <td>{{ $blog->user ? $blog->user->name : 'Không có tác giả' }}</td> 
+
+                                                        {{-- <td><img src="{{ Storage::url($blog->image_path) }}" alt="Image">
+                                                        </td> --}}
                                                         {{-- <td>
-                                                            <img src="{{ isset($blog->image_path) && $blog->image_path ? asset('storage/' . $blog->image_path) : asset('assets/img/avt1.jpg') }}" alt="Image" style="width: 80px; height: 70px;">
+                                                            <img src="{{ asset('storage/' . $blog->image_path) }}" alt="Image">
                                                         </td> --}}
                                                         <td>
-                                                            <img src="{{ $blog->image_path ? asset('storage/' . $blog->image_path) : asset('assets/img/avt1.jpg') }}" alt="Image" style="width: 80px; height: 70px;">
+                                                            <img src="{{ asset('storage/' . ltrim($blog->image_path, 'http://127.0.0.1:8000/')) }}" alt="Image"style="width: 90px; height: 70px;">
                                                         </td>
                                                         
-                                                        <td>{{ $blog->category ? $blog->category->name : 'Không có danh mục' }}</td>
+                                                            
+                                                        <td>{{ $blog->category ? $blog->category->name : 'Không có danh mục' }}</td>    
                                                         <td>{{ $blog->likes_count }}</td>
                                                         <td id="status-{{ $blog->id }}">{{ $blog->status == 'approved' ? 'Đã phê duyệt' : 'Chờ phê duyệt' }}</td>
                                                         <td>{{ $blog->created_at->format('d/m/Y H:i') }}</td>
@@ -64,6 +67,7 @@
                                                         
                                                     </tr>
                                                     @endforeach
+                                                    
                                                 </tbody>
                                             </table>
                                         </div>

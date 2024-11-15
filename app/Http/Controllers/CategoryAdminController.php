@@ -34,7 +34,7 @@ class CategoryAdminController extends Controller
         // Kiểm tra nếu có file hình ảnh
         $image_path = null;
         if ($request->hasFile('image_path')) {
-            $image_path = $request->file('image_path')->store('category', 'public');
+            $image_path = $request->file('image_path')->store('category', 'public');    
         }
 
         // Tạo mới hoặc cập nhật danh mục

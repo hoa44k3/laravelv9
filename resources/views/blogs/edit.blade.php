@@ -43,7 +43,7 @@
                         <label for="image">Hình ảnh</label>
                         <input type="file" class="form-control" name="image_path" id="image">
                         @if($blog->image_path)
-                            <img src="{{ Storage::url($blog->image_path) }}" alt="Image" class="mt-2" style="width: 100px;">
+                        <img src="{{ asset('storage/' . ltrim($blog->image_path, 'http://127.0.0.1:8000/')) }}" alt="Image"style="width: 80px; height: 70px;">
                         @endif
                     </div>
                     <button type="submit" class="btn btn-primary">Cập nhật bài viết</button>

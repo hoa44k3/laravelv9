@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\Controller;
 use App\Models\Blog;
 use App\Models\Category;
 use App\Models\Comment;
 use App\Models\User;
+use App\Models\Like;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
@@ -20,32 +22,31 @@ class BlogAdminController extends Controller
     {
         $categories = Category::all();
         $users = User::all();
-        return view('blogs.create', compact('categories','users')); 
+        $likes = Like::all();
+        return view('blogs.create', compact('categories','users','likes')); 
     }
     public function store(Request $request)
     {
+         // Validate dữ liệu
+
         $create = new Blog();
         $create->title = $request->title;
         $create->content = $request->content;   
-        $create->status =$request->status;
-        $create->likes = $request->likes;
+        $create->status = $request->status;
+        //$create->likes = $request->likes;
+        $create->like_id = $request->like_id;
+
         $create->comment_count = $request->comment_count;   
-        $create->user_id =$request->user_id;
+        $create->user_id = $request->user_id;
         $create->category_id = $request->category_id;   
 
-        $image_path = null;
-        // if ($request->hasFile('image_path')) {
-        //     $image_path = $request->file('image_path')->store('blogs', 'public');
-        //     $create->image_path = $image_path; 
-        // }
         if ($request->hasFile('image_path')) {
-            $image_path = $request->file('image_path')->store('blogs', 'public');
+            $create->image_path = $request->file('image_path')->store('main', 'public');
         }
-
-        
         $create->save();
         return redirect()->route('blogs.home')->with('success', 'Bài viết đã được tạo thành công!');
     }
+
     public function edit($id)
     {
         $blog = Blog::findOrFail($id);
@@ -59,7 +60,7 @@ class BlogAdminController extends Controller
 
             if ($blog->image_path) {
                 //Storage::disk('public')->delete($blog->image_path);
-                Storage::disk('public')->delete('blog/' . $blog->image_path);
+                Storage::disk('public')->delete(' main/' . $blog->image_path);
              }
 
             $blog->delete();
@@ -77,24 +78,22 @@ class BlogAdminController extends Controller
         $edit->comment_count = $request->comment_count;  
         $edit->user_id = $request->user_id;
         $edit->category_id = $request->category_id;  
-        $edit->save();
-    if ($request->hasFile('image_path')) {
-        if ($edit->image_path) {
-            Storage::disk('public')->delete($edit->image_path);
+   
+     // Xử lý ảnh nếu có ảnh mới
+        if ($request->hasFile('image_path')) {
+            // Xóa ảnh cũ nếu có
+            if ($edit->image_path) {
+                Storage::delete('public/' . $edit->image_path);
+            }
+
+            // Lưu ảnh mới vào thư mục 'public' và lấy đường dẫn lưu vào cơ sở dữ liệu
+            $imagePath = $request->file('image_path')->store('main', 'public');
+            $edit->image_path = $imagePath;
         }
-        $edit->image_path = $request->file('image_path')->store('blog', 'public');
-    }
+
+        $edit->save();
         return redirect()->route('blogs.home')->with('success', 'Bài viết đã được cập nhật thành công!');
     }
-    // public function show($id)
-    // {
-    //     $blog = Blog::with('user')->findOrFail($id); // Lấy bài viết và thông tin tác giả
-    //         $comments = Comment::with('user')->where('blog_id', $id)->get(); // Lấy bình luận và thông tin tác giả bình luận
-
-    //         $totalLikes = $blog->likes_count; // Tổng lượt thích
-    //         $totalComments = $comments->count(); // Tổng bình luận
-    //             return view('backend.blog.show', compact('blog', 'totalLikes', 'totalComments','comments'));
-    // }
     public function show($id)
     {
         // Lấy thông tin bài viết

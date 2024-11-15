@@ -300,25 +300,29 @@
                             <div class="leave-comment-area section_padding_50 clearfix">
                                 <div class="comment-form">
                                     <h4 class="mb-30">Leave A Comment</h4>
-
+                            
                                     <!-- Comment Form -->
-                                    <form action="#" method="post">
+                                    <form action="{{ route('comments.store') }}" method="post">
+                                        @csrf <!-- CSRF Token -->
+                                        <input type="hidden" name="blog_id" value="{{ $blog->id }}"> <!-- Thêm blog_id -->
+                            
                                         <div class="form-group">
-                                            <input type="text" class="form-control" id="contact-name" placeholder="Name">
+                                            <input type="text" class="form-control" name="name" placeholder="Name" required>
                                         </div>
                                         <div class="form-group">
-                                            <input type="email" class="form-control" id="contact-email" placeholder="Email">
+                                            <input type="email" class="form-control" name="email" placeholder="Email" required>
                                         </div>
                                         <div class="form-group">
-                                            <input type="text" class="form-control" id="contact-website" placeholder="Website">
+                                            <input type="text" class="form-control" name="website" placeholder="Website">
                                         </div>
                                         <div class="form-group">
-                                            <textarea class="form-control" name="message" id="message" cols="30" rows="10" placeholder="Message"></textarea>
+                                            <textarea class="form-control" name="message" cols="30" rows="10" placeholder="Message" required></textarea>
                                         </div>
                                         <button type="submit" class="btn contact-btn">Post Comment</button>
                                     </form>
                                 </div>
                             </div>
+                            
 
                         </div>
                     </div>

@@ -40,15 +40,16 @@ Route::post('login', [AuthController::class, 'login'])->name('auth.login');
 Route::get('/statistics', [BlogAdminController::class, 'statistics'])->name('statistics.index');
 
 Route::prefix('admin')->group(function () {
-    Route::get('blogs', [BlogAdminController::class, 'home'])->name('blogs.home');
-    Route::get('blog/create', [BlogAdminController::class, 'create'])->name('blogs.create');
-    Route::post('blog/store', [BlogAdminController::class, 'store'])->name('blog.store');
-    Route::get('blog/{id}/edit', [BlogAdminController::class, 'edit'])->name('blogs.edit');
-    Route::put('blog/{id}', [BlogAdminController::class, 'update'])->name('blog.update');
-    Route::delete('blog/{id}', [BlogAdminController::class, 'destroy'])->name('blog.destroy');
-    Route::post('/blog/toggle-approval/{id}', [BlogAdminController::class, 'toggleApproval'])->name('blog.toggleApproval');
-    Route::get('blog/{id}', [BlogAdminController::class, 'show'])->name('blogs.show');
+    Route::get('blogs', [BlogAdminController::class, 'home'])->name('blogs.home'); // Hiển thị danh sách blog
+    Route::get('blog/create', [BlogAdminController::class, 'create'])->name('blogs.create'); // Hiển thị form tạo mới blog
+    Route::post('blog/store', [BlogAdminController::class, 'store'])->name('blog.store'); // Xử lý lưu blog mới
+    Route::get('blog/{id}/edit', [BlogAdminController::class, 'edit'])->name('blogs.edit'); // Hiển thị form chỉnh sửa blog
+    Route::put('blog/{id}', [BlogAdminController::class, 'update'])->name('blog.update'); // Xử lý cập nhật blog
+    Route::delete('blog/{id}', [BlogAdminController::class, 'destroy'])->name('blog.destroy'); // Xử lý xóa blog
+    Route::post('blog/toggle-approval/{id}', [BlogAdminController::class, 'toggleApproval'])->name('blog.toggleApproval'); // Duyệt hay bỏ duyệt blog
+    Route::get('blog/{id}', [BlogAdminController::class, 'show'])->name('blogs.show'); // Xem chi tiết blog
 });
+
 
 Route::prefix('admin')->group(function () {
     Route::get('/likes', [LikeAdminController::class, 'index'])->name('likes.index');
@@ -79,11 +80,38 @@ Route::get('/users/create', [UserController::class, 'create'])->name('users.crea
 Route::post('/users/store', [UserController::class, 'store'])->name('users.store');
 Route::get('/users/edit/{id}', [UserController::class, 'edit'])->name('users.edit');
 Route::put('/users/update/{id}', [UserController::class, 'update'])->name('users.update');
-Route::delete('/users/delete/{id}', [UserController::class, 'destroy'])->name('users.destroy');
+Route::delete('/users/{id}', [UserController::class, 'destroy'])->name('users.destroy');
 Route::get('/users/{user}', [UserController::class, 'show'])->name('users.show');
 
 
 
+// Route::prefix('comments')->name('comment.')->group(function () {
+//     Route::get('/{blog?}', [CommentController::class, 'index'])->name('index');
+//     Route::get('/{blog}/create', [CommentController::class, 'create'])->name('create');
+//     Route::post('/{blog}/store', [CommentController::class, 'store'])->name('store');
+//     Route::get('/{blog}/edit/{comment}', [CommentController::class, 'edit'])->name('edit');
+//     Route::put('/{blog}/update/{comment}', [CommentController::class, 'update'])->name('update');
+//     Route::delete('/delete/{id}', [CommentController::class, 'destroy'])->name('destroy');
+// });
+// Route::prefix('comments')->name('comment.')->group(function () {
+//     // Route để hiển thị danh sách bình luận, có thể có hoặc không có bài viết (blog)
+//     Route::get('/{blog?}', [CommentController::class, 'index'])->name('index');
+
+//     // Route để tạo bình luận cho một bài viết cụ thể
+//     Route::get('/{blog}/create', [CommentController::class, 'create'])->name('create');
+
+//     // Route để lưu bình luận cho một bài viết
+//     Route::post('/{blog}/store', [CommentController::class, 'store'])->name('store');
+
+//     // Route để sửa bình luận của một bài viết cụ thể
+//     Route::get('/{blog}/edit/{comment}', [CommentController::class, 'edit'])->name('edit');
+
+//     // Route để cập nhật bình luận của một bài viết cụ thể
+//     Route::put('/{blog}/update/{comment}', [CommentController::class, 'update'])->name('update');
+
+//     // Route để xóa bình luận
+//     Route::delete('/delete/{id}', [CommentController::class, 'destroy'])->name('destroy');
+// });
 Route::prefix('comments')->name('comment.')->group(function () {
     Route::get('/{blog?}', [CommentController::class, 'index'])->name('index');
     Route::get('/{blog}/create', [CommentController::class, 'create'])->name('create');
@@ -92,6 +120,7 @@ Route::prefix('comments')->name('comment.')->group(function () {
     Route::put('/{blog}/update/{comment}', [CommentController::class, 'update'])->name('update');
     Route::delete('/delete/{id}', [CommentController::class, 'destroy'])->name('destroy');
 });
+
 
 use App\Http\Controllers\Customer\HomeController;
 

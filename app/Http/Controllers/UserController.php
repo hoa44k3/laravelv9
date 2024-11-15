@@ -19,26 +19,34 @@ class UserController extends Controller
         return view('users.create');
     }
     public function store(Request $request)
-    {
-        $validatedData = $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:users,email',
-            'phone' => 'nullable|string|max:20',
-            'address' => 'nullable|string|max:255',
-            'birthday' => 'nullable|date',
-            'password' => 'required|string|min:6',
-            'description' => 'nullable|string|max:500',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-        ]);
-        if ($request->hasFile('image')) {
-            $validatedData['image'] = $request->file('image')->store('avatars', 'public');
-        }
+{
+    // Xác thực dữ liệu
+    $validatedData = $request->validate([
+        'name' => 'required|string|max:255',
+        'email' => 'required|email|unique:users,email',
+        'phone' => 'nullable|string|max:20',
+        'address' => 'nullable|string|max:255',
+        'birthday' => 'nullable|date',
+        'password' => 'required|string|min:6',
+        'description' => 'nullable|string|max:500',
+        'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+    ]);
 
-        $validatedData['password'] = bcrypt($validatedData['password']);
-        User::create($validatedData);
-
-        return redirect()->route('users.index')->with('success', 'Người dùng đã được thêm thành công!');
+    // Xử lý file ảnh nếu có
+    if ($request->hasFile('image')) {
+        $validatedData['image'] = $request->file('image')->store('avatars', 'public');
     }
+
+    // Mã hóa mật khẩu
+    $validatedData['password'] = bcrypt($validatedData['password']);
+
+    // Tạo người dùng mới
+    User::create($validatedData);
+
+    // Quay lại trang danh sách người dùng với thông báo thành công
+    return redirect()->route('users.index')->with('success', 'Người dùng đã được thêm thành công!');
+}
+
     public function edit($id)
     {
         $user = User::findOrFail($id); 
@@ -71,15 +79,17 @@ class UserController extends Controller
 
     public function destroy($id)
     {
-        $user = User::findOrFail($id);
-        
-        if ($user->image) {
-            Storage::disk('public')->delete($user->image);
+        $user = User::find($id);
+
+        if ($user) {
+            if ($user->image) {
+                Storage::disk('public')->delete($user->image);
+            }
+            $user->delete();
+            return response()->json(['success' => 'Người dùng đã được xóa!']);
         }
 
-        $user->delete();
-
-        return response()->json(['success' => 'Người dùng đã được xóa thành công.']);
+    return response()->json(['error' => 'Người dùng không tồn tại!'], 404);
     }
     public function show($user)
     {

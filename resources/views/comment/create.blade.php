@@ -37,7 +37,7 @@
             <input type="text" class="form-control" value="{{ now()->format('d/m/Y H:i:s') }}" readonly>
         </div>
 
-        <button type="submit" class="btn btn-success">Lưu Bình Luận</button>
+        <button type="submit" class="btn btn-primary">Lưu Bình Luận</button>
         <a href="{{ route('comment.index', ['blog' => $blog->id]) }}" class="btn btn-secondary">Quay Lại</a>
     </form>
 </div>

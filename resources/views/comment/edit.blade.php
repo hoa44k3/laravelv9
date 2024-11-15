@@ -35,7 +35,7 @@
         </div>
         
         <button type="submit" class="btn btn-primary">Cập nhật</button>
-        <a href="{{ route('comment.index', ['blog' => $blog->id]) }}" class="btn btn-secondary">Quay Lại</a>
+        <a href="{{ route('comment.index', $blog->id }}" class="btn btn-secondary">Quay Lại</a>
     </form>
 </div>
 @include('backend.dashboard.component.custom')

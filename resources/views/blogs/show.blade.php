@@ -48,7 +48,7 @@
                                     <td>Ảnh:</td>
                                     <td>
                                         @if ($blog->image_path)
-                                            <img src="{{ asset('storage/' . $blog->image_path) }}" alt="Ảnh bài viết" width="150">
+                                        <img src="{{ asset('storage/' . ltrim($blog->image_path, 'http://127.0.0.1:8000/')) }}" alt="Image"style="width: 90px; height: 70px;">
                                         @else
                                             Không có ảnh
                                         @endif

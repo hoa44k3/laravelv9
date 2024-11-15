@@ -17,8 +17,6 @@
                                 {{ session('success') }}
                             </div>
                         @endif
-
-    {{-- <a href="{{ route('users.create') }}" class="btn btn-primary btn-add-user">Thêm người dùng</a> --}}
                 <div class="card-body">
                     <div class="table-responsive">
                         <table class="table table-bordered table-striped">
@@ -49,8 +47,12 @@
                                     <td>{{ $user->description }}</td>
                                     <td>
                                         <a href="{{ route('users.edit', $user->id) }}" class="btn btn-warning btn-sm">Sửa</a>
+                                        
+                                        <!-- Nút xóa sẽ sử dụng AJAX -->
                                         <button type="button" class="btn btn-danger btn-sm btn-delete" data-id="{{ $user->id }}">Xóa</button>
                                     </td>
+                                    
+                                    
                                 </tr>
                                 @endforeach
                             </tbody>
@@ -64,28 +66,27 @@
 @include('backend.dashboard.component.custom')
 @include('backend.dashboard.component.script') 
 <script>
-    document.addEventListener('DOMContentLoaded', function () {
-        document.querySelectorAll('.deleteUser').forEach(button => {
-            button.addEventListener('click', function () {
-                const userId = this.getAttribute('data-id');
-                if (confirm('Bạn có chắc chắn muốn xóa người dùng này?')) {
-                    fetch(`/admin/users/${userId}`, {
-                        method: 'DELETE',
-                        headers: {
-                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-                        }
-                    })
-                    .then(response => response.json())
-                    .then(data => {
-                        if (data.success) {
-                            document.getElementById(`user-${userId}`).remove();
-                            alert('Xóa người dùng thành công');
-                        } else {
-                            alert('Có lỗi xảy ra');
-                        }
-                    });
+    $(document).on('click', '.btn-delete', function () {
+        var userId = $(this).data('id'); // Lấy ID người dùng từ data-id
+
+        // Xác nhận người dùng có muốn xóa hay không
+        if (confirm('Bạn có chắc chắn muốn xóa người dùng này?')) {
+            $.ajax({
+                url: '/users/' + userId, // URL xóa người dùng
+                type: 'DELETE',
+                data: {
+                    _token: '{{ csrf_token() }}', // Token CSRF
+                },
+                success: function (response) {
+                    // Nếu xóa thành công, xóa dòng trong bảng
+                    alert(response.success);
+                    location.reload(); // Tải lại trang hoặc xóa dòng khỏi bảng mà không tải lại trang
+                },
+                error: function () {
+                    alert('Đã có lỗi xảy ra. Vui lòng thử lại.');
                 }
             });
-        });
+        }
     });
 </script>
+
