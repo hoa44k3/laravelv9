@@ -19,7 +19,7 @@
                                     <th>Id</th>
                                     <th>Name</th>
                                     <th>Image</th>
-                                    <th>Comment</th>
+                                    {{-- <th>Comment</th> --}}
                                     <th>Action</th>
                                 </tr>
                             </thead>
@@ -30,7 +30,7 @@
                                         <td>{{ $category->name }}</td>
                                         <td><img src="{{ asset('storage/' . $category->image_path) }}" alt="Image" style="width: 80px; height: 70px;">
                                         </td>       
-                                        <td>{{ $category->comment }}</td>
+                                        {{-- <td>{{ $category->comment }}</td> --}}
                                         <td>
                                             <a href="{{ route('category.edit', $category->id) }}" class="btn btn-warning btn-sm">Sửa</a>
                                             <button type="button" class="btn btn-danger btn-sm btn-delete" data-id="{{ $category->id }}">Xóa</button>

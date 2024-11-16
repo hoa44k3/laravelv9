@@ -14,11 +14,11 @@
                         @endif
                     </h4>
                     @if ($blog)
-    <a href="{{ route('comment.create', ['blog' => $blog->id]) }}" class="btn btn-success btn-sm">Thêm bình luận</a>
-@else
-    <!-- Nếu không có $blog, bạn có thể không hiển thị nút này hoặc thay đổi hành động khác -->
-    <p>Không có bài viết, không thể thêm bình luận.</p>
-@endif
+                            <a href="{{ route('comment.create', ['blog' => $blog->id]) }}" class="btn btn-success btn-sm">Thêm bình luận</a>
+                        @else
+                      
+                            <p>Không có bài viết, không thể thêm bình luận.</p>
+                        @endif
 
 
                 </div>
@@ -67,7 +67,6 @@
         </div>
     </div>
 </div>
-
 @include('backend.dashboard.component.custom')
 @include('backend.dashboard.component.script')
 

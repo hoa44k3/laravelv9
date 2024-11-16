@@ -15,7 +15,10 @@ class BlogAdminController extends Controller
 {
     public function home()
     {
-        $blogs = Blog::with('user', 'category')->withCount('likes')->get();
+       // $blogs = Blog::with('user', 'category')->withCount('likes')->get();
+       $blogs = Blog::with('user', 'category')
+       ->withCount(['likes', 'comments']) // Đếm số bình luận
+       ->get();
         return view('blogs.home', compact('blogs'));
     }
     public function create()
@@ -27,15 +30,11 @@ class BlogAdminController extends Controller
     }
     public function store(Request $request)
     {
-         // Validate dữ liệu
-
         $create = new Blog();
         $create->title = $request->title;
         $create->content = $request->content;   
         $create->status = $request->status;
-        //$create->likes = $request->likes;
         $create->like_id = $request->like_id;
-
         $create->comment_count = $request->comment_count;   
         $create->user_id = $request->user_id;
         $create->category_id = $request->category_id;   
@@ -59,13 +58,13 @@ class BlogAdminController extends Controller
         $blog = Blog::findOrFail($id);
 
             if ($blog->image_path) {
-                //Storage::disk('public')->delete($blog->image_path);
+              
                 Storage::disk('public')->delete(' main/' . $blog->image_path);
              }
 
             $blog->delete();
             return response()->json(['status' => 'success']);
-            //return response()->json(['success' => 'Bài viết đã được xóa thành công.']);
+           
     }
 
     public function update(Request $request, $id)

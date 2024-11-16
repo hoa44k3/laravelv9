@@ -20,7 +20,7 @@ return new class extends Migration
             $table->unsignedBigInteger('user_id')->nullable();
             $table->string('author')->nullable(); 
             $table->text('content')->nullable();
-            $table->timestamps();
+            $table->timestamp('created_at')->nullable();
             $table->foreign('category_id')->references('id')->on('categories')->onDelete('cascade');
             $table->foreign('blog_id')->references('id')->on('blogs')->onDelete('cascade');
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
@@ -34,6 +34,9 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('comments');
+        // Schema::dropIfExists('comments');
+        Schema::table('comments', function (Blueprint $table) {
+            $table->dropColumn('created_at');
+        });
     }
 };

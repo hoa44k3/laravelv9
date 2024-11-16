@@ -7,12 +7,18 @@ use Illuminate\Http\Request;
 use App\Models\Blog;
 use App\Models\Comment;
 use App\Models\User;
+use App\Models\Category;
 class CommentController extends Controller
 {
-    public function index(Request $request, $blogId = null)
+    public function index( $blogId = null)
     {
-        $blog = $blogId ? Blog::find($blogId) : null;
-        $comments = $blog ? $blog->comments : Comment::with(['blog', 'user'])->get();
+        $comments = Comment::with(['blog.category', 'user']) 
+        ->when($blogId, function ($query) use ($blogId) {
+            $query->where('blog_id', $blogId);
+        })
+        ->get();
+
+        $blog = $blogId ? Blog::find($blogId) : null;  
         return view('comment.index', compact('comments', 'blog'));
     }
 
@@ -20,43 +26,24 @@ class CommentController extends Controller
     {
         $blog = Blog::findOrFail($blogId);
         $users = User::all();
-        return view('comment.create', compact('blog','users'));
+        $categories = Category::all();
+        return view('comment.create', compact('blog','users', 'categories'));
     }
 
     public function store(Request $request, $blogId)
     {
-            // Xác thực dữ liệu từ form
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|max:255',
-            'website' => 'nullable|url|max:255',
-            'message' => 'required|string',
-        ]);
+        $blog = Blog::findOrFail($blogId);
 
-        // Lấy thông tin bài viết với $blogId
-        // $blog = Blog::findOrFail($blogId);
+            // Thêm bình luận
+            Comment::create([
+                'blog_id' => $blog->id,
+                'user_id' => $request->user_id,
+                'category_id' => $request->category_id,
+                'content' => $request->content,
+                'created_at' => now(), // Thêm giá trị thủ công
+            ]);
 
-        // // Tạo một bình luận mới liên kết với bài viết
-        // $blog->comments()->create([
-        //     'name' => $request->name,
-        //     'email' => $request->email,
-        //     'website' => $request->website,
-        //     'message' => $request->message,
-        // ]);
-
-        // Quay lại trang chi tiết bài viết hoặc trang quản lý bình luận
-        // return redirect()->route('post', ['id' => $blogId])
-        //     ->with('success', 'Bình luận đã được thêm thành công!');
-$comment = new Comment();
-    $comment->name = $request->name;
-    $comment->email = $request->email;
-    $comment->website = $request->website;
-    $comment->message = $request->message;
-    $comment->blog_id = $blogId;  // Lưu blog_id vào cơ sở dữ liệu
-    $comment->save();
-
-    return back()->with('success', 'Bình luận của bạn đã được gửi.');
-
+          return redirect()->route('comment.index', ['blog' => $blog->id])->with('success', 'Bình luận đã được thêm!');  
     }
 
 
@@ -100,5 +87,12 @@ $comment = new Comment();
     
         return response()->json(['success' => 'Bình luận đã được xóa thành công.']);
     }
+    public function showComments()
+    {
+        // Lấy danh sách các categories từ cơ sở dữ liệu cùng với blogs và comments của từng category
+        $categories = Category::with('blogs.comments.user')->get(); // Eager load blogs, comments và user
 
+        // Trả về view và truyền biến categories vào
+        return view('comment.index', compact('categories'));
+    }
 }

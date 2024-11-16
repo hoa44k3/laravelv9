@@ -190,8 +190,11 @@
                                         </div>
                                         <!-- Post Comments -->
                                         <div class="post-comments">
-                                            <a href="#"><i class="fa fa-comment-o" aria-hidden="true"></i> {{ $blog->comment ? $blog->comment->name : 'Chưa có bình luận' }}</a>
+                                            <i class="fa fa-comment-o" aria-hidden="true"></i>
+                                            {{ $blog->comments_count > 0 ? $blog->comments_count . ' Bình luận' : 'Chưa có bình luận' }}
                                         </div>
+                                        
+                                        
                                         <!-- Post Share -->
                                         {{-- <div class="post-share">
                                             <a href="#"><i class="fa fa-share-alt" aria-hidden="true"></i></a>

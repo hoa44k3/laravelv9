@@ -15,55 +15,61 @@
                                     </div>
                                     <div class="card-body">
                                         <div class="table-responsive">
-                                            <table id="add-row" class="display table table-striped table-hover">
-                                                <thead>
-                                                    <tr>
-                                                        <th>Tên bài viết</th>
-                                                        <th>Tác giả</th>
-                                                        <th>Hình ảnh</th>
-                                                        <th>Danh mục</th>
-                                                        <th>Lượt thích</th>
-                                                        <th>Trạng thái</th>
-                                                        <th>Ngày tạo</th>
-                                                        <th style="width: 10%">Hành động</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    @foreach ($blogs as $blog)
-                                                    <tr id="blog-{{ $blog->id }}">
-                                                        <td>{{ $blog->title }}</td>
-                                                        <td>{{ $blog->user ? $blog->user->name : 'Không có tác giả' }}</td> 
-                                                        <td>
-                                                            <img src="{{ asset('storage/' . ltrim($blog->image_path, 'http://127.0.0.1:8000/')) }}" alt="Image"style="width: 90px; height: 70px;">
-                                                        </td>
-                                                        
+                                            <div class="scrollable-table">
+                                                <table id="add-row" class="display table table-striped table-hover">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>Tên bài viết</th>
+                                                            <th>Tác giả</th>
+                                                            <th>Hình ảnh</th>
+                                                            <th>Danh mục</th>
+                                                            <th>Lượt thích</th>
+                                                            <th>Lượt bình luận</th>
+                                                            <th>Trạng thái</th>
+                                                            <th>Ngày tạo</th>
+                                                            <th style="width: 10%">Hành động</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        @foreach ($blogs as $blog)
+                                                        <tr id="blog-{{ $blog->id }}">
+                                                            <td>{{ $blog->title }}</td>
+                                                            <td>{{ $blog->user ? $blog->user->name : 'Không có tác giả' }}</td> 
+                                                            <td>
+                                                                <img src="{{ asset('storage/' . ltrim($blog->image_path, 'http://127.0.0.1:8000/')) }}" alt="Image"style="width: 90px; height: 70px;">
+                                                            </td>
+                                                            <td>{{ $blog->category ? $blog->category->name : 'Không có danh mục' }}</td>    
+                                                            <td>{{ $blog->likes_count }}</td>
+                                                            <td>
+                                                                <a href="{{ route('comment.index', ['blog' => $blog->id]) }}">
+                                                                    {{ $blog->comments_count }}
+                                                                </a>
+                                                            </td>
+                                                            <td id="status-{{ $blog->id }}">{{ $blog->status == 'approved' ? 'Đã phê duyệt' : 'Chờ phê duyệt' }}</td>
+                                                            <td>{{ $blog->created_at->format('d/m/Y H:i') }}</td>
+                                                            <td>
+                                                                <div class="form-button-action">
+                                                                    <a href="{{ route('blogs.show', $blog->id) }}" class="btn btn-link btn-info btn-lg">
+                                                                        <i class="fa fa-eye"></i> Xem chi tiết
+                                                                    </a>
+                                                                    <a href="{{ route('blogs.edit', $blog->id) }}" class="btn btn-link btn-primary btn-lg">
+                                                                        <i class="fa fa-edit"></i>
+                                                                    </a>
+                                                                    <button type="button" class="btn btn-link btn-danger" onclick="deleteBlog({{ $blog->id }})">
+                                                                        <i class="fa fa-times"></i>
+                                                                    </button>
+                                                                    <button type="button" class="btn btn-link btn-success" onclick="toggleApproval({{ $blog->id }})">
+                                                                        <i class="fa fa-check"></i> {{ $blog->status == 'approved' ? 'Bỏ duyệt' : 'Duyệt' }}
+                                                                    </button>
+                                                                </div>
+                                                            </td>
                                                             
-                                                        <td>{{ $blog->category ? $blog->category->name : 'Không có danh mục' }}</td>    
-                                                        <td>{{ $blog->likes_count }}</td>
-                                                        <td id="status-{{ $blog->id }}">{{ $blog->status == 'approved' ? 'Đã phê duyệt' : 'Chờ phê duyệt' }}</td>
-                                                        <td>{{ $blog->created_at->format('d/m/Y H:i') }}</td>
-                                                        <td>
-                                                            <div class="form-button-action">
-                                                                <a href="{{ route('blogs.show', $blog->id) }}" class="btn btn-link btn-info btn-lg">
-                                                                    <i class="fa fa-eye"></i> Xem chi tiết
-                                                                </a>
-                                                                <a href="{{ route('blogs.edit', $blog->id) }}" class="btn btn-link btn-primary btn-lg">
-                                                                    <i class="fa fa-edit"></i>
-                                                                </a>
-                                                                <button type="button" class="btn btn-link btn-danger" onclick="deleteBlog({{ $blog->id }})">
-                                                                    <i class="fa fa-times"></i>
-                                                                </button>
-                                                                <button type="button" class="btn btn-link btn-success" onclick="toggleApproval({{ $blog->id }})">
-                                                                    <i class="fa fa-check"></i> {{ $blog->status == 'approved' ? 'Bỏ duyệt' : 'Duyệt' }}
-                                                                </button>
-                                                            </div>
-                                                        </td>
+                                                        </tr>
+                                                        @endforeach
                                                         
-                                                    </tr>
-                                                    @endforeach
-                                                    
-                                                </tbody>
-                                            </table>
+                                                    </tbody>
+                                                </table>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>

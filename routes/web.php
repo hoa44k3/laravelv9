@@ -112,14 +112,44 @@ Route::get('/users/{user}', [UserController::class, 'show'])->name('users.show')
 //     // Route để xóa bình luận
 //     Route::delete('/delete/{id}', [CommentController::class, 'destroy'])->name('destroy');
 // });
+
+
 Route::prefix('comments')->name('comment.')->group(function () {
+    // Hiển thị danh sách bình luận, có thể lọc theo blog nếu truyền blog ID
     Route::get('/{blog?}', [CommentController::class, 'index'])->name('index');
-    Route::get('/{blog}/create', [CommentController::class, 'create'])->name('create');
-    Route::post('/{blog}/store', [CommentController::class, 'store'])->name('store');
-    Route::get('/{blog}/edit/{comment}', [CommentController::class, 'edit'])->name('edit');
-    Route::put('/{blog}/update/{comment}', [CommentController::class, 'update'])->name('update');
-    Route::delete('/delete/{id}', [CommentController::class, 'destroy'])->name('destroy');
+
+    // Hiển thị form thêm mới bình luận cho một blog cụ thể
+    Route::get('/create/{blog}', [CommentController::class, 'create'])->name('create');
+
+    // Lưu bình luận mới vào cơ sở dữ liệu
+    Route::post('/store/{blogId}', [CommentController::class, 'store'])->name('store');
+
+
+    // Hiển thị form sửa bình luận cho một blog cụ thể
+    Route::get('/edit/{blog}/{comment}', [CommentController::class, 'edit'])->name('edit');
+
+    // Cập nhật nội dung bình luận
+    Route::put('/update/{blog}/{comment}', [CommentController::class, 'update'])->name('update');
+
+    // Xóa bình luận
+    Route::delete('/delete/{comment}', [CommentController::class, 'destroy'])->name('destroy');
+
+    // Hiển thị danh sách bình luận theo categories (nếu cần chức năng này)
+    Route::get('/show', [CommentController::class, 'showComments'])->name('show');
 });
+
+
+
+
+
+// Route::prefix('comments')->name('comment.')->group(function () {
+//     Route::get('/{blog?}', [CommentController::class, 'index'])->name('index');
+//     Route::get('/{blog}/create', [CommentController::class, 'create'])->name('create');
+//     Route::post('/{blog}/store', [CommentController::class, 'store'])->name('store');
+//     Route::get('/{blog}/edit/{comment}', [CommentController::class, 'edit'])->name('edit');
+//     Route::put('/{blog}/update/{comment}', [CommentController::class, 'update'])->name('update');
+//     Route::delete('/delete/{id}', [CommentController::class, 'destroy'])->name('destroy');
+// });
 
 
 use App\Http\Controllers\Customer\HomeController;

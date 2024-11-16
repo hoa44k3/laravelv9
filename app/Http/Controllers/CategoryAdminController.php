@@ -13,7 +13,8 @@ class CategoryAdminController extends Controller
 {
     public function home(Request $request)
     {     
-        $categories = Category::all(); 
+       // $categories = Category::all(); 
+       $categories = Category::with(['blogs.comments'])->get();
          return view('category.home', compact('categories')); 
     }
 
