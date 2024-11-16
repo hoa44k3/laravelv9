@@ -29,12 +29,12 @@
                                         <td>{{ $category->id }}</td>
                                         <td>{{ $category->name }}</td>
                                         <td><img src="{{ asset('storage/' . $category->image_path) }}" alt="Image" style="width: 80px; height: 70px;">
-                                        </td>
-                                        
+                                        </td>       
                                         <td>{{ $category->comment }}</td>
                                         <td>
                                             <a href="{{ route('category.edit', $category->id) }}" class="btn btn-warning btn-sm">Sửa</a>
                                             <button type="button" class="btn btn-danger btn-sm btn-delete" data-id="{{ $category->id }}">Xóa</button>
+
                                         </td>
                                     </tr>
                                 @endforeach
@@ -49,26 +49,41 @@
 
 @include('backend.dashboard.component.custom')
 @include('backend.dashboard.component.script')
-
 <script>
-    $.ajax({
-    url: '/category/' + id,
-    type: 'DELETE',
-    data: {
-        _token: '{{ csrf_token() }}',
-        id: id
-    },
-    success: function(response) {
-        if (response === 'success') {
-            alert('Danh mục đã được xóa!');
-            $('#laravel_9_datatable').DataTable().ajax.reload(); // Reload bảng sau khi xóa
-        } else {
-            alert('Có lỗi xảy ra!');
+  $(document).ready(function() {
+    // Thêm sự kiện click cho các nút xóa
+    $('.btn-delete').on('click', function() {
+        var id = $(this).data('id');  // Lấy id từ thuộc tính data-id
+        var row = $(this).closest('tr');  // Lấy dòng tr của danh mục cần xóa
+        
+        // Xác nhận xóa
+        if (confirm('Bạn có chắc chắn muốn xóa danh mục này?')) {
+            $.ajax({
+                url: '/category/' + id,  // Đảm bảo rằng URL chính xác
+                type: 'DELETE',
+                data: {
+                    _token: '{{ csrf_token() }}',  // Chuyển token csrf
+                    id: id  // Truyền id để xóa
+                },
+                success: function(response) {
+                    // Kiểm tra phản hồi từ server
+                    if (response.status === 'success') {
+                        alert('Danh mục đã được xóa!');
+                        row.remove();  // Xóa dòng trong bảng
+                    } else {
+                        alert('Có lỗi xảy ra!');
+                    }
+                },
+                error: function(xhr, status, error) {
+                    // In ra thông báo lỗi chi tiết trong console
+                    console.error('AJAX Error: ', error);
+                    alert('Có lỗi xảy ra!');
+                }
+            });
         }
-    },
-    error: function() {
-        alert('Có lỗi xảy ra!');
-    }
+    });
 });
 
+
 </script>
+

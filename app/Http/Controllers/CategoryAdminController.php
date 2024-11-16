@@ -66,31 +66,30 @@ class CategoryAdminController extends Controller
             Storage::disk('public')->delete('category/' . $category->image_path);
         }
         $category->delete();
-        return response()->json(['status' => 'success']);
-       // return redirect()->route('category.home')->with('success', 'Danh mục đã được xóa thành công!');
+       return response()->json(['status' => 'success']);
     }
     // Phương thức cập nhật danh mục
-public function update(Request $request, $id)
-{
-    // Xác thực dữ liệu nhập vào
-    $request->validate([
-        'name' => 'required|string|max:255',
-        'comment' => 'nullable|string',
-        'image_path' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-    ]);
+    public function update(Request $request, $id)
+    {
+        // Xác thực dữ liệu nhập vào
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'comment' => 'nullable|string',
+            'image_path' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+        ]);
 
-    // Tìm danh mục cần cập nhật
-    $category = Category::findOrFail($id);
+        // Tìm danh mục cần cập nhật
+        $category = Category::findOrFail($id);
 
-    // Kiểm tra nếu có file hình ảnh
-    if ($request->hasFile('image_path')) {
-        // Xóa ảnh cũ nếu có
-        if ($category->image_path) {
-            Storage::disk('public')->delete('category/' . $category->image_path);
-        }
+        // Kiểm tra nếu có file hình ảnh
+        if ($request->hasFile('image_path')) {
+            // Xóa ảnh cũ nếu có
+            if ($category->image_path) {
+                Storage::disk('public')->delete('category/' . $category->image_path);
+            }
 
-        // Lưu ảnh mới
-        $category->image_path = $request->file('image_path')->store('category', 'public');
+            // Lưu ảnh mới
+            $category->image_path = $request->file('image_path')->store('category', 'public');
     }
 
     // Cập nhật thông tin danh mục

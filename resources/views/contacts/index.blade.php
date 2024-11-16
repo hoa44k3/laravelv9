@@ -9,25 +9,32 @@
                     <div class="d-flex align-items-center justify-content-between">
                         <h4 class="card-title">Danh sách liên hệ</h4>
                     </div>
+                    @if(session('success'))
+                    <div class="alert alert-success">
+                        {{ session('success') }}
+                    </div>
+                @endif
                 </div>
                 <div class="card-body">
                     <div class="table-responsive">
                         <table class="table table-bordered table-striped" id="laravel_9_datatable">
                             <thead>
                                 <tr>
-                                    <th>ID</th>
-                                    <th>Tên</th>
+                                    <th>#</th>
+                                    <th>Họ và tên</th>
                                     <th>Email</th>
                                     <th>Tin nhắn</th>
+                                    <th>Ngày gửi</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 @foreach ($contacts as $contact)
                                     <tr>
-                                        <td>{{ $contact->id }}</td>
+                                        <td>{{ $loop->iteration }}</td>
                                         <td>{{ $contact->name }}</td>
                                         <td>{{ $contact->email }}</td>
                                         <td>{{ $contact->message }}</td>
+                                        <td>{{ $contact->created_at->format('d/m/Y H:i') }}</td>
                                         <td>    
                                                             
                                             <button type="button" class="btn btn-danger btn-sm btn-delete" data-id="{{ $contact->id }}">Xóa</button>

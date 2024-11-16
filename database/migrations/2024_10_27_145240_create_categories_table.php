@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('name');
             $table->string('image_path')->nullable();
             $table->string('comment')->nullable();
+            $table->string('status')->default('inactive');
             $table->timestamps();
         });
     }
@@ -30,5 +31,6 @@ return new class extends Migration
     public function down()
     {
         Schema::dropIfExists('categories');
+        
     }
 };

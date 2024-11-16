@@ -7,41 +7,44 @@ use Illuminate\Http\Request;
 use App\Models\Category;
 use App\Models\Blog;
 use App\Models\Comment;
+use App\Models\Contact;
 class HomeController extends Controller
 {
     public function index(){
         $categories = Category::all();
-        return view('site.index', compact('categories'));
+        $blogs = Blog::all();
+       // $blogs = Blog::first(); 
+        return view('site.index', compact('categories','blogs'));
     }
     public function contact(){
-        return view('site.contact');
+        $blog = Blog::first();
+        return view('site.contact',compact('blog'));
     }
     public function blog(){
-        $blogs = Blog::with('user', 'category')->get();
+        $blogs = Blog::with('user', 'category')->paginate(10); 
         return view('site.blog',compact('blogs'));
     }
     public function post($id){
-        $blogs = Blog::with('user', 'category')->get();
-        $blog = Blog::with('comments')->findOrFail($id);
-      //  $comments = $blog ? $blog->comments : Comment::with(['blog', 'user'])->get();
-        return view('site.post',compact('blogs','comments'));
+        $blog = Blog::findOrFail($id);
+
+        $comments = $blog->comments;
+        return view('site.post', compact('blog', 'comments'));
     }
     public function category(){
-
         $categories = Category::all();
-        return view('site.category', compact('categories'));
+       // $categories = Category::where('status', 'active')->get();
+        $blog = Blog::first();
+        return view('site.category', compact('categories','blog'));
     }
     public function store(Request $request)
     {
-        // Validate dữ liệu bình luận
         $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|email|max:255',
             'message' => 'required|string',
             'blog_id' => 'required|exists:blogs,id',
+            'website' => 'nullable|url', 
         ]);
-
-        // Lưu bình luận
         $comment = new Comment();
         $comment->name = $request->name;
         $comment->email = $request->email;
@@ -52,4 +55,22 @@ class HomeController extends Controller
 
         return back()->with('success', 'Bình luận của bạn đã được gửi.');
     }
+    public function sendContact(Request $request)
+    {
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|max:255',
+            'message' => 'required|string',
+        ]);
+
+        Contact::create($request->only('name', 'email', 'message'));
+    
+        return back()->with('success', 'Cảm ơn bạn đã liên hệ với chúng tôi!');
+    }
+    public function show($id)
+    {
+        $blog = Blog::findOrFail($id);
+        return view('site.post', compact('blog'));
+    }
+
 }

@@ -97,11 +97,14 @@
                                 <li class="nav-item dropdown">
                                     <a class="nav-link dropdown-toggle" href="#" id="yummyDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Pages</a>
                                     <div class="dropdown-menu" aria-labelledby="yummyDropdown">
-                                        <a class="dropdown-item" href="{{route('index')}}">Trang chủ</a>
-                                        <a class="dropdown-item" href="{{route('blog')}}">Bài viết</a>
-                                        <a class="dropdown-item" href="{{route('post')}}">Nội dung bài viết </a>
-                                        <a class="dropdown-item" href="{{route('contact')}}">Liên hệ</a>
+                                        <a class="dropdown-item" href="{{ route('index') }}">Trang chủ</a>
+                                        <a class="dropdown-item" href="{{ route('blog') }}">Bài viết</a>
+             
+                                        <a class="dropdown-item" href="{{ route('post', ['id' => $blog->id]) }}">Nội dung bài viết</a> 
+                                    
+                                        <a class="dropdown-item" href="{{ route('contact') }}">Liên hệ</a>
                                     </div>
+                                    
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link" href="{{route('category')}}">Categories</a>
@@ -110,12 +113,15 @@
                                     <a class="nav-link" href="{{route('blog')}}">Blog</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" href="{{route('post')}}">Post</a>
+                                    
+                                    <a class="nav-link" href="{{ route('post', ['id' => $blog->id]) }}">Post</a>
+                                    
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link" href="{{route('contact')}}">Contact</a>
                                 </li>
                             </ul>
+                            
                         </div>
                     </nav>
                 </div>

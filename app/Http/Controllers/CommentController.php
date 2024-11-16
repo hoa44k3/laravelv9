@@ -25,21 +25,40 @@ class CommentController extends Controller
 
     public function store(Request $request, $blogId)
     {
+            // Xác thực dữ liệu từ form
         $request->validate([
-            'user_id' => 'required|exists:users,id',
-            'content' => 'required|string',
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|max:255',
+            'website' => 'nullable|url|max:255',
+            'message' => 'required|string',
         ]);
 
-         $blog = Blog::findOrFail($blogId);
+        // Lấy thông tin bài viết với $blogId
+        // $blog = Blog::findOrFail($blogId);
 
-    $blog->comments()->create([
-        'user_id' => $request->user_id,
-        'content' => $request->content,
-    ]);
+        // // Tạo một bình luận mới liên kết với bài viết
+        // $blog->comments()->create([
+        //     'name' => $request->name,
+        //     'email' => $request->email,
+        //     'website' => $request->website,
+        //     'message' => $request->message,
+        // ]);
 
-    return redirect()->route('comment.index', ['blog' => $blogId])
-        ->with('success', 'Bình luận đã được thêm thành công!');
+        // Quay lại trang chi tiết bài viết hoặc trang quản lý bình luận
+        // return redirect()->route('post', ['id' => $blogId])
+        //     ->with('success', 'Bình luận đã được thêm thành công!');
+$comment = new Comment();
+    $comment->name = $request->name;
+    $comment->email = $request->email;
+    $comment->website = $request->website;
+    $comment->message = $request->message;
+    $comment->blog_id = $blogId;  // Lưu blog_id vào cơ sở dữ liệu
+    $comment->save();
+
+    return back()->with('success', 'Bình luận của bạn đã được gửi.');
+
     }
+
 
     public function edit($blogId, $commentId)
     {

@@ -302,10 +302,10 @@
                                     <h4 class="mb-30">Leave A Comment</h4>
                             
                                     <!-- Comment Form -->
-                                    <form action="{{ route('comments.store') }}" method="post">
-                                        @csrf <!-- CSRF Token -->
-                                        <input type="hidden" name="blog_id" value="{{ $blog->id }}"> <!-- Thêm blog_id -->
-                            
+                                    <form action="#" method="post">
+                                        {{-- @csrf --}}
+                                        <input type="hidden" name="blog_id" value="">
+                                    
                                         <div class="form-group">
                                             <input type="text" class="form-control" name="name" placeholder="Name" required>
                                         </div>
@@ -320,8 +320,10 @@
                                         </div>
                                         <button type="submit" class="btn contact-btn">Post Comment</button>
                                     </form>
+                                    
                                 </div>
                             </div>
+                            
                             
 
                         </div>

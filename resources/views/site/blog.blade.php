@@ -36,44 +36,44 @@
 
             <!-- Single Post -->
             @foreach ($blogs as $blog)
-    <div class="col-12 col-md-6 col-lg-4">
-        <div class="single-post wow fadeInUp" data-wow-delay="0.1s">
-            <!-- Post Thumb -->
-            <div class="post-thumb">
-                <img src="/customer/img/blog-img/2.jpg" alt="">
-            </div>
-            <!-- Post Content -->
-            <div class="post-content">
-                <div class="post-meta d-flex">
-                    <div class="post-author-date-area d-flex">
-                        <!-- Post Author -->
-                        <div class="post-author">
-                            <a href="#">{{ $blog->user->name ?? 'Không có tên tác giả' }}</a>
+                <div class="col-12 col-md-6 col-lg-4">
+                    <div class="single-post wow fadeInUp" data-wow-delay="0.1s">
+                        <!-- Post Thumb -->
+                        <div class="post-thumb">
+                            <img src="{{ asset('storage/' . ltrim($blog->image_path, 'http://127.0.0.1:8000/')) }}" alt="Image"style="width:300px; height: 200px;">
                         </div>
-                        <!-- Post Date -->
-                        <div class="post-date">
-                            <a href="#">{{ $blog->created_at->format('d/m/Y H:i') }}</a>
-                        </div>
-                    </div>
-                    <!-- Post Comment & Share Area -->
-                    <div class="post-comment-share-area d-flex">
-                        <!-- Post Favourite -->
-                        <div class="post-favourite">
-                            <a href="#"><i class="fa fa-heart-o" aria-hidden="true"></i>{{ $blog->likes_count }}</a>
-                        </div>
-                        <!-- Post Comments -->
-                        <div class="post-comments">
-                            <a href="#"><i class="fa fa-comment-o" aria-hidden="true"></i>{{ $blog->comment ? $blog->comment->name : 'Chưa có bình luận' }}</a>
+                        <!-- Post Content -->
+                        <div class="post-content">
+                            <div class="post-meta d-flex">
+                                <div class="post-author-date-area d-flex">
+                                    <!-- Post Author -->
+                                    <div class="post-author">
+                                        <a href="#">{{ $blog->user->name ?? 'Không có tên tác giả' }}</a>
+                                    </div>
+                                    <!-- Post Date -->
+                                    <div class="post-date">
+                                        <a href="#">{{ $blog->created_at->format('d/m/Y H:i') }}</a>
+                                    </div>
+                                </div>
+                                <!-- Post Comment & Share Area -->
+                                <div class="post-comment-share-area d-flex">
+                                    <!-- Post Favourite -->
+                                    <div class="post-favourite">
+                                        <a href="#"><i class="fa fa-heart-o" aria-hidden="true"></i>{{ $blog->likes_count }}</a>
+                                    </div>
+                                    <!-- Post Comments -->
+                                    <div class="post-comments">
+                                        <a href="#"><i class="fa fa-comment-o" aria-hidden="true"></i>{{ $blog->comment ? $blog->comment->name : 'Chưa có bình luận' }}</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <a href="#">
+                                <h4 class="post-headline">{{ $blog->title }}</h4>
+                            </a>
                         </div>
                     </div>
                 </div>
-                <a href="#">
-                    <h4 class="post-headline">{{ $blog->title }}</h4>
-                </a>
-            </div>
-        </div>
-    </div>
-@endforeach
+            @endforeach
 
 
             <div class="col-12">
