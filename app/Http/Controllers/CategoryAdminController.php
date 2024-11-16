@@ -61,12 +61,16 @@ class CategoryAdminController extends Controller
     public function destroy($id)
     {
         $category = Category::findOrFail($id);
+    
         // Xóa ảnh nếu có
         if ($category->image_path) {
             Storage::disk('public')->delete('category/' . $category->image_path);
         }
+        
+        // Xóa danh mục
         $category->delete();
-       return response()->json(['status' => 'success']);
+        
+        return response()->json(['status' => 'success']);
     }
     // Phương thức cập nhật danh mục
     public function update(Request $request, $id)

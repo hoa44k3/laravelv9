@@ -50,40 +50,35 @@
 @include('backend.dashboard.component.custom')
 @include('backend.dashboard.component.script')
 <script>
-  $(document).ready(function() {
-    // Thêm sự kiện click cho các nút xóa
-    $('.btn-delete').on('click', function() {
-        var id = $(this).data('id');  // Lấy id từ thuộc tính data-id
-        var row = $(this).closest('tr');  // Lấy dòng tr của danh mục cần xóa
-        
-        // Xác nhận xóa
-        if (confirm('Bạn có chắc chắn muốn xóa danh mục này?')) {
-            $.ajax({
-                url: '/category/' + id,  // Đảm bảo rằng URL chính xác
-                type: 'DELETE',
-                data: {
-                    _token: '{{ csrf_token() }}',  // Chuyển token csrf
-                    id: id  // Truyền id để xóa
-                },
-                success: function(response) {
-                    // Kiểm tra phản hồi từ server
-                    if (response.status === 'success') {
-                        alert('Danh mục đã được xóa!');
-                        row.remove();  // Xóa dòng trong bảng
-                    } else {
+    $(document).ready(function() {
+        // Thêm sự kiện click cho các nút xóa
+        $('.btn-delete').on('click', function() {
+            var id = $(this).data('id');  // Lấy id từ thuộc tính data-id
+            var row = $(this).closest('tr');  // Lấy dòng tr của danh mục cần xóa
+            
+            // Xác nhận xóa
+            if (confirm('Bạn có chắc chắn muốn xóa danh mục này?')) {
+                $.ajax({
+                    url: '{{ route('category.destroy', '') }}/' + id,  // Đảm bảo đường dẫn đúng
+                    type: 'DELETE',
+                    data: {
+                        _token: '{{ csrf_token() }}',  // Chuyển token csrf
+                    },
+                    success: function(response) {
+                        if (response.status === 'success') {
+                            alert('Danh mục đã được xóa!');
+                            row.remove();  // Xóa dòng trong bảng
+                        } else {
+                            alert('Có lỗi xảy ra!');
+                        }
+                    },
+                    error: function() {
                         alert('Có lỗi xảy ra!');
                     }
-                },
-                error: function(xhr, status, error) {
-                    // In ra thông báo lỗi chi tiết trong console
-                    console.error('AJAX Error: ', error);
-                    alert('Có lỗi xảy ra!');
-                }
-            });
-        }
+                });
+            }
+        });
     });
-});
-
-
-</script>
+    </script>
+    
 

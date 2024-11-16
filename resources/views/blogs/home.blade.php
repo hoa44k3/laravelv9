@@ -33,12 +33,6 @@
                                                     <tr id="blog-{{ $blog->id }}">
                                                         <td>{{ $blog->title }}</td>
                                                         <td>{{ $blog->user ? $blog->user->name : 'Không có tác giả' }}</td> 
-
-                                                        {{-- <td><img src="{{ Storage::url($blog->image_path) }}" alt="Image">
-                                                        </td> --}}
-                                                        {{-- <td>
-                                                            <img src="{{ asset('storage/' . $blog->image_path) }}" alt="Image">
-                                                        </td> --}}
                                                         <td>
                                                             <img src="{{ asset('storage/' . ltrim($blog->image_path, 'http://127.0.0.1:8000/')) }}" alt="Image"style="width: 90px; height: 70px;">
                                                         </td>
