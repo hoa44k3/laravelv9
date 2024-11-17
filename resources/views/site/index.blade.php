@@ -178,10 +178,6 @@
                     </div>
                 @endforeach
             </div>
-
-            <!-- Thêm các nút điều hướng để trượt -->
-            <button type="button" class="slick-prev">Prev</button>
-            <button type="button" class="slick-next">Next</button>
         </div>
     </div>
 </section>

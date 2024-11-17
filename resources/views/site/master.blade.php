@@ -100,7 +100,7 @@
                                         <a class="dropdown-item" href="{{ route('index') }}">Trang chủ</a>
                                         <a class="dropdown-item" href="{{ route('blog') }}">Bài viết</a>
              
-                                        <a class="dropdown-item" href="{{ route('post', ['id' => $blog->id]) }}">Nội dung bài viết</a> 
+                                        <a class="dropdown-item" href="{{ route('site.post', ['id' => $blog->id]) }}">Nội dung bài viết</a> 
                                     
                                         <a class="dropdown-item" href="{{ route('contact') }}">Liên hệ</a>
                                     </div>
@@ -114,7 +114,7 @@
                                 </li>
                                 <li class="nav-item">
                                     
-                                    <a class="nav-link" href="{{ route('post', ['id' => $blog->id]) }}">Post</a>
+                                    <a class="nav-link" href="{{ route('site.post', ['id' => $blog->id]) }}">Post</a>
                                     
                                 </li>
                                 <li class="nav-item">

@@ -25,11 +25,31 @@ class HomeController extends Controller
        ->paginate(10);
         return view('site.blog',compact('blogs'));
     }
-    public function post($id){
-        $blog = Blog::findOrFail($id);
+    public function post($id = null){
+       
+    //     // Lấy bài viết nổi bật (bài viết đầu tiên)
+    //     $featuredBlog = Blog::withCount(['likes', 'comments'])
+    //     ->with('user', 'comments.user') // Eager load user và comments.user
+    //     ->latest() // Lấy bài viết mới nhất
+    //     ->first(); // Lấy bài viết đầu tiên
 
-        $comments = $blog->comments;
-        return view('site.post', compact('blog', 'comments'));
+    // // Lấy các bài viết còn lại (trừ bài viết nổi bật)
+    // $otherBlogs = Blog::withCount(['likes', 'comments'])
+    //     ->with('user') // Eager load user
+    //     ->where('id', '!=', $featuredBlog->id) // Loại bỏ bài viết nổi bật
+    //     ->latest() // Lấy các bài viết mới nhất
+    //     ->paginate(3); // Phân trang 3 bài viết mỗi lần
+
+        // Nếu có ID, lấy bài viết theo ID đó, nếu không lấy bài viết nổi bật
+    $featuredBlog = $id ? Blog::withCount(['likes', 'comments'])->with('user', 'comments.user')->findOrFail($id) :
+    Blog::withCount(['likes', 'comments'])->with('user', 'comments.user')->latest()->first();
+
+// Lấy các bài viết còn lại (trừ bài viết hiện tại)
+$otherBlogs = Blog::withCount(['likes', 'comments'])->with('user')->where('id', '!=', $featuredBlog->id)->latest()->paginate(3);
+
+    // Trả về view với cả hai biến
+    return view('site.post', compact('featuredBlog', 'otherBlogs'));
+
     }
     public function category(){
         $categories = Category::all();
@@ -37,7 +57,7 @@ class HomeController extends Controller
         $blog = Blog::first();
         return view('site.category', compact('categories','blog'));
     }
-    public function store(Request $request)
+    public function store(Request $request, $blogId)
     {
         $request->validate([
             'name' => 'required|string|max:255',
@@ -52,7 +72,10 @@ class HomeController extends Controller
         $comment->website = $request->website;
         $comment->message = $request->message;
         $comment->blog_id = $request->blog_id;
+        $comment->parent_id = $request->parent_id; 
         $comment->save();
+
+    
 
         return back()->with('success', 'Bình luận của bạn đã được gửi.');
     }

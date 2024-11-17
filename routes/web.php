@@ -94,7 +94,6 @@ Route::prefix('comments')->name('comment.')->group(function () {
     // Lưu bình luận mới vào cơ sở dữ liệu
     Route::post('/store/{blogId}', [CommentController::class, 'store'])->name('store');
 
-
     // Hiển thị form sửa bình luận cho một blog cụ thể
     Route::get('/edit/{blog}/{comment}', [CommentController::class, 'edit'])->name('edit');
 
@@ -106,6 +105,7 @@ Route::prefix('comments')->name('comment.')->group(function () {
 
     // Hiển thị danh sách bình luận theo categories (nếu cần chức năng này)
     Route::get('/show', [CommentController::class, 'showComments'])->name('show');
+    Route::post('/reply/{comment}', [CommentController::class, 'reply'])->name('reply');
 });
 
 use App\Http\Controllers\Customer\HomeController;
@@ -113,7 +113,7 @@ use App\Http\Controllers\Customer\HomeController;
 Route::get('/', [HomeController::class, 'index'])->name('index');
 Route::get('/blog', [HomeController::class, 'blog'])->name('blog');
 Route::get('/contact', [HomeController::class, 'contact'])->name('contact');
-Route::get('/post/{id}', [HomeController::class, 'post'])->name('post');
+Route::get('/post/{id}', [HomeController::class, 'post'])->name('site.post');
 
 Route::get('/category', [HomeController::class, 'category'])->name('category');
 Route::post('/contact', [HomeController::class, 'sendContact'])->name('contact.send');

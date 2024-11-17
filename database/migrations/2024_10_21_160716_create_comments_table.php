@@ -21,9 +21,11 @@ return new class extends Migration
             $table->string('author')->nullable(); 
             $table->text('content')->nullable();
             $table->timestamp('created_at')->nullable();
+            $table->unsignedBigInteger('parent_id')->nullable();
             $table->foreign('category_id')->references('id')->on('categories')->onDelete('cascade');
             $table->foreign('blog_id')->references('id')->on('blogs')->onDelete('cascade');
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
+            $table->foreign('parent_id')->references('id')->on('comments')->onDelete('cascade');
         });
     }
 
