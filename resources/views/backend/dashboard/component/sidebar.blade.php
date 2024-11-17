@@ -66,13 +66,13 @@
           <span class="caret"></span>
       </a>
        </li>
-       <li class="nav-item">
+       {{-- <li class="nav-item">
           <a href="{{ route('comment.index') }}">
           <i class="fas fa-table"></i>
           <p>Quản lý bình luận</p>
           <span class="caret"></span>
            </a>
-      </li>
+      </li> --}}
       <li class="nav-item">
          <a href="{{ route('users.index') }}">
           <i class="fas fa-table"></i>

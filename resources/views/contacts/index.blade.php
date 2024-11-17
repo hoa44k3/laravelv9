@@ -1,6 +1,22 @@
 <!-- resources/views/contacts/index.blade.php -->
 @include('backend.dashboard.component.head')
 @include('backend.dashboard.component.sidebar')
+<style>
+    .table tbody tr:hover {
+    background-color: #e8f0fe;
+}
+
+.table thead th, .table tbody td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: center;
+}
+
+    .table thead th {
+    background-color: #717172;
+    color: white;
+}
+</style>
 <div class="container-fluid">
     <div class="row">
         <div class="col-md-10 offset-md-2">
@@ -25,6 +41,7 @@
                                     <th>Email</th>
                                     <th>Tin nhắn</th>
                                     <th>Ngày gửi</th>
+                                    <th>Hành động</th>
                                 </tr>
                             </thead>
                             <tbody>

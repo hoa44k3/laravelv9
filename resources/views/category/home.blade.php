@@ -1,6 +1,21 @@
 @include('backend.dashboard.component.head')
 @include('backend.dashboard.component.sidebar')
+<style>
+    .table tbody tr:hover {
+    background-color: #e8f0fe;
+}
 
+.table thead th, .table tbody td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: center;
+}
+
+    .table thead th {
+    background-color: #717172;
+    color: white;
+}
+</style>
 <div class="container-fluid">
     <div class="row">
         <div class="col-md-10 offset-md-2">
@@ -28,9 +43,9 @@
                                     <tr>
                                         <td>{{ $category->id }}</td>
                                         <td>{{ $category->name }}</td>
-                                        <td><img src="{{ asset('storage/' . $category->image_path) }}" alt="Image" style="width: 80px; height: 70px;">
+                                        <td><img src="{{ asset('storage/' . $category->image_path) }}" alt="Image" style="width: 90px; height: 70px;">
                                         </td>       
-                                        {{-- <td>{{ $category->comment }}</td> --}}
+                                      
                                         <td>
                                             <a href="{{ route('category.edit', $category->id) }}" class="btn btn-warning btn-sm">Sửa</a>
                                             <button type="button" class="btn btn-danger btn-sm btn-delete" data-id="{{ $category->id }}">Xóa</button>

@@ -1,6 +1,62 @@
 @include('backend.dashboard.component.head')
 @include('backend.dashboard.component.sidebar')
+<style>
+    .table {
+        width: 100%;
+        border-collapse: collapse;
+        text-align: center;
+    }
+    
+    .table thead th {
+        background-color: #f8f9fa;
+        font-weight: bold;
+        text-transform: uppercase;
+    }
+    
+    .table tbody td {
+        vertical-align: middle;
+        padding: 10px;
+    }
+    
+    .table img {
+        border-radius: 5px;
+        object-fit: cover;
+    }
+    
+    .scrollable-table {
+        overflow-x: auto;
+    }
+    
+    .form-button-action {
+        display: flex;
+        justify-content: center;
+        gap: 5px;
+    }
+    
+    .btn-link {
+        text-decoration: none;
+        font-size: 14px;
+    }
+    .table tbody tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
 
+.table tbody tr:hover {
+    background-color: #e8f0fe;
+}
+
+.table thead th, .table tbody td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: center;
+}
+
+.table thead th {
+    background-color: #717172;
+    color: white;
+}
+    </style>
+    
                     <div class="container-fluid">
                         <div class="row">
                             <div class="col-md-10 offset-md-2">
@@ -31,12 +87,52 @@
                                                         </tr>
                                                     </thead>
                                                     <tbody>
-                                                        @foreach ($blogs as $blog)
+                                                          {{-- Hiển thị bài viết nổi bật --}}
+                                                        @if ($featuredBlog)
+                                                        <tr id="blog-{{ $featuredBlog->id }}" style="background-color: #ffeeba; font-weight: bold;">
+                                                            <td>
+                                                                <span style="color: #e74c3c; font-size: 18px;">★</span> 
+                                                                {{ \Illuminate\Support\Str::limit($featuredBlog->title, 30, '...') }}
+                                                            </td>
+                                                            <td>{{ $featuredBlog->user ? $featuredBlog->user->name : 'Không có tác giả' }}</td>
+                                                            <td>
+                                                                <img src="{{ asset('storage/' . ltrim($featuredBlog->image_path, 'http://127.0.0.1:8000/')) }}" alt="Image" style="width: 90px; height: 70px;">
+                                                            </td>
+                                                            <td>{{ $featuredBlog->category ? $featuredBlog->category->name : 'Không có danh mục' }}</td>
+                                                            <td>{{ $featuredBlog->likes_count }}</td>
+                                                            <td>
+                                                                <a href="{{ route('comment.index', ['blog' => $featuredBlog->id]) }}">
+                                                                    {{ $featuredBlog->comments_count }}
+                                                                </a>
+                                                            </td>
+                                                            <td id="status-{{ $featuredBlog->id }}">{{ $featuredBlog->status == 'approved' ? 'Đã phê duyệt' : 'Chờ phê duyệt' }}</td>
+                                                            <td>{{ $featuredBlog->created_at->format('d/m/Y H:i') }}</td>
+                                                            <td>
+                                                                <div class="form-button-action">
+                                                                    <a href="{{ route('blogs.show', $featuredBlog->id) }}" class="btn btn-link btn-info btn-lg">
+                                                                        <i class="fa fa-eye"></i> 
+                                                                    </a>
+                                                                    <a href="{{ route('blogs.edit', $featuredBlog->id) }}" class="btn btn-link btn-primary btn-lg">
+                                                                        <i class="fa fa-edit"></i>
+                                                                    </a>
+                                                                    <button type="button" class="btn btn-link btn-danger" onclick="deleteBlog({{ $featuredBlog->id }})">
+                                                                        <i class="fa fa-times"></i>
+                                                                    </button>
+                                                                    <button type="button" class="btn btn-link btn-success" onclick="toggleApproval({{ $featuredBlog->id }})">
+                                                                         {{ $featuredBlog->status == 'approved' ? 'Bỏ duyệt' : 'Duyệt' }}
+                                                                    </button>
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                        @endif
+                                                        @foreach ($otherBlogs as $blog)
                                                         <tr id="blog-{{ $blog->id }}">
-                                                            <td>{{ $blog->title }}</td>
+                                                            <td>{{ \Illuminate\Support\Str::limit($blog->title, 30, '...') }}</td>
                                                             <td>{{ $blog->user ? $blog->user->name : 'Không có tác giả' }}</td> 
                                                             <td>
-                                                                <img src="{{ asset('storage/' . ltrim($blog->image_path, 'http://127.0.0.1:8000/')) }}" alt="Image"style="width: 90px; height: 70px;">
+                                                                <img src="{{ asset('storage/' . ltrim($blog->image_path, 'http://127.0.0.1:8000/')) }}" 
+                                                                alt="Image" style="width: 90px; height: 70px; object-fit: cover;">
+                                                           
                                                             </td>
                                                             <td>{{ $blog->category ? $blog->category->name : 'Không có danh mục' }}</td>    
                                                             <td>{{ $blog->likes_count }}</td>
@@ -49,20 +145,21 @@
                                                             <td>{{ $blog->created_at->format('d/m/Y H:i') }}</td>
                                                             <td>
                                                                 <div class="form-button-action">
-                                                                    <a href="{{ route('blogs.show', $blog->id) }}" class="btn btn-link btn-info btn-lg">
-                                                                        <i class="fa fa-eye"></i> Xem chi tiết
+                                                                    <a href="{{ route('blogs.show', $blog->id) }}" class="btn btn-link btn-info">
+                                                                        <i class="fa fa-eye"></i>
                                                                     </a>
-                                                                    <a href="{{ route('blogs.edit', $blog->id) }}" class="btn btn-link btn-primary btn-lg">
+                                                                    <a href="{{ route('blogs.edit', $blog->id) }}" class="btn btn-link btn-primary">
                                                                         <i class="fa fa-edit"></i>
                                                                     </a>
                                                                     <button type="button" class="btn btn-link btn-danger" onclick="deleteBlog({{ $blog->id }})">
                                                                         <i class="fa fa-times"></i>
                                                                     </button>
                                                                     <button type="button" class="btn btn-link btn-success" onclick="toggleApproval({{ $blog->id }})">
-                                                                        <i class="fa fa-check"></i> {{ $blog->status == 'approved' ? 'Bỏ duyệt' : 'Duyệt' }}
+                                                                        {{ $blog->status == 'approved' ? 'Bỏ duyệt' : 'Duyệt' }}
                                                                     </button>
                                                                 </div>
                                                             </td>
+                                                            
                                                             
                                                         </tr>
                                                         @endforeach

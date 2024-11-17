@@ -21,10 +21,10 @@
                             <input type="file" class="form-control" id="image_path" name="image_path" accept="image/*">
                             <img src="{{ asset('storage/' . $category->image_path) }}" alt="Preview" width="100px">
                         </div>
-                        <div class="form-group">
+                        {{-- <div class="form-group">
                             <label for="comment">Mô tả</label>
                             <textarea class="form-control" id="comment" name="comment">{{ $category->comment }}</textarea>
-                        </div>
+                        </div> --}}
                         <button type="submit" class="btn btn-primary">Lưu</button>
                     </form>
                 </div>

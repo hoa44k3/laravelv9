@@ -84,36 +84,6 @@ Route::delete('/users/{id}', [UserController::class, 'destroy'])->name('users.de
 Route::get('/users/{user}', [UserController::class, 'show'])->name('users.show');
 
 
-
-// Route::prefix('comments')->name('comment.')->group(function () {
-//     Route::get('/{blog?}', [CommentController::class, 'index'])->name('index');
-//     Route::get('/{blog}/create', [CommentController::class, 'create'])->name('create');
-//     Route::post('/{blog}/store', [CommentController::class, 'store'])->name('store');
-//     Route::get('/{blog}/edit/{comment}', [CommentController::class, 'edit'])->name('edit');
-//     Route::put('/{blog}/update/{comment}', [CommentController::class, 'update'])->name('update');
-//     Route::delete('/delete/{id}', [CommentController::class, 'destroy'])->name('destroy');
-// });
-// Route::prefix('comments')->name('comment.')->group(function () {
-//     // Route để hiển thị danh sách bình luận, có thể có hoặc không có bài viết (blog)
-//     Route::get('/{blog?}', [CommentController::class, 'index'])->name('index');
-
-//     // Route để tạo bình luận cho một bài viết cụ thể
-//     Route::get('/{blog}/create', [CommentController::class, 'create'])->name('create');
-
-//     // Route để lưu bình luận cho một bài viết
-//     Route::post('/{blog}/store', [CommentController::class, 'store'])->name('store');
-
-//     // Route để sửa bình luận của một bài viết cụ thể
-//     Route::get('/{blog}/edit/{comment}', [CommentController::class, 'edit'])->name('edit');
-
-//     // Route để cập nhật bình luận của một bài viết cụ thể
-//     Route::put('/{blog}/update/{comment}', [CommentController::class, 'update'])->name('update');
-
-//     // Route để xóa bình luận
-//     Route::delete('/delete/{id}', [CommentController::class, 'destroy'])->name('destroy');
-// });
-
-
 Route::prefix('comments')->name('comment.')->group(function () {
     // Hiển thị danh sách bình luận, có thể lọc theo blog nếu truyền blog ID
     Route::get('/{blog?}', [CommentController::class, 'index'])->name('index');
@@ -137,20 +107,6 @@ Route::prefix('comments')->name('comment.')->group(function () {
     // Hiển thị danh sách bình luận theo categories (nếu cần chức năng này)
     Route::get('/show', [CommentController::class, 'showComments'])->name('show');
 });
-
-
-
-
-
-// Route::prefix('comments')->name('comment.')->group(function () {
-//     Route::get('/{blog?}', [CommentController::class, 'index'])->name('index');
-//     Route::get('/{blog}/create', [CommentController::class, 'create'])->name('create');
-//     Route::post('/{blog}/store', [CommentController::class, 'store'])->name('store');
-//     Route::get('/{blog}/edit/{comment}', [CommentController::class, 'edit'])->name('edit');
-//     Route::put('/{blog}/update/{comment}', [CommentController::class, 'update'])->name('update');
-//     Route::delete('/delete/{id}', [CommentController::class, 'destroy'])->name('destroy');
-// });
-
 
 use App\Http\Controllers\Customer\HomeController;
 

@@ -1,9 +1,81 @@
 @extends('site.master')
 
 @section('title','Trang chủ')
-    
-
 @section('body')
+<!-- Thêm CSS của Slick Carousel -->
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.css">
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick-theme.min.css">
+
+<!-- Thêm JS của Slick Carousel -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.js"></script>
+
+    <style>
+      /* Thiết lập kích thước cho container carousel */
+.category-carousel {
+    display: flex;
+    overflow: hidden;
+}
+
+.category-carousel .single_catagory {
+    flex: 0 0 auto; /* Giúp các danh mục không bị co giãn */
+    width: 33.33%; /* Hiển thị 3 danh mục mỗi lần */
+    padding: 0 10px; /* Khoảng cách giữa các danh mục */
+}
+
+/* Thiết lập cho ảnh trong mỗi danh mục */
+.category-image-container {
+    position: relative;
+    overflow: hidden;
+    height: 200px; /* Đảm bảo tất cả ảnh có chiều cao cố định */
+}
+
+.category-image-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Đảm bảo ảnh không bị kéo dài, cắt ảnh nếu cần */
+}
+
+/* Hiển thị tiêu đề khi hover vào ảnh */
+.category-title-overlay {
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
+    background-color: rgba(248, 90, 90, 0.5);
+    color: white;
+    padding: 10px;
+    width: 100%;
+    text-align: center;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.category-image-container:hover .category-title-overlay {
+    opacity: 1;
+}
+/* CSS cho nút Prev và Next */
+.slick-prev, .slick-next {
+    font-size: 20px;
+    color: black;
+    background-color: white;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 10;
+}
+
+.slick-prev {
+    left: 0;
+}
+
+.slick-next {
+    right: 0;
+}
+
+    </style>
  <!-- ****** Welcome Post Area Start ****** -->
  <section class="welcome-post-sliders owl-carousel">
 
@@ -93,21 +165,31 @@
 <section class="categories_area clearfix" id="about">
     <div class="container">
         <div class="row">
-            @foreach ($categories as $category)
-                <div class="col-12 col-md-6 col-lg-4">
+            <!-- Thêm class category-carousel để tạo hiệu ứng trượt -->
+            <div class="category-carousel">
+                @foreach ($categories as $category)
                     <div class="single_catagory wow fadeInUp" data-wow-delay=".3s">
-                        <img src="{{ asset('storage/' . $category->image_path) }}" alt="{{ $category->name }}" style="width: 80px; height: 70px;">
-                        <div class="catagory-title">
-                            <a href="#">
+                        <div class="category-image-container" style="position: relative;">
+                            <img src="{{ asset('storage/' . $category->image_path) }}" alt="{{ $category->name }}" style="width: 100%; height: auto;">
+                            <div class="category-title-overlay">
                                 <h5>{{ $category->name }}</h5>
-                            </a>
+                            </div>
                         </div>
                     </div>
-                </div>
-            @endforeach
+                @endforeach
+            </div>
+
+            <!-- Thêm các nút điều hướng để trượt -->
+            <button type="button" class="slick-prev">Prev</button>
+            <button type="button" class="slick-next">Next</button>
         </div>
     </div>
 </section>
+
+
+
+
+
 <!-- ****** Categories Area End ****** -->
 
 <!-- ****** Blog Area Start ****** -->
@@ -189,12 +271,15 @@
                                             <a href="#"><i class="fa fa-heart-o" aria-hidden="true"></i> {{ $blog->likes_count }}</a>
                                         </div>
                                         <!-- Post Comments -->
-                                        <div class="post-comments">
+                                        {{-- <div class="post-comments">
                                             <i class="fa fa-comment-o" aria-hidden="true"></i>
                                             {{ $blog->comments_count > 0 ? $blog->comments_count . ' Bình luận' : 'Chưa có bình luận' }}
+                                        </div> --}}
+                                        
+                                        <div class="post-comments">
+                                            <i class="fa fa-comment-o" aria-hidden="true"></i>
+                                            {{ $blog->comments_count }}
                                         </div>
-                                        
-                                        
                                         <!-- Post Share -->
                                         {{-- <div class="post-share">
                                             <a href="#"><i class="fa fa-share-alt" aria-hidden="true"></i></a>
@@ -521,12 +606,32 @@
 <!-- ****** Our Creative Portfolio Area End ****** -->
 @endsection
 
-@section('css')
-<style>
-    body{
-        background-color: pink
-    }
-</style>
-@endsection
+<!-- Thêm JS để khởi tạo Slick Carousel -->
+<!-- Thêm JS để khởi tạo Slick Carousel -->
+<script>
+    $(document).ready(function(){
+        $('.category-carousel').slick({
+            infinite: true,            // Lặp lại carousel
+            slidesToShow: 3,           // Hiển thị 3 danh mục mỗi lần
+            slidesToScroll: 1,         // Trượt 1 mục mỗi lần
+            prevArrow: $('.slick-prev'),  // Liên kết nút Prev
+            nextArrow: $('.slick-next'),  // Liên kết nút Next
+            responsive: [
+                {
+                    breakpoint: 992,
+                    settings: {
+                        slidesToShow: 2   // Hiển thị 2 danh mục trên màn hình vừa
+                    }
+                },
+                {
+                    breakpoint: 768,
+                    settings: {
+                        slidesToShow: 1   // Hiển thị 1 danh mục trên màn hình nhỏ
+                    }
+                }
+            ]
+        });
+    });
+</script>
 
 

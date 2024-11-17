@@ -15,11 +15,21 @@ class BlogAdminController extends Controller
 {
     public function home()
     {
-       // $blogs = Blog::with('user', 'category')->withCount('likes')->get();
-       $blogs = Blog::with('user', 'category')
-       ->withCount(['likes', 'comments']) // Đếm số bình luận
-       ->get();
-        return view('blogs.home', compact('blogs'));
+       // Lấy danh sách bài viết kèm số lượt thích và bình luận
+            $blogs = Blog::with('user', 'category') // Lấy quan hệ với user và category
+            ->withCount(['likes', 'comments'])  // Đếm số lượt thích và bình luận
+            ->get()
+            ->sortByDesc(function ($blog) {
+                // Tính tổng điểm nổi bật (lượt thích + bình luận)
+                return $blog->likes_count + $blog->comments_count;
+            });
+
+        // Lấy bài viết nổi bật nhất
+        $featuredBlog = $blogs->first(); // Bài viết có điểm cao nhất
+        $otherBlogs = $blogs->skip(1);   // Các bài viết khác
+
+        return view('blogs.home', compact('featuredBlog', 'otherBlogs'));
+                
     }
     public function create()
     {

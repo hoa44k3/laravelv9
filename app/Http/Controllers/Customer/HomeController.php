@@ -10,10 +10,9 @@ use App\Models\Comment;
 use App\Models\Contact;
 class HomeController extends Controller
 {
-    public function index($blogId){
+    public function index(){
         $categories = Category::all();
-       // $blogs = Blog::all();
-        $blog = Blog::withCount('comments')->findOrFail($blogId);
+       $blogs = Blog::withCount('comments','likes')->get(); // Lấy danh sách các blog kèm số lượng bình luận
         return view('site.index', compact('categories','blogs'));
     }
     public function contact(){
@@ -21,8 +20,7 @@ class HomeController extends Controller
         return view('site.contact',compact('blog'));
     }
     public function blog(){
-       // $blogs = Blog::with('user', 'category')->paginate(10); 
-       $blogs = Blog::withCount('likes')  // Lấy số lượt thích của mỗi blog
+       $blogs = Blog::withCount('comments','likes')  
        ->with('user', 'category') // Lấy các quan hệ với user và category
        ->paginate(10);
         return view('site.blog',compact('blogs'));

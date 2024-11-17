@@ -63,7 +63,7 @@
                                     </div>
                                     <!-- Post Comments -->
                                     <div class="post-comments">
-                                        <a href="#"><i class="fa fa-comment-o" aria-hidden="true"></i>{{ $blog->comment ? $blog->comment->name : 'Chưa có bình luận' }}</a>
+                                        <a href="#"><i class="fa fa-comment-o" aria-hidden="true"></i> {{ $blog->comments_count }}</a>
                                     </div>
                                 </div>
                             </div>
