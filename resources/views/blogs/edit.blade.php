@@ -1,5 +1,6 @@
 @include('backend.dashboard.component.head')
 @include('backend.dashboard.component.sidebar')
+<script src="https://cdn.ckeditor.com/ckeditor5/39.0.0/classic/ckeditor.js"></script>
 <div class="container-fluid">
 <div class="row">
     <div class="col-md-10 offset-md-2">
@@ -25,10 +26,9 @@
                             @endforeach
                         </select>
                     </div>
-                    
                     <div class="form-group">
                         <label for="content">Nội dung</label>
-                        <textarea class="form-control" name="content" id="content" rows="4" required>{{ old('content', $blog->content) }}</textarea>
+                        <textarea class="form-control" name="content" id="content-editor" rows="4" required>{{ old('content', $blog->content) }}</textarea>
                     </div>
                     <div class="form-group">
                         <label for="category_id">Danh mục</label>
@@ -53,5 +53,15 @@
     </div>
 </div>
 </div>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        ClassicEditor
+            .create(document.querySelector('#content-editor'))
+            .catch(error => {
+                console.error(error);
+            });
+    });
+</script>
+
 @include('backend.dashboard.component.custom')
 @include('backend.dashboard.component.script') 

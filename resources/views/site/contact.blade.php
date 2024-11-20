@@ -3,12 +3,12 @@
 @section('title','Liên hệ')   
 @section('body')
    <!-- ****** Breadcumb Area Start ****** -->
-   <div class="breadcumb-area" style="background-image: url(/customer/img/bg-img/breadcumb.jpg);">
+   <div class="breadcumb-area" style="background-image: url(/customer/img/ne2.jpg);">
     <div class="container h-100">
         <div class="row h-100 align-items-center">
             <div class="col-12">
                 <div class="bradcumb-title text-center">
-                    <h2>Contact Us</h2>
+                    <h2>Liên hệ </h2>
                 </div>
             </div>
         </div>
@@ -20,8 +20,8 @@
             <div class="col-12">
                 <nav aria-label="breadcrumb">
                     <ol class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="#"><i class="fa fa-home" aria-hidden="true"></i> Home</a></li>
-                        <li class="breadcrumb-item active" aria-current="page">Contact Us</li>
+                        <li class="breadcrumb-item"><a href="#"><i class="fa fa-home" aria-hidden="true"></i> Trang chủ</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Liên hệ với chúng tôi</li>
                     </ol>
                 </nav>
             </div>

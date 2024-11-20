@@ -21,7 +21,33 @@
     <link href="/customer/css/responsive/responsive.css" rel="stylesheet">
 
 </head>
+<style>
+    .logo_area {
+    position: relative; /* Tạo lớp cha để định vị chữ */
+    display: inline-block;
+}
 
+.yummy-logo {
+    width: 2000px; /* Kéo ảnh ra toàn chiều rộng cột */
+    height: 300px; /* Đặt chiều cao cố định hoặc sử dụng giá trị tự do */
+    object-fit: cover; /* Đảm bảo ảnh không bị méo */
+    border-radius: 10px; /* Tùy chọn: Thêm bo tròn góc nếu cần */
+}
+
+.logo-text {
+    position: absolute;
+    top: 50%; /* Căn giữa theo chiều dọc */
+    left: 50%; /* Căn giữa theo chiều ngang */
+    transform: translate(-50%, -50%); /* Đảm bảo chữ nằm chính giữa ảnh */
+    font-size: 36px; /* Tùy chỉnh kích thước chữ */
+    font-weight: bold;
+    color: white; /* Màu chữ (tùy chỉnh nếu cần) */
+    text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.5); /* Tạo bóng để chữ nổi bật hơn */
+    z-index: 2; /* Đảm bảo chữ nằm trên ảnh */
+    font-family: Arial, sans-serif; /* Tùy chỉnh font chữ */
+}
+
+</style>
 <body>
     <!-- Preloader Start -->
     <div id="preloader">
@@ -78,11 +104,17 @@
             <div class="row">
                 <!-- Logo Area Start -->
                 <div class="col-12">
-                    <div class="logo_area text-center">
-                        <a href="index.html" class="yummy-logo">Yummy Blog</a>
+                    <div class="logo_area text-center position-relative">
+                        <a href="index.html">
+                            <img src="/customer/img/nen.jpg" alt="Yummy Blog Logo" class="yummy-logo">
+                        </a>
+                        <div class="logo-text">
+                            Yummy Blog
+                        </div>
                     </div>
                 </div>
             </div>
+            
 
             <div class="row">
                 <div class="col-12">
@@ -106,9 +138,9 @@
                                     </div>
                                     
                                 </li>
-                                <li class="nav-item">
+                                {{-- <li class="nav-item">
                                     <a class="nav-link" href="{{route('category')}}">Categories</a>
-                                </li>
+                                </li> --}}
                                 <li class="nav-item">
                                     <a class="nav-link" href="{{route('blog')}}">Blog</a>
                                 </li>

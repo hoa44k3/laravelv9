@@ -3,7 +3,7 @@
    
 @section('body')
     <!-- ****** Breadcumb Area Start ****** -->
-    <div class="breadcumb-area" style="background-image: url(/customer/img/bg-img/breadcumb.jpg);">
+    <div class="breadcumb-area" style="background-image: url(/customer/img/ne2.jpg);">
         <div class="container h-100">
             <div class="row h-100 align-items-center">
                 <div class="col-12">
@@ -150,7 +150,7 @@
                                             </div>
                                         </div>
                                         <p>{{ \Illuminate\Support\Str::limit($blog->content, 50) }}</p>
-                                        {{-- <a href="{{ route('blogs.show', $blog->id) }}" class="btn btn-secondary btn-sm">Xem chi tiết</a> --}}
+                                       
                                     </div>
                                 </div>                         
                             @endforeach   

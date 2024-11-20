@@ -1,5 +1,7 @@
 @include('backend.dashboard.component.head')
 @include('backend.dashboard.component.sidebar')
+<script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
+<script src="https://cdn.ckeditor.com/ckeditor5/39.0.0/classic/ckeditor.js"></script>
 
 <div class="container-fluid">
     <div class="row">
@@ -26,7 +28,8 @@
                     
                     <div class="form-group">
                         <label for="content">Nội dung</label>
-                        <textarea class="form-control" name="content" rows="4" required></textarea>
+                        <textarea class="form-control" name="content" id="content-editor" rows="4" required></textarea>
+
                     </div>
 
                     <div class="form-group">
@@ -50,5 +53,14 @@
         </div>
     </div>
 </div>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        ClassicEditor
+            .create(document.querySelector('#content-editor'))
+            .catch(error => {
+                console.error(error);
+            });
+    });
+</script>
 @include('backend.dashboard.component.custom')
 @include('backend.dashboard.component.script') 

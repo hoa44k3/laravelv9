@@ -1,5 +1,7 @@
 @include('backend.dashboard.component.head')
 @include('backend.dashboard.component.sidebar')
+<script src="https://cdn.ckeditor.com/ckeditor5/39.0.0/classic/ckeditor.js"></script>
+
 <style>
     .table {
         width: 100%;
@@ -56,7 +58,6 @@
     color: white;
 }
     </style>
-    
                     <div class="container-fluid">
                         <div class="row">
                             <div class="col-md-10 offset-md-2">
@@ -218,4 +219,12 @@ function toggleApproval(id) {
         }
     });
 }
+
+document.addEventListener('DOMContentLoaded', () => {
+        ClassicEditor
+            .create(document.querySelector('#content-editor'))
+            .catch(error => {
+                console.error(error);
+            });
+    });
 </script>

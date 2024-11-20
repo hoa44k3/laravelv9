@@ -44,7 +44,7 @@ class BlogAdminController extends Controller
         $create->title = $request->title;
         $create->content = $request->content;   
         $create->status = $request->status;
-        $create->like_id = $request->like_id;
+        $create->likes = $request->likes;
         $create->comment_count = $request->comment_count;   
         $create->user_id = $request->user_id;
         $create->category_id = $request->category_id;   

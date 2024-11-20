@@ -1,5 +1,7 @@
 @include('backend.dashboard.component.head')
 @include('backend.dashboard.component.sidebar')
+<script src="https://cdn.ckeditor.com/ckeditor5/39.0.0/classic/ckeditor.js"></script>
+
 <div class="container mt-5">
     <div class="row">
         <div class="col-md-10 offset-md-2">
@@ -26,7 +28,10 @@
                                 </tr>
                                 <tr>
                                     <td>Nội dung:</td>
-                                    <td>{{ $blog->content }}</td>
+                                    {{-- <td>{{ $blog->content }}</td> --}}
+                                    <td>
+                                        <textarea name="content" id="content-editor" rows="4" class="form-control" required>{{ $blog->content }}</textarea>
+                                    </td>
                                 </tr>
                                 <tr>
                                     <td>Tác giả:</td>
@@ -62,5 +67,14 @@
         </div>
     </div>
 </div>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        ClassicEditor
+            .create(document.querySelector('#content-editor'))
+            .catch(error => {
+                console.error(error);
+            });
+    });
+</script>
 @include('backend.dashboard.component.custom')
 @include('backend.dashboard.component.script')

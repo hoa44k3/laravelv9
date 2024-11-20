@@ -66,7 +66,7 @@
 
 </style>
  <!-- ****** Breadcumb Area Start ****** -->
- <div class="breadcumb-area" style="background-image: url(/customer/img/bg-img/breadcumb.jpg);">
+ <div class="breadcumb-area" style="background-image: url(/customer/img/ne2.jpg);">
     <div class="container h-100">
         <div class="row h-100 align-items-center">
             <div class="col-12">

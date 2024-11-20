@@ -122,6 +122,8 @@ Route::post('/contact', [HomeController::class, 'sendContact'])->name('contact.s
 use App\Http\Controllers\ContactController;
 
 Route::get('/contacts', [ContactController::class, 'index'])->name('contacts.index');
-Route::post('/comment/store/{blogId}', [CommentController::class, 'store'])->name('comment.store');
+//Route::post('/comment/store/{blogId}', [CommentController::class, 'store'])->name('comment.store');
+Route::post('/comments', [CommentController::class, 'store'])->name('comments.store');
+
 
 
