@@ -5,8 +5,8 @@ namespace App\Http\Middleware;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-
-class AuthenticateMiddleware
+use App\Models\User;
+class AdminMiddleware
 {
     /**
      * Handle an incoming request.
@@ -17,13 +17,11 @@ class AuthenticateMiddleware
      */
     public function handle(Request $request, Closure $next)
     {
-        // if (Auth::id() == null) {
-        //     return redirect()->route('auth.login')->with('error', 'Bạn phải đăng nhập 
-        //     để sử dụng chức năng này');
-        // }
         if (Auth::check() && Auth::user()->role === 'admin') {
             return $next($request); // Admin được phép truy cập
         }
-        return $next($request);
+
+       // return redirect()->route('index')->with('error', 'Bạn không có quyền truy cập.');
+         return $next($request);
     }
 }

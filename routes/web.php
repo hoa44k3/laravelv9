@@ -1,6 +1,6 @@
 <?php
 namespace App\Http\Controllers\Backend;
-use App\Http\Controllers\Backend\DashboardController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\AuthController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CommentController;
@@ -9,14 +9,43 @@ use App\Http\Controllers\BlogAdminController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\CategoryAdminController;
 use App\Http\Controllers\LikeAdminController;
-
-Route::get('dashboard.index', [DashboardController::class, 'index'])->name
-('dashboard.index')->middleware('admin');
+use App\Http\Controllers\Customer\HomeController;
 
 
-Route::get('admin', [AuthController::class, 'index'])->name('auth.admin');
-Route::post('logout', [AuthController::class, 'logout'])->name('auth.logout');
-Route::post('login', [AuthController::class, 'login'])->name('auth.login');
+// Route::get('dashboard.index', [DashboardController::class, 'index'])->name
+// ('dashboard.index')->middleware('admin');
+// Route::get('admin', [AuthController::class, 'index'])->name('auth.admin');
+// Route::post('logout', [AuthController::class, 'logout'])->name('auth.logout');
+// Route::post('login', [AuthController::class, 'login'])->name('auth.login');
+
+// Route::get('/admin/dashboard', [DashboardController::class, 'index'])
+//     ->middleware(['auth', 'admin'])
+//     ->name('backend.dashboard.index');
+
+    // Route đăng nhập
+// Route cho đăng nhập
+
+// Route đăng xuất
+Route::post('/logout', [AuthController::class, 'logout'])->name('auth.logout');
+
+Route::get('/login', function () {
+    return view('auth.login'); // Giao diện đăng nhập
+})->name('login');
+
+Route::post('/login', [AuthController::class, 'login'])->name('auth.login');
+// Route cho dashboard admin
+Route::middleware('auth')->group(function () {
+    // Route dành cho admin
+    Route::get('/admin/dashboard', function () {
+        return view('backend.dashboard.index'); // Giao diện admin dashboard
+    })->name('backend.dashboard.index');
+});
+Route::get('/', [HomeController::class, 'index'])->name('index');
+Route::get('/blog', [HomeController::class, 'blog'])->name('blog');
+Route::get('/contact', [HomeController::class, 'contact'])->name('contact');
+Route::get('/post/{id}', [HomeController::class, 'post'])->name('site.post');
+Route::get('/category', [HomeController::class, 'category'])->name('category');
+Route::post('/contact', [HomeController::class, 'sendContact'])->name('contact.send');
 
 // // Route trang đăng ký (GET)
 // Route::get('admin/register', [AuthController::class, 'registerForm'])->name('auth.register');
@@ -108,15 +137,8 @@ Route::prefix('comments')->name('comment.')->group(function () {
     Route::post('/reply/{comment}', [CommentController::class, 'reply'])->name('reply');
 });
 
-use App\Http\Controllers\Customer\HomeController;
 
-Route::get('/', [HomeController::class, 'index'])->name('index');
-Route::get('/blog', [HomeController::class, 'blog'])->name('blog');
-Route::get('/contact', [HomeController::class, 'contact'])->name('contact');
-Route::get('/post/{id}', [HomeController::class, 'post'])->name('site.post');
 
-Route::get('/category', [HomeController::class, 'category'])->name('category');
-Route::post('/contact', [HomeController::class, 'sendContact'])->name('contact.send');
 
 
 use App\Http\Controllers\ContactController;
