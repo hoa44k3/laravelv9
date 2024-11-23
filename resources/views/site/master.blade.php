@@ -28,7 +28,7 @@
 }
 
 .yummy-logo {
-    width: 2000px; /* Kéo ảnh ra toàn chiều rộng cột */
+    width: 3000px; /* Kéo ảnh ra toàn chiều rộng cột */
     height: 300px; /* Đặt chiều cao cố định hoặc sử dụng giá trị tự do */
     object-fit: cover; /* Đảm bảo ảnh không bị méo */
     border-radius: 10px; /* Tùy chọn: Thêm bo tròn góc nếu cần */
@@ -46,6 +46,10 @@
     z-index: 2; /* Đảm bảo chữ nằm trên ảnh */
     font-family: Arial, sans-serif; /* Tùy chỉnh font chữ */
 }
+.user_avatar img {
+    border-radius: 50%;
+    border: 2px solid #ddd;
+}
 
 </style>
 <body>
@@ -58,44 +62,52 @@
     <div class="top_header_area">
         <div class="container">
             <div class="row">
-                <div class="col-5 col-sm-6">
-                    <!--  Top Social bar start -->
-                    <div class="top_social_bar">
-                        <a href="#"><i class="fa fa-facebook" aria-hidden="true"></i></a>
-                        <a href="#"><i class="fa fa-twitter" aria-hidden="true"></i></a>
-                        <a href="#"><i class="fa fa-linkedin" aria-hidden="true"></i></a>
-                        <a href="#"><i class="fa fa-skype" aria-hidden="true"></i></a>
-                        <a href="#"><i class="fa fa-dribbble" aria-hidden="true"></i></a>
-                    </div>
-                </div>
-                <!--  Login Register Area -->
+                <div class="col-5 col-sm-6"></div>
+                <!-- Login Register Area -->
                 <div class="col-7 col-sm-6">
                     <div class="signup-search-area d-flex align-items-center justify-content-end">
-                        <div class="login_register_area d-flex">
-                            <div class="login">
-                                <a href="register.html">Sing in</a>
+                        @if (Auth::check())
+                            <!-- User Logged In -->
+                            <div class="user_area d-flex align-items-center">
+                                <div class="user_avatar">
+                                    <a href="{{ route('users.profile', Auth::id()) }}">
+                                        <img src="{{ Auth::user()->image ? asset('storage/' . Auth::user()->image) : asset('assets/img/default-avatar.png') }}" 
+                         alt="Image" style="width: 40px; height: 40px;">
+                                    </a>
+                                </div>
+                                <div class="user_name ml-2">
+                                    <a href="{{ route('users.profile', Auth::id()) }}">
+                                        {{ Auth::user()->name }}
+                                    </a>
+                                </div>
+                                <div class="logout ml-3">
+                                    <a href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                                        Đăng xuất
+                                    </a>
+                                </div>
                             </div>
-                            <div class="register">
-                                <a href="register.html">Sing up</a>
+                        @else
+                            <!-- Guest View -->
+                            <div class="login_register_area d-flex">
+                                <div class="login">
+                                    <a href="{{ route('auth.login') }}">Đăng nhập</a>
+                                </div>
+                                <div class="register">
+                                    <a href="{{ route('auth.register') }}">Đăng ký</a>
+                                </div>
                             </div>
-                        </div>
+                        @endif
                         <!-- Search Button Area -->
                         <div class="search_button">
                             <a class="searchBtn" href="#"><i class="fa fa-search" aria-hidden="true"></i></a>
-                        </div>
-                        <!-- Search Form -->
-                        <div class="search-hidden-form">
-                            <form action="#" method="get">
-                                <input type="search" name="search" id="search-anything" placeholder="Search Anything...">
-                                <input type="submit" value="" class="d-none">
-                                <span class="searchBtn"><i class="fa fa-times" aria-hidden="true"></i></span>
-                            </form>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+    
+    
     <!-- ****** Top Header Area End ****** -->
 
     <!-- ****** Header Area Start ****** -->

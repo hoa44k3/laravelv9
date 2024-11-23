@@ -23,7 +23,7 @@ class UserController extends Controller
     // Xác thực dữ liệu
     $validatedData = $request->validate([
         'name' => 'required|string|max:255',
-        'email' => 'required|email|unique:users,email',
+        'email' => 'required|email|max:255|unique:users,email',
         'phone' => 'nullable|string|max:20',
         'address' => 'nullable|string|max:255',
         'birthday' => 'nullable|date',
@@ -91,9 +91,10 @@ class UserController extends Controller
 
     return response()->json(['error' => 'Người dùng không tồn tại!'], 404);
     }
-    public function show($user)
+    public function profile($id)
     {
-        $user = User::findOrFail($user);
-        return view('users.show', compact('user'));
+        $user = User::findOrFail($id);
+        return view('users.profile', compact('user'));
     }
+
 }

@@ -134,7 +134,7 @@
                   </div>
             </form>
             <p>Chưa có tài khoản?
-                <a href="#" style="text-decoration: none;">
+                <a href="{{ route('auth.register') }}" style="text-decoration: none;">
                     Tạo tài khoản
                 </a>
             </p>

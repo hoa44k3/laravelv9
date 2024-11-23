@@ -10,29 +10,23 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\CategoryAdminController;
 use App\Http\Controllers\LikeAdminController;
 use App\Http\Controllers\Customer\HomeController;
+use App\Http\Controllers\ContactController;
 
-
-// Route::get('dashboard.index', [DashboardController::class, 'index'])->name
-// ('dashboard.index')->middleware('admin');
-// Route::get('admin', [AuthController::class, 'index'])->name('auth.admin');
-// Route::post('logout', [AuthController::class, 'logout'])->name('auth.logout');
-// Route::post('login', [AuthController::class, 'login'])->name('auth.login');
-
-// Route::get('/admin/dashboard', [DashboardController::class, 'index'])
-//     ->middleware(['auth', 'admin'])
-//     ->name('backend.dashboard.index');
-
-    // Route đăng nhập
-// Route cho đăng nhập
 
 // Route đăng xuất
-Route::post('/logout', [AuthController::class, 'logout'])->name('auth.logout');
+Route::post('/logout', [AuthController::class, 'logout'])->name('auth.logout.submit');
+Route::post('/login', [AuthController::class, 'login'])->name('auth.login');
+// Hiển thị form đăng ký
+Route::get('/register', [AuthController::class, 'showRegisterForm'])->name('auth.register');
+
+// Xử lý đăng ký tài khoản
+Route::post('/register', [AuthController::class, 'register'])->name('auth.register.submit');
 
 Route::get('/login', function () {
     return view('auth.login'); // Giao diện đăng nhập
 })->name('login');
 
-Route::post('/login', [AuthController::class, 'login'])->name('auth.login');
+
 // Route cho dashboard admin
 Route::middleware('auth')->group(function () {
     // Route dành cho admin
@@ -44,25 +38,10 @@ Route::get('/', [HomeController::class, 'index'])->name('index');
 Route::get('/blog', [HomeController::class, 'blog'])->name('blog');
 Route::get('/contact', [HomeController::class, 'contact'])->name('contact');
 Route::get('/post/{id}', [HomeController::class, 'post'])->name('site.post');
-Route::get('/category', [HomeController::class, 'category'])->name('category');
 Route::post('/contact', [HomeController::class, 'sendContact'])->name('contact.send');
+//Route::get('/category', [HomeController::class, 'category'])->name('category');
 
-// // Route trang đăng ký (GET)
-// Route::get('admin/register', [AuthController::class, 'registerForm'])->name('auth.register');
-
-
-// // Route đăng ký (POST)
-// Route::post('admin/register', [AuthController::class, 'register'])->name('auth.register.submit');
-
-// // Route trang đăng nhập (GET)
-// Route::get('admin/login', [AuthController::class, 'index'])->name('auth.login');
-
-// // Route đăng nhập (POST)
-// Route::post('admin/login', [AuthController::class, 'login'])->name('auth.login');
-
-// // Route đăng xuất (POST)
-// Route::post('admin/logout', [AuthController::class, 'logout'])->name('auth.logout');
-
+Route::get('/posts/category/{category}', [HomeController::class, 'category'])->name('site.category');
 
 
 
@@ -110,18 +89,18 @@ Route::post('/users/store', [UserController::class, 'store'])->name('users.store
 Route::get('/users/edit/{id}', [UserController::class, 'edit'])->name('users.edit');
 Route::put('/users/update/{id}', [UserController::class, 'update'])->name('users.update');
 Route::delete('/users/{id}', [UserController::class, 'destroy'])->name('users.destroy');
-Route::get('/users/{user}', [UserController::class, 'show'])->name('users.show');
+Route::get('/users/{id}', [UserController::class, 'profile'])->name('users.profile');
 
 
 Route::prefix('comments')->name('comment.')->group(function () {
     // Hiển thị danh sách bình luận, có thể lọc theo blog nếu truyền blog ID
-    Route::get('/{blog?}', [CommentController::class, 'index'])->name('index');
+    Route::get('/{blog}', [CommentController::class, 'index'])->name('comment.index');
 
     // Hiển thị form thêm mới bình luận cho một blog cụ thể
     Route::get('/create/{blog}', [CommentController::class, 'create'])->name('create');
 
     // Lưu bình luận mới vào cơ sở dữ liệu
-    Route::post('/store/{blogId}', [CommentController::class, 'store'])->name('store');
+    Route::post('/store', [CommentController::class, 'store'])->name('store');
 
     // Hiển thị form sửa bình luận cho một blog cụ thể
     Route::get('/edit/{blog}/{comment}', [CommentController::class, 'edit'])->name('edit');
@@ -136,16 +115,14 @@ Route::prefix('comments')->name('comment.')->group(function () {
     Route::get('/show', [CommentController::class, 'showComments'])->name('show');
     Route::post('/reply/{comment}', [CommentController::class, 'reply'])->name('reply');
 });
+Route::middleware('auth')->post('/comment/store', [CommentController::class, 'store'])->name('comment.store');
 
 
 
 
-
-use App\Http\Controllers\ContactController;
 
 Route::get('/contacts', [ContactController::class, 'index'])->name('contacts.index');
-//Route::post('/comment/store/{blogId}', [CommentController::class, 'store'])->name('comment.store');
-Route::post('/comments', [CommentController::class, 'store'])->name('comments.store');
+
 
 
 

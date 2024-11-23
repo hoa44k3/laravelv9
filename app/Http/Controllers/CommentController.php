@@ -8,6 +8,8 @@ use App\Models\Blog;
 use App\Models\Comment;
 use App\Models\User;
 use App\Models\Category;
+
+use Illuminate\Support\Facades\Auth;
 class CommentController extends Controller
 {
     public function index( $blogId = null)
@@ -30,21 +32,49 @@ class CommentController extends Controller
         return view('comment.create', compact('blog','users', 'categories'));
     }
 
-    public function store(Request $request, $blogId)
-    {
-        $blog = Blog::findOrFail($blogId);
+    // public function store(Request $request, $blogId)
+    // {
+    //     $blog = Blog::findOrFail($blogId);
 
-            // Thêm bình luận
-            Comment::create([
-                'blog_id' => $blog->id,
-                'user_id' => $request->user_id,
-                'category_id' => $request->category_id,
-                'content' => $request->content,
-                'created_at' => now(), // Thêm giá trị thủ công
-            ]);
+    //         // Thêm bình luận
+    //         Comment::create([
+    //             'blog_id' => $blog->id,
+    //             'user_id' => $request->user_id,
+    //             'category_id' => $request->category_id,
+    //             'content' => $request->content,
+    //             'created_at' => now(), // Thêm giá trị thủ công
+    //         ]);
 
-          return redirect()->route('comment.index', ['blog' => $blog->id])->with('success', 'Bình luận đã được thêm!');  
+    //       return redirect()->route('comment.index', ['blog' => $blog->id])->with('success', 'Bình luận đã được thêm!');  
+    // }
+
+    public function store(Request $request)
+{
+    // Kiểm tra người dùng đã đăng nhập hay chưa
+    if (!Auth::check()) {
+        return redirect()->route('auth.login')->with('error', 'Vui lòng đăng nhập trước khi bình luận.');
     }
+    $validated = $request->validate([
+        'name' => 'required|string|max:255',
+        'email' => 'required|email|max:255',
+        'message' => 'required|string|max:1000',
+        'blog_id' => 'required|exists:blogs,id', // Kiểm tra blog_id có tồn tại không
+    ]);
+
+    // Tìm blog tương ứng
+    $blog = Blog::findOrFail($request->blog_id);
+
+    // Lưu bình luận
+    Comment::create([
+        'blog_id' => $blog->id,
+       'user_id' => Auth::user()->id, // Sử dụng Auth::user() để lấy thông tin người dùng
+        'content' => $request->message,
+        'created_at' => now(),
+    ]);
+
+    // Redirect đến trang danh sách bình luận của blog
+    return redirect()->route('comment.index', ['blog' => $blog->id])->with('success', 'Bình luận đã được thêm!');
+}
 
 
     public function edit($blogId, $commentId)

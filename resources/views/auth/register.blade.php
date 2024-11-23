@@ -89,69 +89,33 @@
 <body>
     <div class="main">
         <h1>GeeksforGeeks</h1>
-        <h3>Enter your registration details</h3>
+        <h3>Nhập thông tin để tạo tài khoản</h3>
 
-        @if ($errors->any())
-        <div class="alert alert-danger">
-            <ul>
-                @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                @endforeach
-            </ul>
-        </div>
-        @endif
+            @if($errors->has('email'))
+            <div class="alert alert-danger">
+                {{ $errors->first('email') }}
+            </div>
+            @endif
+    
 
         <form method="POST" action="{{ route('auth.register.submit') }}">
             @csrf
+            <label for="name">Tên:</label>
+            <input type="text" id="name" name="name" placeholder="Nhập tên của bạn" value="{{ old('name') }}">
+
             <label for="email">Email:</label>
-            <input type="email" 
-                   id="email" 
-                   name="email" 
-                   placeholder="Enter your Email"  
-                   value="{{ old('email') }}"
-            >
-            @if ($errors->has('email'))
-                <span class="error-message">
-                    * {{ $errors->first('email') }}
-                </span>
-            @endif
+            <input type="email" id="email" name="email" placeholder="Nhập email" value="{{ old('email') }}">
 
-            <label for="password">Password:</label>
-            <input type="password"
-                   id="password" 
-                   name="password"
-                   placeholder="Enter your Password"  
-            >
-            @if ($errors->has('password'))
-                <span class="error-message">
-                    * {{ $errors->first('password') }}
-                </span>
-            @endif
+            <label for="password">Mật khẩu:</label>
+            <input type="password" id="password" name="password" placeholder="Nhập mật khẩu">
 
-            <label for="password_confirmation">Confirm Password:</label>
-            <input type="password"
-                   id="password_confirmation" 
-                   name="password_confirmation"
-                   placeholder="Confirm your Password"  
-            >
-            @if ($errors->has('password_confirmation'))
-                <span class="error-message">
-                    * {{ $errors->first('password_confirmation') }}
-                </span>
-            @endif
+            <label for="password_confirmation">Nhập lại mật khẩu:</label>
+            <input type="password" id="password_confirmation" name="password_confirmation" placeholder="Nhập lại mật khẩu">
 
-            <div class="wrap">
-                <button type="submit">
-                    Đăng ký
-                </button>
-            </div>
+            <button type="submit">Đăng Ký</button>
         </form>
 
-        <p>Already have an account?
-            <a href="{{ route('auth.login') }}" style="text-decoration: none;">
-                Đăng nhập
-            </a>
-        </p>
+        <p>Đã có tài khoản? <a href="{{ route('auth.login') }}">Đăng nhập</a></p>
     </div>
 </body>
 

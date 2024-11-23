@@ -56,6 +56,7 @@ class HomeController extends Controller
         $blog = Blog::first();
         return view('site.category', compact('categories','blog'));
     }
+    
     // public function store(Request $request, $blogId)
     // {
     //     $request->validate([

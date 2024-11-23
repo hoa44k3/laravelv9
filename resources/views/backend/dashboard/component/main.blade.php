@@ -50,15 +50,18 @@
                     </li>
 
                     <li class="nav-item topbar-user dropdown hidden-caret">
-                        <a class="dropdown-toggle profile-pic" data-bs-toggle="dropdown" href="{{ route('users.show', ['user' => auth()->user()->id]) }}" aria-expanded="false">
-                            <div class="avatar-sm">
-                                <img src="{{ auth()->user()->image ? asset('storage/' . auth()->user()->image) : asset('assets/img/avt1.jpg') }}" alt="Avatar" class="avatar-img rounded-circle" />
-                            </div>
-                            <span class="profile-username">
-                                <span class="op-7">{{ auth()->user()->name }}</span>
-                            </span>
-                        </a>
-                        
+                        <a class="dropdown-toggle profile-pic" data-bs-toggle="dropdown" 
+                        href="{{ route('users.profile', ['id' => auth()->user()->id]) }}" 
+                        aria-expanded="false">
+                         <div class="avatar-sm">
+                             <img src="{{ auth()->user()->image ? asset('storage/' . auth()->user()->image) : asset('assets/img/avt1.jpg') }}" 
+                                  alt="Avatar" class="avatar-img rounded-circle" />
+                         </div>
+                         <span class="profile-username">
+                             <span class="op-7">{{ auth()->user()->name }}</span>
+                         </span>
+                     </a>
+                     
                         <ul class="dropdown-menu dropdown-user animated fadeIn">
                             <div class="dropdown-user-scroll scrollbar-outer">
                                 <li>
@@ -76,19 +79,74 @@
                                     <div class="dropdown-divider"></div>
                     
                                     <!-- Link xem thông tin người dùng -->
-                                    <a class="dropdown-item" href="{{ route('users.show', auth()->user()->id) }}">Xem thông tin</a>
+                                    {{-- <li class="nav-item topbar-user dropdown hidden-caret"> --}}
+                                        <a
+                                            class="dropdown-toggle profile-pic"
+                                            data-bs-toggle="dropdown"
+                                            href="#"
+                                            aria-expanded="false"
+                                        >
+                                            <div class="avatar-sm">
+                                                <img
+                                                    src="{{ auth()->user()->image ? asset('storage/' . auth()->user()->image) : asset('assets/img/avt1.jpg') }}"
+                                                    alt="Avatar"
+                                                    class="avatar-img rounded-circle"
+                                                />
+                                            </div>
+                                            <span class="profile-username">
+                                                <span class="op-7">Hi,</span>
+                                                <span class="fw-bold">{{ auth()->user()->name }}</span>
+                                            </span>
+                                        </a>
+                                        <ul class="dropdown-menu dropdown-user animated fadeIn">
+                                            <div class="dropdown-user-scroll scrollbar-outer">
+                                                <li>
+                                                    <div class="user-box">
+                                                        <div class="avatar-lg">
+                                                            <img
+                                                                src="{{ auth()->user()->image ? asset('storage/' . auth()->user()->image) : asset('assets/img/avt1.jpg') }}"
+                                                                alt="Profile Image"
+                                                                class="avatar-img rounded"
+                                                            />
+                                                        </div>
+                                                        <div class="u-text">
+                                                            <h4>{{ auth()->user()->name }}</h4>
+                                                            <p class="text-muted">{{ auth()->user()->email }}</p>
+                                                            <a
+                                                                href="{{ route('users.profile', ['id' => auth()->user()->id]) }}"
+                                                                class="btn btn-xs btn-secondary btn-sm"
+                                                            >
+                                                                Xem thông tin
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                                <li>
+                                                    <div class="dropdown-divider"></div>
+                                                    <a class="dropdown-item" href="{{ route('users.profile', ['id' => auth()->user()->id]) }}">
+                                                        Xem thông tin
+                                                    </a>
+                                                    <div class="dropdown-divider"></div>
+                                                    <form
+                                                        id="logout-form"
+                                                        action="{{ route('auth.logout.submit') }}"
+                                                        method="POST"
+                                                        style="display: none;"
+                                                    >
+                                                        @csrf
+                                                    </form>
+                                                    <a
+                                                        class="dropdown-item"
+                                                        href="#"
+                                                        onclick="event.preventDefault(); document.getElementById('logout-form').submit();"
+                                                    >
+                                                        Đăng xuất
+                                                    </a>
+                                                </li>
+                                            </div>
+                                        </ul>
+                                    {{-- </li> --}}
 
-                                    <div class="dropdown-divider"></div>
-                    
-                                    <!-- Logout Form -->
-                                    <form id="logout-form" action="{{ route('auth.logout') }}" method="POST" style="display: none;">
-                                        @csrf
-                                    </form>
-                                    
-                                    <!-- Link Đăng xuất -->
-                                    <a class="dropdown-item" href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                                        Đăng xuất
-                                    </a>
                                 </li>
                             </div>
                         </ul>

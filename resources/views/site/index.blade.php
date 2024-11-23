@@ -100,6 +100,35 @@
     border-radius: 5px; /* Tùy chọn: Thêm bo góc nhẹ cho ảnh */
 }
 
+/*comment*/
+.single_comment_area {
+    margin-bottom: 20px;
+}
+
+.comment-wrapper {
+    margin-bottom: 15px;
+}
+
+.comment-author img {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+}
+
+.comment-content {
+    margin-left: 15px;
+    flex-grow: 1;
+}
+
+.reply-toggle {
+    cursor: pointer;
+    color: #007bff;
+}
+
+.reply-toggle:hover {
+    text-decoration: underline;
+}
+
     </style>
 
 <!-- ****** Categories Area Start ****** -->
@@ -186,59 +215,64 @@
                  <!-- Leave A Comment -->
                  <div class="leave-comment-area section_padding_50 clearfix">
                     <div class="comment-form">
-                        <h4 class="mb-30">Để lại bình luận</h4>
-                
-                        <!-- Form bình luận chính -->
-                        <form action="{{ route('comments.store') }}" method="POST">
-                            @csrf
-                            <input type="hidden" name="blog_id" value="{{ $featuredBlog->id }}">
-                
-                            <div class="form-group">
-                                <input type="text" name="name" class="form-control" placeholder="Tên" required>
-                            </div>
-                            <div class="form-group">
-                                <input type="email" name="email" class="form-control" placeholder="Email" required>
-                            </div>
-                            <div class="form-group">
-                                <textarea name="message" class="form-control" placeholder="Bình luận của bạn" required></textarea>
-                            </div>
-                            <button type="submit" class="btn btn-primary">Gửi bình luận</button>
-                        </form>
-                
                         <hr>
-                
                         <!-- Hiển thị bình luận -->
-                        @foreach($featuredBlog->comments as $comment)
-                            <div class="single-comment mt-3">
-                                <div class="comment-author">
-                                    <strong>{{ $comment->author ?? $comment->user->name }}</strong>
-                                    <p>{{ $comment->content }}</p>
+                        <ol>
+                            @foreach ($featuredBlog->comments as $comment)
+                            <li class="single_comment_area">
+                                <div class="comment-wrapper d-flex">
+                                    <!-- Comment Meta -->
+                                    <div class="comment-author">
+                                        <img src="{{ asset('storage/' . ltrim($comment->user->image ?? 'default-avatar.jpg', 'http://127.0.0.1:8000/')) }}" 
+                                        alt="Image" 
+                                        style="width: 100%; height: auto; object-fit: cover;">
+                                    </div>
+                                    <!-- Comment Content -->
+                                    <div class="comment-content">
+                                        <span class="comment-date text-muted">
+                                            <a href="#">{{ $comment->created_at ? $comment->created_at->format('d/m/Y H:i') : 'N/A' }}</a>
+                                        </span>
+                                        
+                                        <h5>{{ $comment->user->name ?? 'Không có tên' }}</h5>
+                                        <p>{{ $comment->content }}</p>
+                        
+                                        <!-- Nút trả lời -->
+                                        <button 
+                                            class="btn btn-link btn-sm text-primary reply-toggle" 
+                                            data-reply-id="{{ $comment->id }}" 
+                                            style="text-decoration: underline;">Trả lời
+                                        </button>
+                                    </div>
                                 </div>
-                
-                                <!-- Hiển thị bình luận trả lời -->
-                                @foreach($comment->replies as $reply)
-                                    <div class="single-reply mt-3 ml-4">
-                                        <strong>{{ $reply->author ?? $reply->user->name }}</strong>
+                        
+                                <!-- Form trả lời bình luận, ẩn mặc định -->
+                                <form id="reply-form-{{ $comment->id }}" method="POST" action="{{ route('comment.reply', $comment->id) }}" style="display: none; margin-left: 60px;">
+                                    @csrf
+                                    <div class="form-group mt-3">
+                                        <textarea class="form-control" name="content" rows="3" placeholder="Trả lời bình luận..."></textarea>
+                                    </div>
+                                    <button type="submit" class="btn btn-primary btn-sm mt-2"style="margin-left: 60px;">Gửi</button>
+                                </form>
+                        
+                                <!-- Các câu trả lời -->
+                                @foreach ($comment->replies as $reply)
+                                <div class="comment-wrapper d-flex ml-4">
+                                    <div class="comment-author">
+                                        <img src="{{ asset('storage/' . ltrim($reply->user->image ?? 'default-avatar.jpg', 'http://127.0.0.1:8000/')) }}" 
+                                        alt="Image" 
+                                        style="width: 100%; height: auto; object-fit: cover;">
+                                    </div>
+                                    <div class="comment-content">
+                                        <span class="comment-date text-muted">{{ $reply->created_at->format('d/m/Y H:i') }}</span>
+                                        <h5>{{ $reply->user->name ?? 'Không có tên' }}</h5>
                                         <p>{{ $reply->content }}</p>
                                     </div>
+                                </div>
                                 @endforeach
-                
-                                <!-- Form trả lời bình luận -->
-                                <form action="{{ route('comments.store') }}" method="POST">
-                                    @csrf
-                                    <input type="hidden" name="blog_id" value="{{ $featuredBlog->id }}">
-                                    <input type="hidden" name="parent_id" value="{{ $comment->id }}">
-                
-                                    <div class="form-group">
-                                        <input type="text" name="name" class="form-control" placeholder="Tên" required>
-                                    </div>
-                                    <div class="form-group">
-                                        <textarea name="message" class="form-control" placeholder="Bình luận của bạn" required></textarea>
-                                    </div>
-                                    <button type="submit" class="btn btn-primary">Trả lời</button>
-                                </form>
-                            </div>
-                        @endforeach
+                            </li>
+                            @endforeach
+                        </ol>
+                        
                 
                     </div>
                 </div>
@@ -280,6 +314,7 @@
                             </div>
                             <a href="{{ route('site.post', $blog->id) }}">
                                 <h4 class="post-headline">{{ $blog->title }}</h4>
+                                <p>{{ \Illuminate\Support\Str::limit($blog->content, 100) }}</p>
                             </a>
                         </div>
                     </div>
@@ -294,31 +329,56 @@
 </section>
 @endsection
 <script>
-    document.addEventListener('DOMContentLoaded', () => {
-        const swiper = new Swiper('.swiper-container', {
-            loop: true, // Cho phép lặp lại
-            navigation: {
-                nextEl: '.swiper-button-next', // Nút Next
-                prevEl: '.swiper-button-prev', // Nút Previous
+document.addEventListener('DOMContentLoaded', () => {
+    // Khởi tạo Swiper
+    const swiper = new Swiper('.swiper-container', {
+        loop: true, // Cho phép lặp lại
+        navigation: {
+            nextEl: '.swiper-button-next', // Nút Next
+            prevEl: '.swiper-button-prev', // Nút Previous
+        },
+        slidesPerView: 3, // Hiển thị 3 danh mục mỗi lần
+        spaceBetween: 20, // Khoảng cách giữa các danh mục
+        breakpoints: {
+            768: {
+                slidesPerView: 2, // Hiển thị 2 danh mục trên thiết bị nhỏ
             },
-            slidesPerView: 3, // Hiển thị 3 danh mục mỗi lần
-            spaceBetween: 20, // Khoảng cách giữa các danh mục
-            breakpoints: {
-                768: {
-                    slidesPerView: 2, // Hiển thị 2 danh mục trên thiết bị nhỏ
-                },
-                1024: {
-                    slidesPerView: 3, // Hiển thị 3 danh mục trên thiết bị lớn
-                },
+            1024: {
+                slidesPerView: 3, // Hiển thị 3 danh mục trên thiết bị lớn
             },
-        });
+        },
     });
+
+    // Khởi tạo ClassicEditor cho textarea có id 'content-editor'
     ClassicEditor
         .create(document.querySelector('#content-editor'))
         .catch(error => {
             console.error(error);
         });
 
+    // Bình luận và trả lời bình luận
+    const replyButtons = document.querySelectorAll(".reply-toggle");
+
+    replyButtons.forEach((button) => {
+        button.addEventListener("click", function () {
+            const replyId = this.getAttribute("data-reply-id");
+            const replyForm = document.getElementById(`reply-form-${replyId}`);
+
+            if (replyForm) {
+                // Toggle hiện/ẩn form trả lời
+                if (replyForm.style.display === "none" || replyForm.style.display === "") {
+                    replyForm.style.display = "block";
+                } else {
+                    replyForm.style.display = "none";
+                }
+            } else {
+                console.error(`Reply form with ID reply-form-${replyId} not found.`);
+            }
+        });
+    });
+});
+
 </script>
+
     <!-- Include CKEditor -->
     <script src="https://cdn.ckeditor.com/ckeditor5/39.0.0/classic/ckeditor.js"></script>

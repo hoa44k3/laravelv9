@@ -121,6 +121,7 @@
                             <!-- Post Title -->
                             <a href="{{ route('site.post', $blog->id) }}" class="post-title">
                                 <h4 class="post-headline mt-3">{{ $blog->title }}</h4>
+                                <p>{{ \Illuminate\Support\Str::limit($blog->content, 100) }}</p>
                             </a>
                             <!-- Post Stats -->
                             <div class="post-stats mt-3 d-flex justify-content-between align-items-center">
