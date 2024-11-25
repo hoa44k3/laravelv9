@@ -4,6 +4,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\AuthController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CommentController;
+use Illuminate\Support\Facades\Auth;
 use App\Models\Category;
 use App\Http\Controllers\BlogAdminController;
 use App\Http\Controllers\UserController;
@@ -14,7 +15,14 @@ use App\Http\Controllers\ContactController;
 
 
 // Route đăng xuất
-Route::post('/logout', [AuthController::class, 'logout'])->name('auth.logout.submit');
+//Route::post('/logout', [AuthController::class, 'logout'])->name('auth.logout.submit');
+
+//Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+Route::post('/logout', function () {
+    Auth::logout();
+    return redirect('/'); // Chuyển hướng về trang chính sau khi đăng xuất
+})->name('logout');
+
 Route::post('/login', [AuthController::class, 'login'])->name('auth.login');
 // Hiển thị form đăng ký
 Route::get('/register', [AuthController::class, 'showRegisterForm'])->name('auth.register');
@@ -39,10 +47,12 @@ Route::get('/blog', [HomeController::class, 'blog'])->name('blog');
 Route::get('/contact', [HomeController::class, 'contact'])->name('contact');
 Route::get('/post/{id}', [HomeController::class, 'post'])->name('site.post');
 Route::post('/contact', [HomeController::class, 'sendContact'])->name('contact.send');
-//Route::get('/category', [HomeController::class, 'category'])->name('category');
+Route::get('/category', [HomeController::class, 'category'])->name('category');
+Route::post('/like/{id}', [HomeController::class, 'toggleLike'])->name('post.like');
 
-Route::get('/posts/category/{category}', [HomeController::class, 'category'])->name('site.category');
-
+Route::post('/comment/{id}', [CommentController::class, 'store'])->name('post.comment');
+// web.php
+//Route::post('/like/{id}', [LikeAdminController::class, 'toggleLike'])->name('post.like');
 
 
 Route::get('/statistics', [BlogAdminController::class, 'statistics'])->name('statistics.index');
@@ -66,8 +76,8 @@ Route::prefix('admin')->group(function () {
     Route::get('/likes/{id}/edit', [LikeAdminController::class, 'edit'])->name('likes.edit');
     Route::put('/likes/{like}', [LikeAdminController::class, 'update'])->name('likes.update');
     Route::delete('/likes/{id}', [LikeAdminController::class, 'destroy'])->name('likes.destroy');
+    Route::post('/toggle-like/{id}', [LikeAdminController::class, 'toggleLike'])->name('likes.toggleLike');
 });
-
 
 Route::prefix('admin')->group(function () {
     Route::get('categories', [CategoryAdminController::class, 'home'])->name('category.home');

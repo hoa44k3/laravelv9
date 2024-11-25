@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Customer;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use App\Models\Category;
 use App\Models\Blog;
 use App\Models\Comment;
@@ -38,48 +39,69 @@ class HomeController extends Controller
        ->paginate(10);
         return view('site.blog',compact('blogs'));
     }
-    public function post($id = null){
+    public function post($id = null)
+    {
 
         // Nếu có ID, lấy bài viết theo ID đó, nếu không lấy bài viết nổi bật
-        $featuredBlog = $id ? Blog::withCount(['likes', 'comments'])->with('user', 'comments.user')->findOrFail($id) :
-        Blog::withCount(['likes', 'comments'])->with('user', 'comments.user')->latest()->first();
+        if ($id) {
+            // Lấy bài viết theo ID
+            $featuredBlog = Blog::withCount(['likes', 'comments'])
+                ->with('user', 'comments.user')
+                ->findOrFail($id); // Nếu không tìm thấy, sẽ trả về lỗi 404
+            $category = $featuredBlog->category;
+        } else {
+            // Nếu không có ID, lấy bài viết nổi bật
+            $featuredBlog = Blog::withCount(['likes', 'comments'])
+                ->with('user', 'comments.user')
+                ->latest() // Lấy bài viết mới nhất
+                ->first();
+        }
 
-    // Lấy các bài viết còn lại (trừ bài viết hiện tại)
-        $otherBlogs = Blog::withCount(['likes', 'comments'])->with('user')->where('id', '!=', $featuredBlog->id)->latest()->paginate(3);
+        // Lấy các bài viết còn lại (trừ bài viết hiện tại)
+        $otherBlogs = Blog::withCount(['likes', 'comments'])
+            ->with('user')
+            ->where('id', '!=', $featuredBlog->id) // Loại bỏ bài viết nổi bật
+            ->latest() // Lấy các bài viết mới nhất
+            ->paginate(3); // Phân trang 3 bài viết mỗi lần
 
-        // Trả về view với cả hai biến
-        return view('site.post', compact('featuredBlog', 'otherBlogs'));
-
+        // Trả về view với các biến
+        return view('site.post', compact('category','featuredBlog', 'otherBlogs'));
     }
+
     public function category(){
         $categories = Category::all();
         $blog = Blog::first();
         return view('site.category', compact('categories','blog'));
     }
+    public function toggleLike($id)
+    {
+        $blog = Blog::findOrFail($id);
+        $user = auth()->user();
     
-    // public function store(Request $request, $blogId)
-    // {
-    //     $request->validate([
-    //         'name' => 'required|string|max:255',
-    //         'email' => 'required|email|max:255',
-    //         'message' => 'required|string',
-    //         'blog_id' => 'required|exists:blogs,id',
-    //         'website' => 'nullable|url', 
-    //     ]);
-    //     $comment = new Comment();
-    //     $comment->name = $request->name;
-    //     $comment->email = $request->email;
-    //     $comment->website = $request->website;
-    //     $comment->message = $request->message;
-    //     $comment->blog_id = $request->blog_id;
-    //     $comment->parent_id = $request->parent_id; 
-    //     $comment->save();
+        if (!$user) {
+            return response()->json(['error' => 'Bạn cần đăng nhập để thực hiện hành động này'], 401);
+        }
+    
+        // Kiểm tra nếu người dùng đã thích bài viết
+        if ($blog->likes()->where('user_id', $user->id)->exists()) {
+            // Nếu đã thích, xóa like
+            $blog->likes()->where('user_id', $user->id)->delete();
+            $like = false;
+        } else {
+            // Nếu chưa thích, thêm like
+            $blog->likes()->create(['user_id' => $user->id]);
+            $like = true;
+        }
+    
+        // Trả về số lượt thích hiện tại
+        return response()->json([
+            'likes_count' => $blog->likes()->count(),
+            'like' => $like,
+        ]);
+    }
+    
 
-    
-    //     $blog = Blog::find($request->blog_id);
-    //     $blog->increment('comments_count');
-    //     return back()->with('success', 'Bình luận của bạn đã được gửi.');
-    // }
+
     public function store(Request $request)
     {
         $request->validate([
@@ -124,5 +146,11 @@ class HomeController extends Controller
         $blog = Blog::findOrFail($id);
         return view('site.post', compact('blog'));
     }
-
+    public function logout(Request $request)
+    {
+        Auth::logout();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+        return redirect()->route('site.index')->with('success', 'Bạn đã đăng xuất thành công');
+    }
 }

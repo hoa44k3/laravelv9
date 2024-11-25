@@ -12,7 +12,7 @@
     <title>Yummy Blog - Food Blog Template</title>
 
     <!-- Favicon -->
-    <link rel="icon" href="/customer/img/core-img/favicon.ico">
+    <link rel="icon" href="/customer/img/core-img/logo.png">
 
     <!-- Core Stylesheet -->
     <link href="/customer/style.css" rel="stylesheet">
@@ -50,6 +50,36 @@
     border-radius: 50%;
     border: 2px solid #ddd;
 }
+/* footer */
+.social_icon_area {
+    background-color: #222; /* Màu nền tối */
+    padding: 30px 0;
+}
+
+.footer-social-area .single-icon a {
+    text-decoration: none;
+    color: #ffffff; /* Màu chữ */
+    font-size: 16px;
+    transition: all 0.3s ease;
+}
+
+.footer-social-area .single-icon a:hover {
+    color: #FFD700; /* Màu vàng khi hover */
+}
+
+.footer-social-area .single-icon i {
+    font-size: 28px; /* Kích thước biểu tượng */
+    margin-right: 10px;
+    transition: transform 0.3s ease;
+}
+
+.footer-social-area .single-icon i:hover {
+    transform: scale(1.2); /* Phóng to biểu tượng khi hover */
+}
+
+.footer-social-area .single-icon span {
+    font-weight: 500; /* Đậm hơn một chút cho chữ */
+}
 
 </style>
 <body>
@@ -72,7 +102,7 @@
                                 <div class="user_avatar">
                                     <a href="{{ route('users.profile', Auth::id()) }}">
                                         <img src="{{ Auth::user()->image ? asset('storage/' . Auth::user()->image) : asset('assets/img/default-avatar.png') }}" 
-                         alt="Image" style="width: 40px; height: 40px;">
+                                         alt="Image" style="width: 40px; height: 40px;">
                                     </a>
                                 </div>
                                 <div class="user_name ml-2">
@@ -80,27 +110,29 @@
                                         {{ Auth::user()->name }}
                                     </a>
                                 </div>
+                                <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                                    @csrf
+                                </form>
+                                
                                 <div class="logout ml-3">
-                                    <a href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                                    <a href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                                         Đăng xuất
                                     </a>
-                                </div>
+                                </div>       
                             </div>
-                        @else
-                            <!-- Guest View -->
-                            <div class="login_register_area d-flex">
-                                <div class="login">
-                                    <a href="{{ route('auth.login') }}">Đăng nhập</a>
+                            @else
+                                <!-- Guest View -->
+                                <div class="login_register_area d-flex">
+                                    <div class="login">
+                                        <a href="{{ route('auth.login') }}">Đăng nhập</a>
+                                    </div>
+                                    <div class="register">
+                                        <a href="{{ route('auth.register') }}">Đăng ký</a>
+                                    </div>
                                 </div>
-                                <div class="register">
-                                    <a href="{{ route('auth.register') }}">Đăng ký</a>
-                                </div>
-                            </div>
-                        @endif
-                        <!-- Search Button Area -->
-                        <div class="search_button">
-                            <a class="searchBtn" href="#"><i class="fa fa-search" aria-hidden="true"></i></a>
-                        </div>
+                            @endif
+                        </div>  
+                        
                     </div>
                 </div>
             </div>
@@ -175,39 +207,62 @@
     <!-- ****** Header Area End ****** -->
 
     @yield('body')
-
-    <!-- ****** Footer Social Icon Area Start ****** -->
-    <div class="social_icon_area clearfix">
-        <div class="container">
-            <div class="row">
-                <div class="col-12">
-                    <div class="footer-social-area d-flex">
-                        <div class="single-icon">
-                            <a href="#"><i class="fa fa-facebook" aria-hidden="true"></i><span>facebook</span></a>
-                        </div>
-                        <div class="single-icon">
-                            <a href="#"><i class="fa fa-twitter" aria-hidden="true"></i><span>Twitter</span></a>
-                        </div>
-                        <div class="single-icon">
-                            <a href="#"><i class="fa fa-google-plus" aria-hidden="true"></i><span>GOOGLE+</span></a>
-                        </div>
-                        <div class="single-icon">
-                            <a href="#"><i class="fa fa-linkedin-square" aria-hidden="true"></i><span>linkedin</span></a>
-                        </div>
-                        <div class="single-icon">
-                            <a href="#"><i class="fa fa-instagram" aria-hidden="true"></i><span>Instagram</span></a>
-                        </div>
-                        <div class="single-icon">
-                            <a href="#"><i class="fa fa-vimeo" aria-hidden="true"></i><span>VIMEO</span></a>
-                        </div>
-                        <div class="single-icon">
-                            <a href="#"><i class="fa fa-youtube-play" aria-hidden="true"></i><span>YOUTUBE</span></a>
-                        </div>
+    
+  <!-- End of .container -->
+  <div class="social_icon_area py-4" style="background-color: #222;">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-12">
+                <div class="footer-social-area d-flex justify-content-center align-items-center flex-wrap">
+                    <!-- Single Social Icon -->
+                    <div class="single-icon mx-3">
+                        <a href="#" class="text-white d-flex align-items-center">
+                            <i class="fa fa-facebook fa-2x mr-2"></i>
+                            <span>Facebook</span>
+                        </a>
+                    </div>
+                    <div class="single-icon mx-3">
+                        <a href="#" class="text-white d-flex align-items-center">
+                            <i class="fa fa-twitter fa-2x mr-2"></i>
+                            <span>Twitter</span>
+                        </a>
+                    </div>
+                    <div class="single-icon mx-3">
+                        <a href="#" class="text-white d-flex align-items-center">
+                            <i class="fa fa-google-plus fa-2x mr-2"></i>
+                            <span>Google+</span>
+                        </a>
+                    </div>
+                    <div class="single-icon mx-3">
+                        <a href="#" class="text-white d-flex align-items-center">
+                            <i class="fa fa-linkedin-square fa-2x mr-2"></i>
+                            <span>LinkedIn</span>
+                        </a>
+                    </div>
+                    <div class="single-icon mx-3">
+                        <a href="#" class="text-white d-flex align-items-center">
+                            <i class="fa fa-instagram fa-2x mr-2"></i>
+                            <span>Instagram</span>
+                        </a>
+                    </div>
+                    <div class="single-icon mx-3">
+                        <a href="#" class="text-white d-flex align-items-center">
+                            <i class="fa fa-vimeo fa-2x mr-2"></i>
+                            <span>Vimeo</span>
+                        </a>
+                    </div>
+                    <div class="single-icon mx-3">
+                        <a href="#" class="text-white d-flex align-items-center">
+                            <i class="fa fa-youtube-play fa-2x mr-2"></i>
+                            <span>YouTube</span>
+                        </a>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+</div>
+
     <!-- ****** Footer Social Icon Area End ****** -->
 
 

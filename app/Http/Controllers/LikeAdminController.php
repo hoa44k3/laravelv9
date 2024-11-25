@@ -61,5 +61,31 @@ class LikeAdminController extends Controller
         $like->delete();
         return response()->json(['success' => 'Lượt thích đã được xóa thành công.']);
     }
+    public function toggleLike($id)
+{
+    $blog = Blog::findOrFail($id);
+    $user = auth()->user();
+
+    if (!$user) {
+        return response()->json(['error' => 'Bạn cần đăng nhập để thực hiện hành động này'], 401);
+    }
+
+    // Kiểm tra nếu người dùng đã thích bài viết
+    if ($blog->likes()->where('user_id', $user->id)->exists()) {
+        // Nếu đã thích, xóa like
+        $blog->likes()->where('user_id', $user->id)->delete();
+        $like = false;
+    } else {
+        // Nếu chưa thích, thêm like
+        $blog->likes()->create(['user_id' => $user->id]);
+        $like = true;
+    }
+
+    // Trả về số lượt thích hiện tại
+    return response()->json([
+        'likes_count' => $blog->likes()->count(),
+        'like' => $like,
+    ]);
+}
 
 }
