@@ -101,10 +101,15 @@
                                                             </td>
                                                             <td>{{ $featuredBlog->category ? $featuredBlog->category->name : 'Không có danh mục' }}</td>
                                                             <td>{{ $featuredBlog->likes_count }}</td>
-                                                            <td>
+                                                            {{-- <td>
                                                                 <a href="{{ route('comment.index', ['blog' => $featuredBlog->id]) }}">
                                                                     {{ $featuredBlog->comments_count }}
                                                                 </a>
+                                                            </td> --}}
+                                                            <td>
+                                                                <button class="btn btn-link" onclick="showCommentForm({{ $featuredBlog->id }})">
+                                                                    {{ $featuredBlog->comments_count }}
+                                                                </button>
                                                             </td>
                                                             <td id="status-{{ $featuredBlog->id }}">{{ $featuredBlog->status == 'approved' ? 'Đã phê duyệt' : 'Chờ phê duyệt' }}</td>
                                                             <td>{{ $featuredBlog->created_at->format('d/m/Y H:i') }}</td>
@@ -160,11 +165,8 @@
                                                                     </button>
                                                                 </div>
                                                             </td>
-                                                            
-                                                            
                                                         </tr>
                                                         @endforeach
-                                                        
                                                     </tbody>
                                                 </table>
                                             </div>
@@ -227,4 +229,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 console.error(error);
             });
     });
+    function showCommentForm(blogId) {
+    var form = document.getElementById('comment-form-' + blogId);
+    form.style.display = (form.style.display === 'none') ? 'block' : 'none';
+}
+
 </script>

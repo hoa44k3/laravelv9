@@ -51,28 +51,19 @@ class AuthController extends Controller
     // Xử lý đăng nhập
     public function login(Request $request)
     {
-       // $credentials = $request->only('email', 'password');
        Log::info('Email:', ['email' => $request->email]);
        Log::info('Password:', ['password' => $request->password]);
-        // Thử đăng nhập xác thực ng dùng
         if (Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
             $user = Auth::user();
-            //dd($user->role); // Kiểm tra giá trị role
-            // Kiểm tra nếu người dùng là admin
             if ($user->role === 'admin') {
-                return redirect()->route('backend.dashboard.index'); // Điều hướng đến trang admin
+                return redirect()->route('backend.dashboard.index'); 
             } else {
-                return redirect()->route('index'); // Điều hướng đến trang người dùng
-            }
-             // Thông báo lỗi nếu đăng nhập thất bại
-             return redirect()->route('login')->with('error', 'Thông tin đăng nhập không đúng.');
+                return redirect()->route('index'); 
         }
-
-        // Đăng nhập thất bại
-        return back()->withErrors(['email' => 'Thông tin đăng nhập không chính xác.']);
+       
     }
-
-    // Xử lý đăng xuất
+    return back()->withErrors(['email' => 'Thông tin đăng nhập không chính xác.']);
+}
     public function logout(Request $request)
     {
         Auth::logout();

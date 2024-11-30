@@ -2,6 +2,7 @@
 @include('backend.dashboard.component.sidebar')
 <script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
 <script src="https://cdn.ckeditor.com/ckeditor5/39.0.0/classic/ckeditor.js"></script>
+<script src="https://cdn.tiny.cloud/1/YOUR_API_KEY/tinymce/6/tinymce.min.js"></script>
 
 <div class="container-fluid">
     <div class="row">
@@ -45,7 +46,24 @@
                         <label for="image_path">Hình ảnh</label>
                         <input type="file" class="form-control" name="image_path"class="form-control">
                     </div>
-
+                    <div class="form-group">
+                        <label for="status">Trạng thái</label>
+                        <select class="form-control" name="status" required>
+                            <option value="pending">Pending</option>
+                            <option value="approved">Approved</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="likes">Lượt thích</label>
+                        <input type="number" class="form-control" name="likes" value="0" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="comment_count">Số bình luận</label>
+                        <input type="number" class="form-control" name="comment_count" value="0" required>
+                    </div>
+                    
                     <button type="submit" class="btn btn-primary">Thêm bài viết</button>
                     </form>
                 </div>

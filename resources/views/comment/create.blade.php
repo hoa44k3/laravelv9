@@ -11,13 +11,11 @@
                     <h4 class="text-center mb-4">Thêm bình luận cho bài viết:{{ $blog->title }} </h4>
                 </div>
                 <div class="card-body">
-                
-                    {{-- <h1 class="text-center mb-4">Thêm Bình Luận Cho Bài Viết: {{ $blog->title }}</h1> --}}
 
-                    <form action="{{ route('comment.store', ['blogId' => $blog->id]) }}" method="POST">
-
+                    {{-- <form action="{{ route('comment.store', ['blogId' => $blog->id]) }}" method="POST"> --}}
+                        <form action="{{ route('comment.store') }}" method="POST">
                         @csrf
-
+                        <input type="hidden" name="blog_id" value="{{ $blog->id }}">
                         <div class="form-group mb-3">
                             <label for="user_id">Tác giả</label>
                             <select name="user_id" class="form-control" required>

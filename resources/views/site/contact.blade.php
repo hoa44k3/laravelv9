@@ -20,7 +20,7 @@
             <div class="col-12">
                 <nav aria-label="breadcrumb">
                     <ol class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="#"><i class="fa fa-home" aria-hidden="true"></i> Trang chủ</a></li>
+                        <li class="breadcrumb-item"><a href="{{route('index')}}"><i class="fa fa-home" aria-hidden="true"></i> Trang chủ</a></li>
                         <li class="breadcrumb-item active" aria-current="page">Liên hệ với chúng tôi</li>
                     </ol>
                 </nav>
@@ -40,14 +40,14 @@
                 <div class="col-12 col-md-4">
                     <div class="single-contact-info mb-30 text-center wow fadeInUp" data-wow-delay="0.3s">
                         <h4>France</h4>
-                        <p>40 Baria Sreet 133/2 NewYork City, US <br> Email: info.contact@gmail.com <br> Phone: 123-456-7890</p>
+                        <p>Phượng Hoàng, Trung Đô, Thành Phố Vinh <br> Email: pxinh3771@gmail.com <br> Phone: 035-669-4603</p>
                     </div>
                 </div>
                 <!-- Single Contact Info -->
                 <div class="col-12 col-md-4">
                     <div class="single-contact-info mb-30 text-center wow fadeInUp" data-wow-delay="0.6s">
                         <h4>United States</h4>
-                        <p>40 Baria Sreet 133/2 NewYork City, US <br> Email: info.contact@gmail.com <br> Phone: 123-456-7890</p>
+                        <p>Phượng Hoàng, Trung Đô, Thành Phố Vinh <br> Email: pxinh3771@gmail.com <br> Phone: 035-669-4603</p>
                     </div>
                 </div>
                 <!-- Single Contact Info -->

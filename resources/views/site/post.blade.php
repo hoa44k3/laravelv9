@@ -1,7 +1,12 @@
 @extends('site.master')
-
-   
 @section('body')
+<style>
+    p {
+    display: block;
+    margin-bottom: 1rem;
+}
+
+</style>
     <!-- ****** Breadcumb Area Start ****** -->
     <div class="breadcumb-area" style="background-image: url(/customer/img/ne2.jpg);">
         <div class="container h-100">
@@ -60,8 +65,9 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <p>{{ \Illuminate\Support\Str::limit($featuredBlog->content, 5000) }}</p>
-                                    {{-- <a href="{{ route('blogs.show', $featuredBlog->id) }}" class="btn btn-primary">Xem chi tiết</a> --}}
+                           
+                                     {!! \Illuminate\Support\Str::limit(strip_tags($featuredBlog->content, '<p><br><strong><em>'), 5000) !!}
+
                                 </div>
                             </div>
     
@@ -149,7 +155,9 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <p>{{ \Illuminate\Support\Str::limit($blog->content, 50) }}</p>
+                                   
+                                            {!! \Illuminate\Support\Str::limit(strip_tags($blog->content, '<p><br><strong><em>'), 50) !!}
+
                                        
                                     </div>
                                 </div>                         
@@ -163,5 +171,4 @@
             </div>
         </div>
     </section>
-
 @endsection

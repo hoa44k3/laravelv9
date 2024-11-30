@@ -19,7 +19,7 @@ class CommentController extends Controller
             $query->where('blog_id', $blogId);
         })
         ->get();
-
+          
         $blog = $blogId ? Blog::find($blogId) : null;  
         return view('comment.index', compact('comments', 'blog'));
     }
@@ -32,57 +32,31 @@ class CommentController extends Controller
         return view('comment.create', compact('blog','users', 'categories'));
     }
 
-    // public function store(Request $request, $blogId)
-    // {
-    //     $blog = Blog::findOrFail($blogId);
-
-    //         // Thêm bình luận
-    //         Comment::create([
-    //             'blog_id' => $blog->id,
-    //             'user_id' => $request->user_id,
-    //             'category_id' => $request->category_id,
-    //             'content' => $request->content,
-    //             'created_at' => now(), // Thêm giá trị thủ công
-    //         ]);
-
-    //       return redirect()->route('comment.index', ['blog' => $blog->id])->with('success', 'Bình luận đã được thêm!');  
-    // }
-
     public function store(Request $request)
-    {
-        // Kiểm tra người dùng đã đăng nhập hay chưa
-        if (!Auth::check()) {
-            return redirect()->route('auth.login')->with('error', 'Vui lòng đăng nhập trước khi bình luận.');
-        }
-
-        // Validate dữ liệu
-        $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|max:255',
-            'message' => 'required|string|max:1000',
-            'blog_id' => 'required|exists:blogs,id', // Kiểm tra blog_id có tồn tại không
-        ]);
-
-        // Tìm blog tương ứng
-        $blog = Blog::findOrFail($request->blog_id);
-
-        // Tạo mới bình luận
-        $newComment = Comment::create([
-            'blog_id' => $blog->id,
-            'user_id' => Auth::id(), // Lấy ID người dùng hiện tại
-            'content' => $request->message,
-            'created_at' => now(),
-        ]);
-
-        // Lấy danh sách bình luận cũ (bao gồm bình luận vừa thêm)
-        $comments = $blog->comments()->orderBy('created_at', 'desc')->get();
-
-        // Render lại danh sách bình luận
-        return redirect()->back()->with([
-            'success' => 'Bình luận đã được thêm!',
-            'comments' => $comments, // Truyền dữ liệu bình luận vào view
-        ]);
+{
+    // Kiểm tra người dùng đã đăng nhập hay chưa
+    if (!Auth::check()) {
+        return redirect()->route('auth.login')->with('error', 'Vui lòng đăng nhập trước khi bình luận.');
     }
+
+    // Validate dữ liệu
+    $request->validate([
+        'content' => 'required|string|max:1000',
+        'blog_id' => 'required|exists:blogs,id', // Kiểm tra blog_id có tồn tại không
+    ]);
+
+    // Tạo mới bình luận
+    $newComment = Comment::create([
+        'blog_id' => $request->blog_id,
+        'user_id' => Auth::id(),
+        'content' => $request->content, // Đảm bảo dùng 'content' thay vì 'message'
+        'created_at' => now(),
+    ]);
+
+    return redirect()->route('comment.index', ['blog' => $request->blog_id])
+        ->with('success', 'Bình luận đã được thêm!');
+}
+
 
 
     public function edit($blogId, $commentId)
@@ -114,17 +88,18 @@ class CommentController extends Controller
 
     }
     public function destroy($commentId)
-    {
-        $comment = Comment::find($commentId);
+{
+    $comment = Comment::find($commentId);
 
-        if (!$comment) {
-            return response()->json(['error' => 'Bình luận không tồn tại.'], 404);
-        }
-    
-        $comment->delete();
-    
-        return response()->json(['success' => 'Bình luận đã được xóa thành công.']);
+    if (!$comment) {
+        return response()->json(['error' => 'Bình luận không tồn tại.'], 404);
     }
+
+    // Xóa bình luận
+    $comment->delete();
+
+    return response()->json(['success' => 'Bình luận đã được xóa thành công.']);
+}
     public function showComments()
     {
         // Lấy danh sách các categories từ cơ sở dữ liệu cùng với blogs và comments của từng category

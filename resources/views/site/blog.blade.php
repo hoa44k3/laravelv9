@@ -63,6 +63,43 @@
 .author-name:hover {
     color: #0056b3;
 }
+/* bo tròn */
+/* Bo tròn ảnh bài viết */
+.single-post .post-thumb img {
+    border-radius: 10px; /* Độ bo góc, bạn có thể thay đổi giá trị */
+    overflow: hidden;
+}
+
+/* Bo tròn khung bài viết */
+.single-post {
+    border-radius: 30px; /* Bo góc cho khung bài viết */
+    overflow: hidden;
+    border: 1px solid #ddd; /* Thêm viền mỏng */
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1); /* Thêm đổ bóng nhẹ */
+    transition: transform 0.3s, box-shadow 0.3s; /* Hiệu ứng hover */
+}
+
+/* Hiệu ứng hover bài viết */
+.single-post:hover {
+    transform: translateY(-5px); /* Đẩy lên trên một chút khi hover */
+    box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.2); /* Đổ bóng đậm hơn */
+}
+
+/* Bo tròn khung nội dung */
+.single-post .post-content {
+    border-radius: 0 0 15px 15px; /* Bo tròn chỉ phía dưới */
+    background-color: #fff; /* Màu nền */
+    padding: 20px;
+}
+
+/* Bo tròn góc cho avatar hoặc thông tin tác giả */
+.post-meta .author-name {
+    border-radius: 5px;
+    background-color: #f8f9fa; /* Màu nền nhạt */
+    padding: 5px 10px;
+    display: inline-block;
+}
+
 
 </style>
  <!-- ****** Breadcumb Area Start ****** -->
@@ -105,8 +142,7 @@
                         <div class="post-thumb">
                             <img src="{{ asset('storage/' . ltrim($blog->image_path, 'http://127.0.0.1:8000/')) }}" 
                                  alt="Image" 
-                                 class="img-fluid rounded" 
-                                 style="object-fit: cover; height: 200px;">
+                                 class="img-fluid rounded">
                         </div>
                         <!-- Post Content -->
                         <div class="post-content">
@@ -121,7 +157,8 @@
                             <!-- Post Title -->
                             <a href="{{ route('site.post', $blog->id) }}" class="post-title">
                                 <h4 class="post-headline mt-3">{{ $blog->title }}</h4>
-                                <p>{{ \Illuminate\Support\Str::limit($blog->content, 100) }}</p>
+                                {!! \Illuminate\Support\Str::limit(strip_tags($blog->content, '<p><br><strong><em>'), 100) !!}
+
                             </a>
                             <!-- Post Stats -->
                             <div class="post-stats mt-3 d-flex justify-content-between align-items-center">
@@ -134,11 +171,10 @@
                             </div>
                         </div>
                     </div>
+                    
                 </div>
             @endforeach
         </div>
     </div>
 </section>
-
-<!-- ****** Archive Area End ****** -->
 @endsection

@@ -7,7 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <!-- The above 4 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <!-- Title -->
     <title>Yummy Blog - Food Blog Template</title>
 
@@ -19,32 +19,43 @@
 
     <!-- Responsive CSS -->
     <link href="/customer/css/responsive/responsive.css" rel="stylesheet">
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
 </head>
 <style>
+    a {
+    text-decoration: none !important;
+}
+.no-underline a {
+    text-decoration: none !important;
+}
+
     .logo_area {
-    position: relative; /* Tạo lớp cha để định vị chữ */
+    position: relative; 
     display: inline-block;
 }
 
 .yummy-logo {
-    width: 3000px; /* Kéo ảnh ra toàn chiều rộng cột */
-    height: 300px; /* Đặt chiều cao cố định hoặc sử dụng giá trị tự do */
-    object-fit: cover; /* Đảm bảo ảnh không bị méo */
-    border-radius: 10px; /* Tùy chọn: Thêm bo tròn góc nếu cần */
+    width: 3000px;
+    height: 300px; 
+    object-fit: cover; 
+    border-radius: 10px; 
 }
 
 .logo-text {
     position: absolute;
-    top: 50%; /* Căn giữa theo chiều dọc */
-    left: 50%; /* Căn giữa theo chiều ngang */
-    transform: translate(-50%, -50%); /* Đảm bảo chữ nằm chính giữa ảnh */
-    font-size: 36px; /* Tùy chỉnh kích thước chữ */
+    top: 50%; 
+    left: 50%; 
+    transform: translate(-50%, -50%); 
+    font-size: 36px; 
     font-weight: bold;
-    color: white; /* Màu chữ (tùy chỉnh nếu cần) */
-    text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.5); /* Tạo bóng để chữ nổi bật hơn */
-    z-index: 2; /* Đảm bảo chữ nằm trên ảnh */
-    font-family: Arial, sans-serif; /* Tùy chỉnh font chữ */
+    color: white; 
+    text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.5); 
+    z-index: 2; 
+    font-family: Arial, sans-serif;
 }
 .user_avatar img {
     border-radius: 50%;
@@ -64,21 +75,21 @@
 }
 
 .footer-social-area .single-icon a:hover {
-    color: #FFD700; /* Màu vàng khi hover */
+    color: #FFD700; 
 }
 
 .footer-social-area .single-icon i {
-    font-size: 28px; /* Kích thước biểu tượng */
+    font-size: 28px; 
     margin-right: 10px;
     transition: transform 0.3s ease;
 }
 
 .footer-social-area .single-icon i:hover {
-    transform: scale(1.2); /* Phóng to biểu tượng khi hover */
+    transform: scale(1.2); 
 }
 
 .footer-social-area .single-icon span {
-    font-weight: 500; /* Đậm hơn một chút cho chữ */
+    font-weight: 500; 
 }
 
 </style>
@@ -106,10 +117,11 @@
                                     </a>
                                 </div>
                                 <div class="user_name ml-2">
-                                    <a href="{{ route('users.profile', Auth::id()) }}">
+                                    <a href="javascript:void(0);" id="viewUserDetail" data-id="{{ Auth::id() }}">
                                         {{ Auth::user()->name }}
                                     </a>
                                 </div>
+                                   
                                 <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                                     @csrf
                                 </form>
@@ -120,6 +132,7 @@
                                     </a>
                                 </div>       
                             </div>
+                            
                             @else
                                 <!-- Guest View -->
                                 <div class="login_register_area d-flex">
@@ -131,15 +144,36 @@
                                     </div>
                                 </div>
                             @endif
+                            {{-- <div class="modal fade" id="userDetailModal" tabindex="-1" aria-labelledby="userDetailModalLabel" aria-hidden="true"data-bs-backdrop="false">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <!-- Modal Header -->
+                                        <div class="modal-header bg-primary text-white">
+                                            <h5 class="modal-title" id="userDetailModalLabel">Thông tin người dùng</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <!-- Modal Body -->
+                                        <div class="modal-body" id="userDetailContent">
+                                            <!-- Nội dung sẽ được load qua AJAX -->
+                                            <div class="text-center">
+                                                <div class="spinner-border text-primary" role="status">
+                                                    <span class="visually-hidden">Đang tải...</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- Modal Footer -->
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div> --}}
                         </div>  
-                        
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    
-    
     <!-- ****** Top Header Area End ****** -->
 
     <!-- ****** Header Area Start ****** -->
@@ -263,10 +297,79 @@
     </div>
 </div>
 
-    <!-- ****** Footer Social Icon Area End ****** -->
+</body>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+    // Bắt sự kiện khi nhấn vào tên người dùng
+    document.getElementById("viewUserDetail").addEventListener("click", function () {
+        const userId = this.getAttribute("data-id");
 
+        // Hiển thị modal và thêm loader
+        const modal = new bootstrap.Modal(document.getElementById("userDetailModal"));
+        document.getElementById("userDetailContent").innerHTML = `
+            <div class="text-center">
+                <div class="spinner-border text-primary" role="status">
+                    <span class="visually-hidden">Đang tải...</span>
+                </div>
+            </div>
+        `;
+        modal.show();
 
+        // Gửi request AJAX để lấy dữ liệu người dùng
+        fetch(`/users/${userId}/profile`, {
+            method: "GET",
+            headers: {
+                "X-Requested-With": "XMLHttpRequest",
+                "Content-Type": "application/json",
+            },
+        })
+            .then((response) => response.json())
+            .then((data) => {
+                if (data.success) {
+                    // Cập nhật nội dung modal
+                    document.getElementById("userDetailContent").innerHTML = `
+                        <div class="text-center mb-3">
+                            <img 
+                                src="${data.user.image}" 
+                                alt="Avatar" 
+                                class="img-thumbnail rounded-circle" 
+                                style="width: 100px; height: 100px;"
+                            >
+                        </div>
+                        <table class="table table-bordered">
+                            <tr>
+                                <th>Tên</th>
+                                <td>${data.user.name}</td>
+                            </tr>
+                            <tr>
+                                <th>Email</th>
+                                <td>${data.user.email}</td>
+                            </tr>
+                            <tr>
+                                <th>Số điện thoại</th>
+                                <td>${data.user.phone ?? 'N/A'}</td>
+                            </tr>
+                            <tr>
+                                <th>Địa chỉ</th>
+                                <td>${data.user.address ?? 'N/A'}</td>
+                            </tr>
+                            <tr>
+                                <th>Ngày sinh</th>
+                                <td>${data.user.birthday ?? 'N/A'}</td>
+                            </tr>
+                        </table>
+                    `;
+                } else {
+                    document.getElementById("userDetailContent").innerHTML = `<p class="text-danger">Không thể tải thông tin người dùng.</p>`;
+                }
+            })
+            .catch(() => {
+                document.getElementById("userDetailContent").innerHTML = `<p class="text-danger">Đã xảy ra lỗi khi tải dữ liệu.</p>`;
+            });
+    });
+});
 
+</script>
     <!-- Jquery-2.2.4 js -->
     <script src="/customer/js/jquery/jquery-2.2.4.min.js"></script>
     <!-- Popper js -->
@@ -277,4 +380,3 @@
     <script src="/customer/js/others/plugins.js"></script>
     <!-- Active JS -->
     <script src="/customer/js/active.js"></script>
-</body>

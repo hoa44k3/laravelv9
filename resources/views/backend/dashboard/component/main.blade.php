@@ -1,10 +1,14 @@
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
+
 <div class="main-panel">
+    <!-- Main Header -->
     <div class="main-header">
         <div class="main-header-logo">
             <!-- Logo Header -->
             <div class="logo-header" data-background-color="dark">
                 <a href="index.html" class="logo">
-                    <img src="assets/img/avt1.jpg" alt="navbar brand" class="navbar-brand" height="20" />
+                    <img src="{{ asset('assets/img/avt1.jpg') }}" alt="Logo" class="navbar-brand" height="20" />
                 </a>
                 <div class="nav-toggle">
                     <button class="btn btn-toggle toggle-sidebar">
@@ -18,170 +22,78 @@
                     <i class="gg-more-vertical-alt"></i>
                 </button>
             </div>
-            <!-- End Logo Header -->
         </div>
 
         <!-- Navbar Header -->
         <nav class="navbar navbar-header navbar-header-transparent navbar-expand-lg border-bottom">
             <div class="container-fluid">
-                <nav class="navbar navbar-header-left navbar-expand-lg navbar-form nav-search p-0 d-none d-lg-flex">
+                <!-- Search Bar -->
+                <form class="navbar navbar-form nav-search d-none d-lg-flex">
                     <div class="input-group">
-                        <div class="input-group-prepend">
-                            <button type="submit" class="btn btn-search pe-1">
-                                <i class="fa fa-search search-icon"></i>
-                            </button>
-                        </div>
+                        <button type="submit" class="btn btn-search pe-1">
+                            <i class="fa fa-search"></i>
+                        </button>
                         <input type="text" placeholder="Search ..." class="form-control" />
                     </div>
-                </nav>
+                </form>
 
-                <ul class="navbar-nav topbar-nav ms-md-auto align-items-center">
-                    <li class="nav-item topbar-icon dropdown hidden-caret d-flex d-lg-none">
-                        <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false" aria-haspopup="true">
-                            <i class="fa fa-search"></i>
-                        </a>
-                        <ul class="dropdown-menu dropdown-search animated fadeIn">
-                            <form class="navbar-left navbar-form nav-search">
-                                <div class="input-group">
-                                    <input type="text" placeholder="Search ..." class="form-control" />
-                                </div>
-                            </form>
-                        </ul>
-                    </li>
-
-                    <li class="nav-item topbar-user dropdown hidden-caret">
+                <!-- User Actions -->
+                <ul class="navbar-nav ms-md-auto align-items-center">
+                    <!-- Profile Dropdown -->
+                    <li class="nav-item topbar-user dropdown">
                         <a class="dropdown-toggle profile-pic" data-bs-toggle="dropdown" 
-                        href="{{ route('users.profile', ['id' => auth()->user()->id]) }}" 
-                        aria-expanded="false">
-                         <div class="avatar-sm">
-                             <img src="{{ auth()->user()->image ? asset('storage/' . auth()->user()->image) : asset('assets/img/avt1.jpg') }}" 
-                                  alt="Avatar" class="avatar-img rounded-circle" />
-                         </div>
-                         <span class="profile-username">
-                             <span class="op-7">{{ auth()->user()->name }}</span>
-                         </span>
-                     </a>
-                     
-                        <ul class="dropdown-menu dropdown-user animated fadeIn">
-                            <div class="dropdown-user-scroll scrollbar-outer">
-                                <li>
-                                    <div class="user-box">
-                                        <div class="avatar-lg">
-                                            <img src="{{ auth()->user()->image ? asset('storage/' . auth()->user()->image) : asset('assets/img/avt1.jpg') }}" alt="Avatar" class="avatar-img rounded" />
-                                        </div>
-                                        <div class="u-text">
-                                            <h4>{{ auth()->user()->name }}</h4>
-                                            <p class="text-muted">{{ auth()->user()->email }}</p>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="dropdown-divider"></div>
-                    
-                                    <!-- Link xem thông tin người dùng -->
-                                    {{-- <li class="nav-item topbar-user dropdown hidden-caret"> --}}
-                                        <a
-                                            class="dropdown-toggle profile-pic"
-                                            data-bs-toggle="dropdown"
-                                            href="#"
-                                            aria-expanded="false"
-                                        >
-                                            <div class="avatar-sm">
-                                                <img
-                                                    src="{{ auth()->user()->image ? asset('storage/' . auth()->user()->image) : asset('assets/img/avt1.jpg') }}"
-                                                    alt="Avatar"
-                                                    class="avatar-img rounded-circle"
-                                                />
-                                            </div>
-                                            <span class="profile-username">
-                                                <span class="op-7">Hi,</span>
-                                                <span class="fw-bold">{{ auth()->user()->name }}</span>
-                                            </span>
-                                        </a>
-                                        <ul class="dropdown-menu dropdown-user animated fadeIn">
-                                            <div class="dropdown-user-scroll scrollbar-outer">
-                                                <li>
-                                                    <div class="user-box">
-                                                        <div class="avatar-lg">
-                                                            <img
-                                                                src="{{ auth()->user()->image ? asset('storage/' . auth()->user()->image) : asset('assets/img/avt1.jpg') }}"
-                                                                alt="Profile Image"
-                                                                class="avatar-img rounded"
-                                                            />
-                                                        </div>
-                                                        <div class="u-text">
-                                                            <h4>{{ auth()->user()->name }}</h4>
-                                                            <p class="text-muted">{{ auth()->user()->email }}</p>
-                                                            <a
-                                                                href="{{ route('users.profile', ['id' => auth()->user()->id]) }}"
-                                                                class="btn btn-xs btn-secondary btn-sm"
-                                                            >
-                                                                Xem thông tin
-                                                            </a>
-                                                        </div>
-                                                    </div>
-                                                </li>
-                                                <li>
-                                                    <div class="dropdown-divider"></div>
-                                                    <a class="dropdown-item" href="{{ route('users.profile', ['id' => auth()->user()->id]) }}">
-                                                        Xem thông tin
-                                                    </a>
-                                                    <div class="dropdown-divider"></div>
-                                                    <form
-                                                        id="logout-form"
-                                                        action="{{ route('auth.logout.submit') }}"
-                                                        method="POST"
-                                                        style="display: none;"
-                                                    >
-                                                        @csrf
-                                                    </form>
-                                                    <a
-                                                        class="dropdown-item"
-                                                        href="#"
-                                                        onclick="event.preventDefault(); document.getElementById('logout-form').submit();"
-                                                    >
-                                                        Đăng xuất
-                                                    </a>
-                                                </li>
-                                            </div>
-                                        </ul>
-                                    {{-- </li> --}}
-
-                                </li>
+                           href="{{ route('users.profile', auth()->id()) }}">
+                            <div class="avatar-sm">
+                                <img src="{{ auth()->user()->image ? asset('storage/' . auth()->user()->image) : asset('assets/img/avt1.jpg') }}" 
+                                     alt="Avatar" class="avatar-img rounded-circle" />
                             </div>
+                            <span class="profile-username">{{ auth()->user()->name }}</span>
+                        </a>
+                        <ul class="dropdown-menu dropdown-user animated fadeIn">
+                            <li>
+                                <div class="user-box text-center">
+                                    <div class="avatar-lg mb-2">
+                                        <img src="{{ auth()->user()->image ? asset('storage/' . auth()->user()->image) : asset('assets/img/avt1.jpg') }}" 
+                                             alt="Profile Image" class="avatar-img rounded" />
+                                    </div>
+                                    <h4>{{ auth()->user()->name }}</h4>
+                                    <p class="text-muted">{{ auth()->user()->email }}</p>
+                                    <a href="{{ route('users.profile', ['id' => auth()->id()]) }}" class="btn btn-sm btn-secondary">
+                                        Xem thông tin
+                                    </a>
+                                </div>
+                            </li>
+                            
+                            <li>
+                                <a class="dropdown-item" href="{{ route('logout') }}" 
+                                   onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                                    Đăng xuất
+                                </a>
+                                <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                                    @csrf
+                                </form>
+                            </li>
                         </ul>
                     </li>
-                    
                 </ul>
             </div>
         </nav>
-        <!-- End Navbar -->
     </div>
 
+    <!-- Main Content -->
     @include('backend.dashboard.home.layout')
 
+    <!-- Footer -->
     <footer class="footer">
         <div class="container-fluid d-flex justify-content-between">
-            <nav class="pull-left">
+            <nav>
                 <ul class="nav">
-                    <li class="nav-item">
-                        <a class="nav-link" href="http://www.themekita.com">ThemeKita</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Help</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Licenses</a>
-                    </li>
+                    <li class="nav-item"><a class="nav-link" href="#">Help</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#">Contact</a></li>
                 </ul>
             </nav>
-            <div class="copyright">
-                2024, made with <i class="fa fa-heart heart text-danger"></i> by
-                <a href="http://www.themekita.com">ThemeKita</a>
-            </div>
-            <div>
-                Distributed by
-                <a target="_blank" href="https://themewagon.com/">ThemeWagon</a>.
+            <div class="copyright text-center">
+                &copy; 2024, made with <i class="fa fa-heart text-danger"></i> by Your Company
             </div>
         </div>
     </footer>

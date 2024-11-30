@@ -35,12 +35,12 @@
             <div class="card-body">
                 <p class="card-text">Sử dụng các nút dưới đây để truy cập các chức năng quản lý khác nhau.</p>
                 <div class="d-flex justify-content-start flex-wrap">
-                    <a href="/backend/user" class="btn btn-primary me-2 mb-2">Quản lý người dùng</a>
-                    <a href="/backend/blogs" class="btn btn-info me-2 mb-2">Quản lý bài viết</a>
-                    <a href="/backend/test" class="btn btn-success me-2 mb-2">Quản lý test</a>
-                    <a href="/backend/report" class="btn btn-warning me-2 mb-2">Báo cáo</a>
-                    <a href="/backend/settings" class="btn btn-secondary mb-2">Cài đặt</a>
-                    <a href="/backend/dashboard" class="btn btn-dark mb-2">Quay lại Dashboard</a>
+                    <a href="{{route('users.index')}}" class="btn btn-primary me-2 mb-2">Quản lý người dùng</a>
+                    <a href="{{route('blogs.home')}}" class="btn btn-info me-2 mb-2">Quản lý bài viết</a>
+                    <a href="{{route('category.home')}}" class="btn btn-success me-2 mb-2">Quản lý danh mục</a>
+                    {{-- <a href="/backend/report" class="btn btn-warning me-2 mb-2">Báo cáo</a> --}}
+                    <a href="{{route('contacts.index')}}" class="btn btn-secondary mb-2">Liên hệ</a>
+                    <a href="{{route('statistics.index')}}" class="btn btn-dark mb-2">Thống kê</a>
                 </div>
             </div>
         </div>

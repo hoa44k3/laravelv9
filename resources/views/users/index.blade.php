@@ -1,6 +1,8 @@
 
 @include('backend.dashboard.component.head')
 @include('backend.dashboard.component.sidebar')
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+
 <style>
     .table tbody tr:hover {
     background-color: #e8f0fe;
@@ -16,6 +18,25 @@
     background-color: #717172;
     color: white;
 }
+.password-container {
+    display: flex;
+    align-items: center;
+}
+
+.password-field {
+    flex: 1;
+    margin-right: 5px;
+    max-width: 150px; /* Giới hạn chiều rộng nếu cần */
+}
+
+.toggle-password {
+    border: none;
+    background: none;
+    cursor: pointer;
+    padding: 0;
+}
+
+
 </style>
 <div class="container-fluid">
     <div class="row">
@@ -41,6 +62,7 @@
                                     <th>Tên</th>
                                     <th>Avatar</th>
                                     <th>Email</th>
+                                    <th>Password</th>
                                     <th>Phone</th>
                                     <th>Address</th>
                                     <th>Birthday</th>
@@ -56,18 +78,32 @@
                                     <td><img src="{{ asset('storage/' . $user->image) }}" alt="Image" style="width: 80px; height: 70px;">
                                     </td>
                                     <td>{{ $user->email }}</td>
+                                    <td>
+                                        <div class="password-container">
+                                            <input 
+                                                type="password" 
+                                                id="password-{{ $user->id }}" 
+                                                class="form-control password-field" 
+                                                value="{{ $user->password }}" 
+                                                readonly>
+                                            <button 
+                                                type="button" 
+                                                class="btn btn-sm btn-outline-secondary toggle-password" 
+                                                onclick="togglePassword({{ $user->id }})">
+                                                <i id="icon-{{ $user->id }}" class="fa fa-eye"></i>
+                                            </button>
+                                        </div>
+                                    </td>
+                                    
+                                    
                                     <td>{{ $user->phone }}</td>
                                     <td>{{ $user->address }}</td>
                                     <td>{{ $user->birthday ? \Carbon\Carbon::parse($user->birthday)->format('d-m-Y') : '' }}</td>
                                     <td>{{ $user->description }}</td>
                                     <td>
                                         <a href="{{ route('users.edit', $user->id) }}" class="btn btn-warning btn-sm">Sửa</a>
-                                        
-                                        <!-- Nút xóa sẽ sử dụng AJAX -->
                                         <button type="button" class="btn btn-danger btn-sm btn-delete" data-id="{{ $user->id }}">Xóa</button>
                                     </td>
-                                    
-                                    
                                 </tr>
                                 @endforeach
                             </tbody>
@@ -102,6 +138,23 @@
                 }
             });
         }
+        
     });
+    function togglePassword(userId) {
+    const passwordField = document.getElementById(`password-${userId}`);
+    const icon = document.getElementById(`icon-${userId}`);
+
+    if (passwordField.type === 'password') {
+        passwordField.type = 'text';
+        icon.classList.remove('fa-eye');
+        icon.classList.add('fa-eye-slash');
+    } else {
+        passwordField.type = 'password';
+        icon.classList.remove('fa-eye-slash');
+        icon.classList.add('fa-eye');
+    }
+}
+
+
 </script>
 
