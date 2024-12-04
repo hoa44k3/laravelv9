@@ -1,5 +1,7 @@
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
 
 <div class="main-panel">
     <!-- Main Header -->
@@ -28,14 +30,16 @@
         <nav class="navbar navbar-header navbar-header-transparent navbar-expand-lg border-bottom">
             <div class="container-fluid">
                 <!-- Search Bar -->
-                <form class="navbar navbar-form nav-search d-none d-lg-flex">
+                <form class="navbar navbar-form nav-search" action="{{ route('blogs.search') }}" method="GET">
                     <div class="input-group">
-                        <button type="submit" class="btn btn-search pe-1">
+                        <button type="submit" class="btn btn-outline-primary">
                             <i class="fa fa-search"></i>
                         </button>
-                        <input type="text" placeholder="Search ..." class="form-control" />
+                        <input type="text" name="query" placeholder="Tìm kiếm bài viết ..." class="form-control" />
                     </div>
                 </form>
+                
+                
 
                 <!-- User Actions -->
                 <ul class="navbar-nav ms-md-auto align-items-center">

@@ -6,7 +6,6 @@
     <meta name="description" content="">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <!-- The above 4 meta tags *must* come first in the head; any other head content must come *after* these tags -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <!-- Title -->
     <title>Yummy Blog - Food Blog Template</title>
@@ -26,6 +25,10 @@
 
 </head>
 <style>
+    .login_register_area a {
+    pointer-events: auto;
+    }
+
     a {
     text-decoration: none !important;
 }
@@ -63,13 +66,13 @@
 }
 /* footer */
 .social_icon_area {
-    background-color: #222; /* Màu nền tối */
+    background-color: #222; 
     padding: 30px 0;
 }
 
 .footer-social-area .single-icon a {
     text-decoration: none;
-    color: #ffffff; /* Màu chữ */
+    color: #ffffff; 
     font-size: 16px;
     transition: all 0.3s ease;
 }
@@ -110,66 +113,60 @@
                         @if (Auth::check())
                             <!-- User Logged In -->
                             <div class="user_area d-flex align-items-center">
+                                <!-- User Avatar -->
                                 <div class="user_avatar">
-                                    <a href="{{ route('users.profile', Auth::id()) }}">
+                                    <a href="{{ route('users.profile', Auth::id()) }}" aria-label="Xem hồ sơ">
                                         <img src="{{ Auth::user()->image ? asset('storage/' . Auth::user()->image) : asset('assets/img/default-avatar.png') }}" 
-                                         alt="Image" style="width: 40px; height: 40px;">
+                                             alt="Avatar của {{ Auth::user()->name }}" 
+                                             style="width: 40px; height: 40px; border-radius: 50%;">
                                     </a>
                                 </div>
+                                <!-- User Name -->
                                 <div class="user_name ml-2">
                                     <a href="javascript:void(0);" id="viewUserDetail" data-id="{{ Auth::id() }}">
-                                        {{ Auth::user()->name }}
+                                        {{ Str::limit(Auth::user()->name, 15) }}
                                     </a>
                                 </div>
-                                   
+                                <!-- Logout Form -->
                                 <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                                     @csrf
                                 </form>
-                                
                                 <div class="logout ml-3">
-                                    <a href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                                    <a href="{{ route('logout') }}" 
+                                       onclick="event.preventDefault(); document.getElementById('logout-form').submit();" 
+                                       aria-label="Đăng xuất">
                                         Đăng xuất
                                     </a>
-                                </div>       
+                                </div>
+                            </div>
+                        @else
+                            <!-- Guest View -->
+                            <div class="login_register_area d-flex">
+                                <div class="login">
+                                    <a href="{{ route('auth.login') }}" aria-label="Đăng nhập" style="z-index: 10;">Đăng nhập</a>
+                                </div>
+                                <div class="register">
+                                    <a href="{{ route('auth.register') }}" aria-label="Đăng ký" style="z-index: 10;">Đăng ký</a>
+                                </div>
                             </div>
                             
-                            @else
-                                <!-- Guest View -->
-                                <div class="login_register_area d-flex">
-                                    <div class="login">
-                                        <a href="{{ route('auth.login') }}">Đăng nhập</a>
-                                    </div>
-                                    <div class="register">
-                                        <a href="{{ route('auth.register') }}">Đăng ký</a>
-                                    </div>
-                                </div>
-                            @endif
-                            {{-- <div class="modal fade" id="userDetailModal" tabindex="-1" aria-labelledby="userDetailModalLabel" aria-hidden="true"data-bs-backdrop="false">
-                                <div class="modal-dialog">
-                                    <div class="modal-content">
-                                        <!-- Modal Header -->
-                                        <div class="modal-header bg-primary text-white">
-                                            <h5 class="modal-title" id="userDetailModalLabel">Thông tin người dùng</h5>
-                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                        </div>
-                                        <!-- Modal Body -->
-                                        <div class="modal-body" id="userDetailContent">
-                                            <!-- Nội dung sẽ được load qua AJAX -->
-                                            <div class="text-center">
-                                                <div class="spinner-border text-primary" role="status">
-                                                    <span class="visually-hidden">Đang tải...</span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <!-- Modal Footer -->
-                                        <div class="modal-footer">
-                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div> --}}
-                        </div>  
+                        @endif
+                        
                     </div>
+                    {{-- <!-- Search Button -->
+                    <div class="search_button">
+                        <a class="searchBtn" href="#" aria-label="Tìm kiếm"><i class="fa fa-search" aria-hidden="true"></i></a>
+                    </div>
+                    <!-- Search Form -->
+                    <div class="search-hidden-form">
+                        <form action="{{ route('site.search') }}" method="GET">
+                            <input type="search" name="query" id="search-anything" 
+                                   placeholder="Tìm bài viết..." 
+                                   aria-label="Tìm kiếm bài viết">
+                            <button type="submit" aria-label="Tìm kiếm">Tìm kiếm</button>
+                            <span class="searchBtn"><i class="fa fa-times" aria-hidden="true"></i></span>
+                        </form>
+                    </div> --}}
                 </div>
             </div>
         </div>

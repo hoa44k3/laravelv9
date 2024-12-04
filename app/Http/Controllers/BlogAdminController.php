@@ -42,8 +42,7 @@ class BlogAdminController extends Controller
     
     public function store(Request $request)
     {
-        dd($request->all());
-        // Validate dữ liệu đầu vào
+        // dd($request->all());
         $request->validate([
             'title' => 'required|string|max:255',
             'content' => 'required',
@@ -53,30 +52,21 @@ class BlogAdminController extends Controller
         ]);
     
         try {
-            // Khởi tạo bài viết mới
             $blog = new Blog();
             $blog->title = $request->input('title');
             $blog->content = $request->input('content');
             $blog->user_id = $request->input('user_id');
             $blog->category_id = $request->input('category_id');
-            $blog->status = 'pending'; // Mặc định trạng thái là "pending"
-    
-            // Xử lý hình ảnh nếu có
+            $blog->status = 'pending'; 
             if ($request->hasFile('image_path')) {
-                $path = $request->file('image_path')->store('main', 'public'); // Lưu vào storage/app/public/main
+                $path = $request->file('image_path')->store('main', 'public'); 
                 $blog->image_path = $path;
             }
-    
-            // Lưu bài viết
             $blog->save();
-    
-            // Điều hướng về trang danh sách bài viết với thông báo thành công
             return redirect()->route('blogs.home')->with('success', 'Bài viết đã được tạo thành công!');
         } catch (\Exception $e) {
-            // Ghi log lỗi nếu có
             Log::error('Lỗi khi tạo bài viết: ' . $e->getMessage());
-    
-            // Điều hướng lại với thông báo lỗi
+
             return redirect()->back()->withErrors('Không thể thêm bài viết. Vui lòng thử lại sau.');
         }
     }
@@ -112,15 +102,12 @@ class BlogAdminController extends Controller
         $edit->comment_count = $request->comment_count;  
         $edit->user_id = $request->user_id;
         $edit->category_id = $request->category_id;  
-   
-     // Xử lý ảnh nếu có ảnh mới
+
         if ($request->hasFile('image_path')) {
-            // Xóa ảnh cũ nếu có
+
             if ($edit->image_path) {
                 Storage::delete('public/' . $edit->image_path);
             }
-
-            // Lưu ảnh mới vào thư mục 'public' và lấy đường dẫn lưu vào cơ sở dữ liệu
             $imagePath = $request->file('image_path')->store('main', 'public');
             $edit->image_path = $imagePath;
         }
@@ -157,22 +144,30 @@ class BlogAdminController extends Controller
     }
 
     public function toggleApproval($id)
-{
-    $blog = Blog::find($id);
-    
-    if (!$blog) {
-        return response()->json(['error' => 'Không tìm thấy bài viết'], 404);
+    {
+        $blog = Blog::find($id);
+        
+        if (!$blog) {
+            return response()->json(['error' => 'Không tìm thấy bài viết'], 404);
+        }
+
+        // Đổi trạng thái phê duyệt
+        $blog->status = $blog->status === 'approved' ? 'pending' : 'approved';
+        $blog->save();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Trạng thái đã được cập nhật thành công',
+            'status' => $blog->status
+        ]);
+    }
+    public function search(Request $request)
+    {
+        $query = $request->input('query'); 
+        $blogs = Blog::where('title', 'LIKE', "%{$query}%")->get();
+
+        return view('blogs.search', compact('blogs', 'query')); 
     }
 
-    // Đổi trạng thái phê duyệt
-    $blog->status = $blog->status === 'approved' ? 'pending' : 'approved';
-    $blog->save();
-
-    return response()->json([
-        'success' => true,
-        'message' => 'Trạng thái đã được cập nhật thành công',
-        'status' => $blog->status
-    ]);
-}
 
 }

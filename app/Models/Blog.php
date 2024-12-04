@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-
+use Illuminate\Support\Str; 
 class Blog extends Model
 {
     use HasFactory;
@@ -16,7 +16,7 @@ class Blog extends Model
     }
     public function likes()
     {
-        return $this->hasMany(Like::class);
+        return $this->hasMany(Like::class,'blog_id');
     }
     public function category()
     {
@@ -44,5 +44,9 @@ class Blog extends Model
     {
         return $value ? asset($value) : null; // Trả về đường dẫn chính xác
     }
-    
+    public function getExcerptAttribute()
+    {
+        return Str::limit($this->content, 150); // Lấy 150 ký tự đầu tiên của nội dung bài viết
+    }
+
 }

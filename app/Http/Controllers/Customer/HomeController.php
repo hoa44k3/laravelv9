@@ -9,62 +9,77 @@ use App\Models\Category;
 use App\Models\Blog;
 use App\Models\Comment;
 use App\Models\Contact;
+use Illuminate\Support\Facades\Log;
 class HomeController extends Controller
 {
     public function index(){
         $categories = Category::all();
-
-    // Lấy bài viết nổi bật
         $featuredBlog = Blog::withCount(['likes', 'comments'])
-            ->with('user', 'comments.user') // Eager load user và comments.user
-            ->latest() // Lấy bài viết mới nhất
-            ->first(); // Lấy bài viết đầu tiên
+            ->with('user', 'comments.user')
+            ->latest() 
+            ->first();
 
-        // Lấy các bài viết khác
         $blogs = Blog::withCount(['likes', 'comments'])
-            ->with('user') // Eager load user
-            ->where('id', '!=', optional($featuredBlog)->id) // Loại bỏ bài viết nổi bật (nếu có)
-            ->latest() // Lấy các bài viết mới nhất
-            ->paginate(3); // Phân trang 3 bài viết mỗi lần
-
+            ->with('user')
+            ->where('id', '!=', optional($featuredBlog)->id) 
+            ->latest() 
+            ->paginate(3);
         return view('site.index', compact('categories', 'blogs', 'featuredBlog'));
     }
+    public function toggleLike(Request $request, $id)
+{
+    if (!auth()->check()) {
+        return response()->json(['success' => false, 'message' => 'Bạn phải đăng nhập để thực hiện hành động này.']);
+    }
+
+    $blog = Blog::findOrFail($id);
+
+    if ($blog->likes()->where('user_id', auth()->id())->exists()) {
+        $blog->likes()->where('user_id', auth()->id())->delete();
+        $like = false;
+    } else {
+        $blog->likes()->create(['user_id' => auth()->id()]);
+        $like = true;
+    }
+
+    return response()->json([
+        'success' => true,
+        'like' => $like,
+        'likes_count' => $blog->likes()->count(),
+    ]);
+}
+
+
+    
     public function contact(){
         $blog = Blog::first();
         return view('site.contact',compact('blog'));
     }
     public function blog(){
        $blogs = Blog::withCount('comments','likes')  
-       ->with('user', 'category') // Lấy các quan hệ với user và category
+       ->with('user', 'category') 
        ->paginate(10);
         return view('site.blog',compact('blogs'));
     }
     public function post($id = null)
     {
-
-        // Nếu có ID, lấy bài viết theo ID đó, nếu không lấy bài viết nổi bật
         if ($id) {
-            // Lấy bài viết theo ID
             $featuredBlog = Blog::withCount(['likes', 'comments'])
                 ->with('user', 'comments.user')
-                ->findOrFail($id); // Nếu không tìm thấy, sẽ trả về lỗi 404
+                ->findOrFail($id); 
             $category = $featuredBlog->category;
         } else {
-            // Nếu không có ID, lấy bài viết nổi bật
+
             $featuredBlog = Blog::withCount(['likes', 'comments'])
                 ->with('user', 'comments.user')
-                ->latest() // Lấy bài viết mới nhất
+                ->latest() 
                 ->first();
         }
-
-        // Lấy các bài viết còn lại (trừ bài viết hiện tại)
         $otherBlogs = Blog::withCount(['likes', 'comments'])
             ->with('user')
-            ->where('id', '!=', $featuredBlog->id) // Loại bỏ bài viết nổi bật
-            ->latest() // Lấy các bài viết mới nhất
-            ->paginate(3); // Phân trang 3 bài viết mỗi lần
-
-        // Trả về view với các biến
+            ->where('id', '!=', $featuredBlog->id) 
+            ->latest() 
+            ->paginate(3); 
         return view('site.post', compact('category','featuredBlog', 'otherBlogs'));
     }
 
@@ -73,40 +88,6 @@ class HomeController extends Controller
         $blog = Blog::first();
         return view('site.category', compact('categories','blog'));
     }
-    public function toggleLike(Request $request, $blogId)
-{
-    $user = auth()->user();
-    if (!$user) {
-        return response()->json(['error' => 'Bạn phải đăng nhập để thực hiện thao tác này.'], 401);
-    }
-
-    $blog = Blog::findOrFail($blogId);
-
-    // Kiểm tra xem user đã thích bài viết này chưa
-    $existingLike = $blog->likes()->where('user_id', $user->id)->first();
-
-    if ($existingLike) {
-        // Hủy thích
-        $existingLike->delete();
-        $isLiked = false;
-    } else {
-        // Thêm thích
-        $blog->likes()->create(['user_id' => $user->id]);
-        $isLiked = true;
-    }
-
-    // Trả về số lượt thích mới và trạng thái like
-    $likesCount = $blog->likes()->count();
-
-    return response()->json([
-        'like' => $isLiked,
-        'likes_count' => $likesCount,
-    ]);
-}
-
-    
-
-
     public function store(Request $request)
     {
         $request->validate([
@@ -114,7 +95,7 @@ class HomeController extends Controller
             'email' => 'required|email',
             'message' => 'required',
             'blog_id' => 'required|exists:blogs,id',
-            'parent_id' => 'nullable|exists:comments,id'  // Kiểm tra nếu có bình luận trả lời
+            'parent_id' => 'nullable|exists:comments,id'
         ]);
     
         $comment = new Comment();
@@ -122,11 +103,9 @@ class HomeController extends Controller
         $comment->email = $request->email;
         $comment->content = $request->message;
         $comment->blog_id = $request->blog_id;
-        $comment->parent_id = $request->parent_id; // Gán parent_id nếu có
+        $comment->parent_id = $request->parent_id; 
     
         $comment->save();
-    
-        // Cập nhật số lượng bình luận của bài viết
         $blog = Blog::find($request->blog_id);
         $blog->increment('comments_count');
     
@@ -158,4 +137,20 @@ class HomeController extends Controller
         $request->session()->regenerateToken();
         return redirect()->route('site.index')->with('success', 'Bạn đã đăng xuất thành công');
     }
+    public function search(Request $request)
+    {
+        $query = $request->input('query'); 
+
+        // Tìm kiếm bài viết theo tên
+        $blogs = Blog::where('title', 'LIKE', '%' . $query . '%')
+        ->orWhere('content', 'LIKE', '%' . $query . '%')
+        ->orWhereHas('user', function ($q) use ($query) {
+            $q->where('name', 'LIKE', '%' . $query . '%');
+        })
+        ->paginate(10);
+    
+
+        return view('site.search', compact('blogs', 'query'));
+    }
+
 }

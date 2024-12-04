@@ -41,12 +41,12 @@ class ContactReplyMail extends Mailable
      *
      * @return \Illuminate\Mail\Mailables\Content
      */
-    // public function content()
-    // {
-    //     return new Content(
-    //         view: 'view.name',
-    //     );
-    // }
+    public function content()
+    {
+        return new Content(
+            view: 'emails.contact_reply',
+        );
+    }
 
     /**
      * Get the attachments for the message.
@@ -56,11 +56,5 @@ class ContactReplyMail extends Mailable
     public function attachments()
     {
         return [];
-    }
-    public function build()
-    {
-        return $this->from('your_email@example.com', 'Admin') // Chỉ định người gửi
-                    ->subject('Phản hồi từ Admin')
-                    ->view('emails.contact_reply');
     }
 }

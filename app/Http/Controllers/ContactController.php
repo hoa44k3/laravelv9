@@ -30,6 +30,8 @@ class ContactController extends Controller
         $contact->response_date = now();
         $contact->save();
 
+        Mail::to($contact->email)->send(new ContactReplyMail($request->response));
+
         // Trả về phản hồi
         return redirect()->back()->with('success', 'Phản hồi đã được gửi thành công!');
     }

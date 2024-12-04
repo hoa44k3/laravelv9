@@ -33,29 +33,27 @@ class CommentController extends Controller
     }
 
     public function store(Request $request)
-{
-    // Kiểm tra người dùng đã đăng nhập hay chưa
-    if (!Auth::check()) {
-        return redirect()->route('auth.login')->with('error', 'Vui lòng đăng nhập trước khi bình luận.');
+    {
+        if (!Auth::check()) {
+            return redirect()->route('auth.login')->with('error', 'Vui lòng đăng nhập trước khi bình luận.');
+        }
+        // dd($request->all());
+        $request->validate([
+            'content' => 'required|string|max:1000',
+            'blog_id' => 'required|exists:blogs,id', 
+        ]);
+
+        $newComment = Comment::create([
+            'blog_id' => $request->blog_id,
+            // 'user_id' => Auth::id(),
+            'user_id' => auth()->id(),
+            'content' => $request->content, 
+            'created_at' => now(),
+        ]);
+
+        return redirect()->route('comment.index', ['blog' => $request->blog_id])
+            ->with('success', 'Bình luận đã được thêm!');
     }
-
-    // Validate dữ liệu
-    $request->validate([
-        'content' => 'required|string|max:1000',
-        'blog_id' => 'required|exists:blogs,id', // Kiểm tra blog_id có tồn tại không
-    ]);
-
-    // Tạo mới bình luận
-    $newComment = Comment::create([
-        'blog_id' => $request->blog_id,
-        'user_id' => Auth::id(),
-        'content' => $request->content, // Đảm bảo dùng 'content' thay vì 'message'
-        'created_at' => now(),
-    ]);
-
-    return redirect()->route('comment.index', ['blog' => $request->blog_id])
-        ->with('success', 'Bình luận đã được thêm!');
-}
 
 
 

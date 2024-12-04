@@ -15,7 +15,6 @@
     <style>
       .category-carousel {
     width: 100%;
-    /* position: relative; */
     overflow: hidden;
 }
 
@@ -29,7 +28,7 @@
     width: 100%;
     height: 100%;
     object-fit: cover;
-    border-radius: 10px; /* Tùy chọn: Bo góc ảnh */
+    border-radius: 10px; 
 }
 
 .category-title-overlay {
@@ -37,7 +36,7 @@
     bottom: 0;
     left: 0;
     right: 0;
-    background: rgba(238, 127, 127, 0.5); /* Nền mờ */
+    background: rgba(238, 127, 127, 0.5); 
     color: white;
     text-align: center;
     padding: 10px;
@@ -50,7 +49,6 @@
     opacity: 1;
 }
 
-/* Swiper điều hướng */
 .swiper-button-next, .swiper-button-prev {
     color: black;
     background-color: white;
@@ -68,8 +66,6 @@
     left: 0;
 }
 
-/* Tạo bố cục đẹp mắt */
-/* Ghi đè margin-bottom mặc định của Bootstrap */
 .container .row {
     margin-bottom: 0;
     padding-bottom: 0;
@@ -79,30 +75,27 @@
     justify-content: center;
     align-items: center;
 }
-/* Giảm khoảng cách giữa các phần (section) */
+
 .categories_area {
-    margin-bottom: 30px; /* Tăng hoặc giảm khoảng cách giữa danh mục và blog */
+    margin-bottom: 30px; 
 }
 
 .blog_area {
-    padding-top: 0; /* Xóa khoảng trống phía trên blog */
+    padding-top: 0;
 }
 
-/* Căn chỉnh các bài viết trong phần blog */
 .blog_area .row {
-    row-gap: 20px; /* Khoảng cách dọc giữa các bài viết */
+    row-gap: 20px; 
 }
 
-/* Chỉnh ảnh danh mục */
 .category-image-container img {
-    margin-bottom: 15px; /* Tăng khoảng cách giữa ảnh và nội dung danh mục */
+    margin-bottom: 15px;
 }
 
-/* Đảm bảo ảnh bài viết không bị giãn */
 .post-thumb img {
     width: 100%;
     height: auto;
-    border-radius: 5px; /* Tùy chọn: Thêm bo góc nhẹ cho ảnh */
+    border-radius: 5px;
 }
 
 /*comment*/
@@ -196,25 +189,12 @@
                                         </div>
                                         <!-- Post Comment & Share Area -->
                                         <div class="post-comment-share-area d-flex">
-                                            {{-- <div class="post-favourite mr-3">
-                                                <a href="#" class="text-muted"><i class="fa fa-heart-o" aria-hidden="true"></i> {{ $featuredBlog->likes_count }}</a>
-                                            </div> --}}
-                                            <div class="post-favourite mr-3">
-                                                <a href="javascript:void(0);" 
-                                                   class="text-muted like-btn" 
-                                                   data-id="{{ $featuredBlog->id }}">
-                                                    <i id="like-icon-{{ $featuredBlog->id }}" 
-                                                       class="fa 
-                                                       @if(auth()->check() && $featuredBlog->likes()->where('user_id', auth()->user()->id)->exists()) 
-                                                           fa-heart 
-                                                       @else 
-                                                           fa-heart-o 
-                                                       @endif" 
-                                                       aria-hidden="true"></i>
-                                                    <span id="like-count-{{ $featuredBlog->id }}">{{ $featuredBlog->likes_count }}</span>
+                                            <div class="post-favourite">
+                                                <a href="#" id="toggle-like">
+                                                    <i class="fa fa-heart-o" aria-hidden="true"></i>
+                                                    <span class="likes-count">{{ $featuredBlog->likes_count }}</span>
                                                 </a>
                                             </div>
-                                            
                                             
                                             <div class="post-comments">
                                                 <a href="#comments-section" class="text-muted">
@@ -222,26 +202,26 @@
                                                     {{ $featuredBlog->comments_count }}
                                                 </a>
                                             </div>
-                                            {{-- <div class="post-comments">
-                                                <a href="#" class="text-muted"><i class="fa fa-comment-o" aria-hidden="true"></i>  {{ $featuredBlog->comments_count }}</a>
+                                            {{-- <div class="post-favourite">
+                                                <a href="#" data-id="{{ $featuredBlog->id }}">
+                                                    <i class="fa {{ auth()->check() && $featuredBlog->likes()->where('user_id', auth()->id())->exists() ? 'fa-heart' : 'fa-heart-o' }}" aria-hidden="true"></i>
+                                                    {{ $featuredBlog->likes_count }}
+                                                </a>
+                                            </div>
+                                        
+                                            <!-- Nút Bình luận -->
+                                            <div class="post-comments">
+                                                <a href="#comments-section" class="text-muted">
+                                                    <i class="fa fa-comment-o" aria-hidden="true"></i>
+                                                    {{ $featuredBlog->comments_count }}
+                                                </a>
                                             </div> --}}
-                                            {{-- <form id="comment-form" method="POST" data-id="{{ $featuredBlog->id }}">
-                                                @csrf
-                                                <div class="form-group">
-                                                    <textarea class="form-control" name="content" rows="3" placeholder="Viết bình luận..."></textarea>
-                                                </div>
-                                                <button type="submit" class="btn btn-primary btn-sm">Gửi</button>
-                                            </form> --}}
-                                            
                                         </div>
                                     </div>
                                     <a href="#">
                                         <h2 class="post-headline mb-3">{{ $featuredBlog->title }}</h2>
                                     </a>
                                     {!! \Illuminate\Support\Str::limit(strip_tags($featuredBlog->content, '<p><br><strong><em>'), 5000) !!}
-
-                                    {{-- {!! \Illuminate\Support\Str::limit(strip_tags($featuredBlog->content, '<p><br>'), 5000) !!} --}}
-
                                 </div>
                             </div>
                         </div>
@@ -250,8 +230,8 @@
                 {{-- Tất cả bài viết --}}
                     <div class="row">
                         <!-- Single Post -->
-                        @foreach ($blogs->take(5) as $blog) <!-- Lấy 4 bài viết -->
-                            <div class="col-md-6 mb-4"> <!-- 2 cột mỗi hàng -->
+                        @foreach ($blogs->take(5) as $blog)
+                            <div class="col-md-6 mb-4">
                                 <div class="single-post wow fadeInUp" data-wow-delay="0.1s">
                                     <!-- Post Thumb -->
                                     <div class="post-thumb">
@@ -279,24 +259,9 @@
                                         </a>
                                         <!-- Post Stats -->
                                         <div class="post-stats mt-3 d-flex justify-content-between align-items-center">
-                                            <div class="post-favourite mr-3">
-                                                <a href="javascript:void(0);" 
-                                                   class="text-muted like-btn" 
-                                                   data-id="{{ $featuredBlog->id }}" 
-                                                   onclick="toggleLike({{ $featuredBlog->id }})">
-                                            
-                                                    <i id="like-icon-{{ $featuredBlog->id }}" class="fa 
-                                                        @if(auth()->check() && $featuredBlog->likes()->where('user_id', auth()->user()->id)->exists())
-                                                            fa-heart
-                                                        @else
-                                                            fa-heart-o
-                                                        @endif" 
-                                                        aria-hidden="true"></i>
-                                            
-                                                    <span id="like-count-{{ $featuredBlog->id }}">{{ $featuredBlog->likes_count }}</span>
-                                                </a>
+                                             <div class="post-favourite">
+                                                <a href="#"><i class="fa fa-heart-o" aria-hidden="true"></i> {{ $blog->likes_count }}</a>
                                             </div>
-                                            
                                             <div class="post-comments">
                                                 <a href="#" class="text-muted"><i class="fa fa-comment-o" aria-hidden="true"></i> {{ $blog->comments_count }}</a>
                                             </div>
@@ -331,29 +296,27 @@
                                         <p>{{ $comment->content }}</p>
                         
                                         <!-- Nút trả lời -->
+                                        @if (auth()->check())
                                         <button 
                                             class="btn btn-link btn-sm text-primary reply-toggle" 
                                             data-reply-id="{{ $comment->id }}" 
                                             style="text-decoration: underline;">Trả lời
                                         </button>
+                                        @endif
                                     </div>
                                 </div>
                         
                                 <!-- Form trả lời bình luận, ẩn mặc định -->
+                                @if (auth()->check())
                                 <form id="reply-form-{{ $comment->id }}" method="POST" action="{{ route('comment.reply', $comment->id) }}" style="display: none; margin-left: 60px;">
                                     @csrf
                                     <div class="form-group mt-3">
                                         <textarea class="form-control" name="content" rows="3" placeholder="Trả lời bình luận..."></textarea>
                                     </div>
-                                    <button type="submit" class="btn btn-primary btn-sm mt-2"style="margin-left: 60px;">Gửi</button>
+                                    <button type="submit" class="btn btn-primary btn-sm mt-2" style="margin-left: 60px;">Gửi</button>
                                 </form>
-                                {{-- <form id="comment-form" method="POST" action="{{ route('comment.store', $featuredBlog->id) }}">
-                                    @csrf
-                                    <div class="form-group mt-3">
-                                        <textarea class="form-control" name="content" rows="3" placeholder="Viết bình luận..."></textarea>
-                                    </div>
-                                    <button type="submit" class="btn btn-primary btn-sm mt-2">Gửi</button>
-                                </form> --}}
+                                @endif
+                
                                 <!-- Các câu trả lời -->
                                 @foreach ($comment->replies as $reply)
                                 <div class="comment-wrapper d-flex ml-4">
@@ -372,8 +335,24 @@
                             </li>
                             @endforeach
                         </ol>
+                
+                        <!-- Biểu mẫu bình luận -->
+                        @if (auth()->check())
+                        <form method="POST" action="{{ route('comment.store') }}">
+                            @csrf
+                            <div class="form-group mt-3">
+                                <textarea class="form-control" name="content" rows="3" placeholder="Viết bình luận..."></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-primary mt-2">Gửi bình luận</button>
+                        </form>
+                        @else
+                        <p class="text-muted mt-3">
+                            Vui lòng <a href="{{ route('login') }}">đăng nhập</a> để bình luận.
+                        </p>
+                        @endif
                     </div>
                 </div>
+                
             </div>
             <div class="col-12 col-sm-8 col-md-6 col-lg-4">
                 <div class="blog-sidebar mt-5 mt-lg-0">
@@ -436,26 +415,52 @@
     </div>
 </section>
 @endsection
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+<script src="https://cdn.ckeditor.com/ckeditor5/39.0.0/classic/ckeditor.js"></script>
 <script>
+    document.addEventListener('DOMContentLoaded', function () {
+        document.getElementById('toggle-like').addEventListener('click', function (e) {
+            e.preventDefault(); 
+            let icon = this.querySelector('i');
+            let likesCountSpan = this.querySelector('.likes-count');
+            
+            // Đổi class của thẻ <i> (fa-heart-o -> fa-heart và ngược lại)
+            if (icon.classList.contains('fa-heart-o')) {
+                icon.classList.remove('fa-heart-o');
+                icon.classList.add('fa-heart');
+            } else {
+                icon.classList.remove('fa-heart');
+                icon.classList.add('fa-heart-o');
+            }
+            
+            // Cập nhật số lượt thích (giả định tăng hoặc giảm 1)
+            let currentLikes = parseInt(likesCountSpan.textContent);
+            if (icon.classList.contains('fa-heart')) {
+                likesCountSpan.textContent = currentLikes + 1;
+            } else {
+                likesCountSpan.textContent = currentLikes - 1;
+            }
+        });
+    });     
+
 document.addEventListener('DOMContentLoaded', () => {
-   // Cấu hình SwiperJS
     const swiper = new Swiper('.swiper-container', {
-        slidesPerView: 3, // Hiển thị 3 danh mục
-        spaceBetween: 30, // Khoảng cách giữa các danh mục
+        slidesPerView: 3, 
+        spaceBetween: 30, 
         navigation: {
             nextEl: '.swiper-button-next',
             prevEl: '.swiper-button-prev',
         },
         breakpoints: {
             768: {
-                slidesPerView: 3, // Hiển thị 2 danh mục trên tablet
+                slidesPerView: 3, 
             },
             480: {
-                slidesPerView: 1, // Hiển thị 1 danh mục trên màn hình nhỏ
+                slidesPerView: 1, 
             }
         }
     });
-    // Khởi tạo ClassicEditor cho textarea có id 'content-editor'
     ClassicEditor
         .create(document.querySelector('#content-editor'))
         .catch(error => {
@@ -521,45 +526,11 @@ document.addEventListener('DOMContentLoaded', () => {
                     </div>
                 `;
                 commentList.appendChild(newComment);
-
-                // Xóa nội dung form
                 commentForm.reset();
             }
         })
         .catch(error => console.error('Error:', error));
     });
 });
-$(document).on('click', '.like-btn', function () {
-    const blogId = $(this).data('id'); // Lấy ID bài viết
-    const likeIcon = $('#like-icon-' + blogId); // Icon trái tim
-    const likeCount = $('#like-count-' + blogId); // Số lượt thích
 
-    $.ajax({
-        url: '/like/' + blogId,
-        type: 'POST',
-        data: {
-            _token: $('meta[name="csrf-token"]').attr('content') // CSRF token
-        },
-        success: function (response) {
-            // Cập nhật số lượt thích
-            likeCount.text(response.likes_count);
-
-            // Cập nhật icon trái tim
-            if (response.like) {
-                likeIcon.removeClass('fa-heart-o').addClass('fa-heart');
-            } else {
-                likeIcon.removeClass('fa-heart').addClass('fa-heart-o');
-            }
-        },
-        error: function (xhr, status, error) {
-            console.error('Error:', error);
-            alert('Đã xảy ra lỗi! Vui lòng thử lại.');
-        }
-    });
-});
 </script>
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="{{ asset('js/like.js') }}"></script>
-
-    <!-- Include CKEditor -->
-    <script src="https://cdn.ckeditor.com/ckeditor5/39.0.0/classic/ckeditor.js"></script>
