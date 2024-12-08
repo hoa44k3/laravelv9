@@ -37,6 +37,12 @@
                   </a>
               </li>
               <li class="nav-item">
+                <a href="{{ route('tags.index') }}">
+                    <i class="fas fa-th-large"></i>
+                    <p>Quản lý thẻ</p>
+                </a>
+            </li>
+              <li class="nav-item">
                   <a href="{{ route('likes.index') }}">
                       <i class="fas fa-th"></i>
                       <p>Quản lý lượt thích</p>
@@ -60,6 +66,12 @@
                       <p>Danh sách liên hệ</p>
                   </a>
               </li>
+              {{-- <li class="nav-item">
+                    <a href="{{ route('ctv.posts.index') }}">
+                        <i class="fas fa-table"></i>
+                        <p>Danh sách CTV</p>
+                    </a>
+                </li> --}}
               <li class="nav-item">
                   <a href="{{ route('statistics.index') }}">
                       <i class="fas fa-folder"></i>

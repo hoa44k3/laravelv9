@@ -41,6 +41,8 @@
                                     <th>Email</th>
                                     <th>Tin nhắn</th>
                                     <th>Ngày gửi</th>
+                                    <th>Phản hồi</th>
+                                    <th>Ngày phản hồi</th>
                                     <th>Hành động</th>
                                 </tr>
                             </thead>
@@ -52,10 +54,15 @@
                                         <td>{{ $contact->email }}</td>
                                         <td>{{ $contact->message }}</td>
                                         <td>{{ $contact->created_at->format('d/m/Y H:i') }}</td>
+                                        <td>{{ $contact->response ?? 'Chưa phản hồi' }}</td>
+                                        <td>{{ $contact->response_date ? \Carbon\Carbon::parse($contact->response_date)->format('d/m/Y H:i') : '-' }}</td>
                                         <td>
                                             <button type="button" class="btn btn-success btn-sm btn-reply" data-id="{{ $contact->id }}" data-name="{{ $contact->name }}" data-email="{{ $contact->email }}">
                                                 Phản hồi
                                             </button>
+                                            {{-- <button type="button" class="btn btn-warning btn-sm btn-edit" data-id="{{ $contact->id }}" data-response="{{ $contact->response }}">
+                                                Sửa 
+                                            </button> --}}
                                             <button type="button" class="btn btn-danger btn-sm btn-delete" data-id="{{ $contact->id }}">
                                                 Xóa
                                             </button>
@@ -65,7 +72,9 @@
                                     
                                 @endforeach
                             </tbody>
+
                         </table>
+
                     </div>
                 </div>
             </div>
@@ -100,6 +109,31 @@
         </div>
     </div>
 </div>
+<!-- Modal sửa phản hồi -->
+<div class="modal fade" id="editResponseModal" tabindex="-1" aria-labelledby="editResponseModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editResponseModalLabel">Sửa phản hồi</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form id="editResponseForm" method="POST" action="{{ route('contacts.editResponse') }}">
+                @csrf
+                <input type="hidden" name="contact_id" id="edit_contact_id">
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="edit_response" class="form-label">Phản hồi</label>
+                        <textarea name="response" id="edit_response" class="form-control" rows="4" required></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                    <button type="submit" class="btn btn-primary">Cập nhật</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 @include('backend.dashboard.component.custom')
 @include('backend.dashboard.component.script')
 <script>
@@ -116,5 +150,17 @@
         modal.show();
     });
 });
+//sửa phản hồi
+// document.querySelectorAll('.btn-edit').forEach(button => {
+//         button.addEventListener('click', function () {
+//             const id = this.getAttribute('data-id');
+//             const response = this.getAttribute('data-response');
 
+//             document.getElementById('edit_contact_id').value = id;
+//             document.getElementById('edit_response').value = response;
+
+//             const modal = new bootstrap.Modal(document.getElementById('editResponseModal'));
+//             modal.show();
+//         });
+//     });
 </script>

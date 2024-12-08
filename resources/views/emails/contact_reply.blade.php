@@ -1,4 +1,4 @@
-<!-- resources/views/emails/contact_reply.blade.php -->
+
 <!DOCTYPE html>
 <html>
 <head>

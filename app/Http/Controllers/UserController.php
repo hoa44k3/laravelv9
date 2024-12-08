@@ -19,33 +19,26 @@ class UserController extends Controller
         return view('users.create');
     }
     public function store(Request $request)
-{
-    // Xác thực dữ liệu
-    $validatedData = $request->validate([
-        'name' => 'required|string|max:255',
-        'email' => 'required|email|max:255|unique:users,email',
-        'phone' => 'nullable|string|max:20',
-        'address' => 'nullable|string|max:255',
-        'birthday' => 'nullable|date',
-        'password' => 'required|string|min:6',
-        'description' => 'nullable|string|max:500',
-        'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-    ]);
-
-    // Xử lý file ảnh nếu có
-    if ($request->hasFile('image')) {
-        $validatedData['image'] = $request->file('image')->store('avatars', 'public');
+    {
+        $validatedData = $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|max:255|unique:users,email',
+            'phone' => 'nullable|string|max:20',
+            'address' => 'nullable|string|max:255',
+            'birthday' => 'nullable|date',
+            'password' => 'required|string|min:6',
+            'role' => 'required|in:admin,user,ctv',
+            'description' => 'nullable|string|max:500',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+        ]);
+        if ($request->hasFile('image')) {
+            $validatedData['image'] = $request->file('image')->store('avatars', 'public');
+        }
+        $validatedData['password'] = bcrypt($validatedData['password']);
+        $validatedData['role'] = 'ctv';
+        User::create($validatedData);
+        return redirect()->route('users.index')->with('success', 'Người dùng đã được thêm thành công!');
     }
-
-    // Mã hóa mật khẩu
-    $validatedData['password'] = bcrypt($validatedData['password']);
-
-    // Tạo người dùng mới
-    User::create($validatedData);
-
-    // Quay lại trang danh sách người dùng với thông báo thành công
-    return redirect()->route('users.index')->with('success', 'Người dùng đã được thêm thành công!');
-}
 
     public function edit($id)
     {
@@ -61,6 +54,7 @@ class UserController extends Controller
             'email' => 'required|email|unique:users,email,' . $user->id,
             'phone' => 'nullable|string|max:20',
             'address' => 'nullable|string|max:255',
+            'role' => 'required|in:admin,user,ctv', 
             'birthday' => 'nullable|date',
             'description' => 'nullable|string|max:500',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',

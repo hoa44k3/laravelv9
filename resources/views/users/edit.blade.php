@@ -43,6 +43,15 @@
                             <label for="description">Description</label>
                             <textarea class="form-control" name="description" id="description" rows="4">{{ old('description', $user->description) }}</textarea>
                         </div>
+                        <div class="form-group">
+                            <label for="role">Vai trò:</label>
+                            <select name="role" id="role" class="form-control" required>
+                                <option value="user" {{ $user->role === 'user' ? 'selected' : '' }}>User</option>
+                                <option value="ctv" {{ $user->role === 'ctv' ? 'selected' : '' }}>Cộng Tác Viên</option>
+                                <option value="admin" {{ $user->role === 'admin' ? 'selected' : '' }}>Admin</option>
+                            </select>
+                        </div>
+                        
                         <button type="submit" class="btn btn-primary">Cập nhật người dùng</button>
                     </form>
                 </div>

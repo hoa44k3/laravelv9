@@ -22,9 +22,9 @@ return new class extends Migration
             $table->string('image')->nullable();
             $table->text('description')->nullable();
             $table->string('email')->nullable();
-            // $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
-            $table->string('role')->default('user')->after('password'); // Giá trị mặc định là 'user'
+            //$table->string('role')->default('user')->after('password'); 
+            $table->enum('role', ['admin', 'user', 'ctv'])->default('user');
             $table->rememberToken();
             $table->timestamps();
         });

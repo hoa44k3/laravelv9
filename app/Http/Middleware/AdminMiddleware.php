@@ -21,7 +21,7 @@ class AdminMiddleware
             return $next($request); // Admin được phép truy cập
         }
 
-       // return redirect()->route('index')->with('error', 'Bạn không có quyền truy cập.');
+        //return redirect()->route('index')->with('error', 'Bạn không có quyền truy cập.');
          return $next($request);
     }
 }

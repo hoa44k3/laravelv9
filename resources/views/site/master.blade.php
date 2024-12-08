@@ -94,6 +94,53 @@
 .footer-social-area .single-icon span {
     font-weight: 500; 
 }
+.signup-search-area {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 15px;
+}
+
+.login_register_area a,
+.user_area .logout a,
+.search_button a {
+    display: inline-block;
+    padding: 5px 10px;
+    text-decoration: none;
+    color: #333;
+    background-color: #f8f9fa;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 14px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.login_register_area a:hover,
+.user_area .logout a:hover,
+.search_button a:hover {
+    background-color: #007bff;
+    color: #fff;
+}
+
+.search-hidden-form {
+    display: none; /* Ban đầu ẩn */
+    position: absolute;
+    top: 100%;
+    right: 0;
+    background-color: white;
+    border: 1px solid #ddd;
+    padding: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    z-index: 100;
+}
+
+.search-hidden-form.active {
+    display: block; /* Hiển thị khi nhấn vào biểu tượng tìm kiếm */
+}
+
+.search_button {
+    cursor: pointer;
+}
 
 </style>
 <body>
@@ -106,14 +153,11 @@
     <div class="top_header_area">
         <div class="container">
             <div class="row">
-                <div class="col-5 col-sm-6"></div>
-                <!-- Login Register Area -->
-                <div class="col-7 col-sm-6">
+                <div class="col-12">
                     <div class="signup-search-area d-flex align-items-center justify-content-end">
                         @if (Auth::check())
                             <!-- User Logged In -->
                             <div class="user_area d-flex align-items-center">
-                                <!-- User Avatar -->
                                 <div class="user_avatar">
                                     <a href="{{ route('users.profile', Auth::id()) }}" aria-label="Xem hồ sơ">
                                         <img src="{{ Auth::user()->image ? asset('storage/' . Auth::user()->image) : asset('assets/img/default-avatar.png') }}" 
@@ -121,13 +165,11 @@
                                              style="width: 40px; height: 40px; border-radius: 50%;">
                                     </a>
                                 </div>
-                                <!-- User Name -->
                                 <div class="user_name ml-2">
                                     <a href="javascript:void(0);" id="viewUserDetail" data-id="{{ Auth::id() }}">
                                         {{ Str::limit(Auth::user()->name, 15) }}
                                     </a>
                                 </div>
-                                <!-- Logout Form -->
                                 <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                                     @csrf
                                 </form>
@@ -141,36 +183,37 @@
                             </div>
                         @else
                             <!-- Guest View -->
-                            <div class="login_register_area d-flex">
-                                <div class="login">
-                                    <a href="{{ route('auth.login') }}" aria-label="Đăng nhập" style="z-index: 10;">Đăng nhập</a>
+                            <div class="login_register_area d-flex align-items-center">
+                                <div class="login mr-2">
+                                    <a href="{{ route('auth.login') }}" aria-label="Đăng nhập">Đăng nhập</a>
                                 </div>
                                 <div class="register">
-                                    <a href="{{ route('auth.register') }}" aria-label="Đăng ký" style="z-index: 10;">Đăng ký</a>
+                                    <a href="{{ route('auth.register') }}" aria-label="Đăng ký">Đăng ký</a>
                                 </div>
                             </div>
-                            
                         @endif
-                        
+    
+                        <!-- Search Button -->
+                        <div class="search_button ml-3">
+                            <a class="searchBtn" href="#" aria-label="Tìm kiếm"><i class="fa fa-search" aria-hidden="true"></i></a>
+                        </div>
+    
+                        <!-- Search Form -->
+                        <div class="search-hidden-form">
+                            <form action="{{ route('site.search') }}" method="GET">
+                                <input type="search" name="query" id="search-anything" 
+                                       placeholder="Tìm bài viết..." 
+                                       aria-label="Tìm kiếm bài viết">
+                                <button type="submit" aria-label="Tìm kiếm">Tìm kiếm</button>
+                                <span class="searchBtn"><i class="fa fa-times" aria-hidden="true"></i></span>
+                            </form>
+                        </div>
                     </div>
-                    {{-- <!-- Search Button -->
-                    <div class="search_button">
-                        <a class="searchBtn" href="#" aria-label="Tìm kiếm"><i class="fa fa-search" aria-hidden="true"></i></a>
-                    </div>
-                    <!-- Search Form -->
-                    <div class="search-hidden-form">
-                        <form action="{{ route('site.search') }}" method="GET">
-                            <input type="search" name="query" id="search-anything" 
-                                   placeholder="Tìm bài viết..." 
-                                   aria-label="Tìm kiếm bài viết">
-                            <button type="submit" aria-label="Tìm kiếm">Tìm kiếm</button>
-                            <span class="searchBtn"><i class="fa fa-times" aria-hidden="true"></i></span>
-                        </form>
-                    </div> --}}
                 </div>
             </div>
         </div>
     </div>
+    
     <!-- ****** Top Header Area End ****** -->
 
     <!-- ****** Header Area Start ****** -->
@@ -298,73 +341,85 @@
 <script>
     document.addEventListener("DOMContentLoaded", function () {
     // Bắt sự kiện khi nhấn vào tên người dùng
-    document.getElementById("viewUserDetail").addEventListener("click", function () {
-        const userId = this.getAttribute("data-id");
+        document.getElementById("viewUserDetail").addEventListener("click", function () {
+            const userId = this.getAttribute("data-id");
 
-        // Hiển thị modal và thêm loader
-        const modal = new bootstrap.Modal(document.getElementById("userDetailModal"));
-        document.getElementById("userDetailContent").innerHTML = `
-            <div class="text-center">
-                <div class="spinner-border text-primary" role="status">
-                    <span class="visually-hidden">Đang tải...</span>
+            // Hiển thị modal và thêm loader
+            const modal = new bootstrap.Modal(document.getElementById("userDetailModal"));
+            document.getElementById("userDetailContent").innerHTML = `
+                <div class="text-center">
+                    <div class="spinner-border text-primary" role="status">
+                        <span class="visually-hidden">Đang tải...</span>
+                    </div>
                 </div>
-            </div>
-        `;
-        modal.show();
+            `;
+            modal.show();
 
-        // Gửi request AJAX để lấy dữ liệu người dùng
-        fetch(`/users/${userId}/profile`, {
-            method: "GET",
-            headers: {
-                "X-Requested-With": "XMLHttpRequest",
-                "Content-Type": "application/json",
-            },
-        })
-            .then((response) => response.json())
-            .then((data) => {
-                if (data.success) {
-                    // Cập nhật nội dung modal
-                    document.getElementById("userDetailContent").innerHTML = `
-                        <div class="text-center mb-3">
-                            <img 
-                                src="${data.user.image}" 
-                                alt="Avatar" 
-                                class="img-thumbnail rounded-circle" 
-                                style="width: 100px; height: 100px;"
-                            >
-                        </div>
-                        <table class="table table-bordered">
-                            <tr>
-                                <th>Tên</th>
-                                <td>${data.user.name}</td>
-                            </tr>
-                            <tr>
-                                <th>Email</th>
-                                <td>${data.user.email}</td>
-                            </tr>
-                            <tr>
-                                <th>Số điện thoại</th>
-                                <td>${data.user.phone ?? 'N/A'}</td>
-                            </tr>
-                            <tr>
-                                <th>Địa chỉ</th>
-                                <td>${data.user.address ?? 'N/A'}</td>
-                            </tr>
-                            <tr>
-                                <th>Ngày sinh</th>
-                                <td>${data.user.birthday ?? 'N/A'}</td>
-                            </tr>
-                        </table>
-                    `;
-                } else {
-                    document.getElementById("userDetailContent").innerHTML = `<p class="text-danger">Không thể tải thông tin người dùng.</p>`;
-                }
+            // Gửi request AJAX để lấy dữ liệu người dùng
+            fetch(`/users/${userId}/profile`, {
+                method: "GET",
+                headers: {
+                    "X-Requested-With": "XMLHttpRequest",
+                    "Content-Type": "application/json",
+                },
             })
-            .catch(() => {
-                document.getElementById("userDetailContent").innerHTML = `<p class="text-danger">Đã xảy ra lỗi khi tải dữ liệu.</p>`;
-            });
+                .then((response) => response.json())
+                .then((data) => {
+                    if (data.success) {
+                        // Cập nhật nội dung modal
+                        document.getElementById("userDetailContent").innerHTML = `
+                            <div class="text-center mb-3">
+                                <img 
+                                    src="${data.user.image}" 
+                                    alt="Avatar" 
+                                    class="img-thumbnail rounded-circle" 
+                                    style="width: 100px; height: 100px;"
+                                >
+                            </div>
+                            <table class="table table-bordered">
+                                <tr>
+                                    <th>Tên</th>
+                                    <td>${data.user.name}</td>
+                                </tr>
+                                <tr>
+                                    <th>Email</th>
+                                    <td>${data.user.email}</td>
+                                </tr>
+                                <tr>
+                                    <th>Số điện thoại</th>
+                                    <td>${data.user.phone ?? 'N/A'}</td>
+                                </tr>
+                                <tr>
+                                    <th>Địa chỉ</th>
+                                    <td>${data.user.address ?? 'N/A'}</td>
+                                </tr>
+                                <tr>
+                                    <th>Ngày sinh</th>
+                                    <td>${data.user.birthday ?? 'N/A'}</td>
+                                </tr>
+                            </table>
+                        `;
+                    } else {
+                        document.getElementById("userDetailContent").innerHTML = `<p class="text-danger">Không thể tải thông tin người dùng.</p>`;
+                    }
+                })
+                .catch(() => {
+                    document.getElementById("userDetailContent").innerHTML = `<p class="text-danger">Đã xảy ra lỗi khi tải dữ liệu.</p>`;
+                });
+        });
     });
+    document.addEventListener('DOMContentLoaded', function () {
+    const searchBtn = document.querySelector('.search_button .searchBtn');
+    const searchForm = document.querySelector('.search-hidden-form');
+
+    if (searchBtn && searchForm) {
+        searchBtn.addEventListener('click', function (e) {
+            e.preventDefault();
+            searchForm.classList.toggle('active');
+        });
+    }
 });
+
 
 </script>
     <!-- Jquery-2.2.4 js -->

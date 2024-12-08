@@ -101,6 +101,11 @@
                                     <td>{{ $user->birthday ? \Carbon\Carbon::parse($user->birthday)->format('d-m-Y') : '' }}</td>
                                     <td>{{ $user->description }}</td>
                                     <td>
+                                        <span class="badge {{ $user->role === 'admin' ? 'badge-danger' : ($user->role === 'ctv' ? 'badge-warning' : 'badge-secondary') }}">
+                                            {{ ucfirst($user->role) }}
+                                        </span>
+                                    </td>
+                                    <td>
                                         <a href="{{ route('users.edit', $user->id) }}" class="btn btn-warning btn-sm">Sửa</a>
                                         <button type="button" class="btn btn-danger btn-sm btn-delete" data-id="{{ $user->id }}">Xóa</button>
                                     </td>

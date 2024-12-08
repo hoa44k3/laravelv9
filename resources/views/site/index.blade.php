@@ -202,26 +202,18 @@
                                                     {{ $featuredBlog->comments_count }}
                                                 </a>
                                             </div>
-                                            {{-- <div class="post-favourite">
-                                                <a href="#" data-id="{{ $featuredBlog->id }}">
-                                                    <i class="fa {{ auth()->check() && $featuredBlog->likes()->where('user_id', auth()->id())->exists() ? 'fa-heart' : 'fa-heart-o' }}" aria-hidden="true"></i>
-                                                    {{ $featuredBlog->likes_count }}
-                                                </a>
-                                            </div>
                                         
-                                            <!-- Nút Bình luận -->
-                                            <div class="post-comments">
-                                                <a href="#comments-section" class="text-muted">
-                                                    <i class="fa fa-comment-o" aria-hidden="true"></i>
-                                                    {{ $featuredBlog->comments_count }}
-                                                </a>
-                                            </div> --}}
                                         </div>
                                     </div>
                                     <a href="#">
                                         <h2 class="post-headline mb-3">{{ $featuredBlog->title }}</h2>
                                     </a>
                                     {!! \Illuminate\Support\Str::limit(strip_tags($featuredBlog->content, '<p><br><strong><em>'), 5000) !!}
+                                        <div class="post-tags mt-3">
+                                            @foreach ($featuredBlog->tags as $tag)
+                                                <span class="badge bg-primary">{{ $tag->name }}</span>
+                                            @endforeach
+                                        </div>
                                 </div>
                             </div>
                         </div>
@@ -265,6 +257,11 @@
                                             <div class="post-comments">
                                                 <a href="#" class="text-muted"><i class="fa fa-comment-o" aria-hidden="true"></i> {{ $blog->comments_count }}</a>
                                             </div>
+                                        </div>
+                                        <div class="post-tags mt-2">
+                                            @foreach ($blog->tags as $tag)
+                                                <span class="badge bg-primary">{{ $tag->name }}</span>
+                                            @endforeach
                                         </div>
                                     </div>
                                 </div>
@@ -340,11 +337,14 @@
                         @if (auth()->check())
                         <form method="POST" action="{{ route('comment.store') }}">
                             @csrf
+                            <!-- Đảm bảo blog_id được gửi -->
+                            <input type="hidden" name="blog_id" value="{{ $featuredBlog->id }}">
                             <div class="form-group mt-3">
                                 <textarea class="form-control" name="content" rows="3" placeholder="Viết bình luận..."></textarea>
                             </div>
                             <button type="submit" class="btn btn-primary mt-2">Gửi bình luận</button>
                         </form>
+                        
                         @else
                         <p class="text-muted mt-3">
                             Vui lòng <a href="{{ route('login') }}">đăng nhập</a> để bình luận.
@@ -352,7 +352,6 @@
                         @endif
                     </div>
                 </div>
-                
             </div>
             <div class="col-12 col-sm-8 col-md-6 col-lg-4">
                 <div class="blog-sidebar mt-5 mt-lg-0">

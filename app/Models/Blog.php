@@ -29,24 +29,28 @@ class Blog extends Model
     }
     public function totalLikes()
     {
-         return $this->likes()->count(); // Tổng số lượt thích
+         return $this->likes()->count(); 
     }
 
     public function totalComments()
     {
-         return $this->comments()->count(); // Tổng số bình luận
+         return $this->comments()->count(); 
     }
     public function totalUsers()
     {
-         return $this->users()->count(); // Tổng số người dùng đăng ký
+         return $this->users()->count(); 
     }
     public function getImagePathAttribute($value)
     {
-        return $value ? asset($value) : null; // Trả về đường dẫn chính xác
+        return $value ? asset($value) : null; 
     }
     public function getExcerptAttribute()
     {
-        return Str::limit($this->content, 150); // Lấy 150 ký tự đầu tiên của nội dung bài viết
+        return Str::limit($this->content, 150); 
     }
-
+    public function tags()
+    {
+        return $this->hasMany(Tag::class, 'blog_id');
+    }
+    
 }

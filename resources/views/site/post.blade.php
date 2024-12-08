@@ -67,7 +67,11 @@
                                     </div>
                            
                                      {!! \Illuminate\Support\Str::limit(strip_tags($featuredBlog->content, '<p><br><strong><em>'), 5000) !!}
-
+                                        <div class="post-tags mt-3">
+                                            @foreach ($featuredBlog->tags as $tag)
+                                                <span class="badge bg-primary">{{ $tag->name }}</span>
+                                            @endforeach
+                                        </div>
                                 </div>
                             </div>
     
@@ -186,6 +190,11 @@
                                             </div>
                                         </div>
                                             {!! \Illuminate\Support\Str::limit(strip_tags($blog->content, '<p><br><strong><em>'), 50) !!}
+                                                <div class="post-tags mt-2">
+                                                    @foreach ($blog->tags as $tag)
+                                                        <span class="badge bg-primary">{{ $tag->name }}</span>
+                                                    @endforeach
+                                                </div>
                                     </div>
                                 </div>                         
                             @endforeach   

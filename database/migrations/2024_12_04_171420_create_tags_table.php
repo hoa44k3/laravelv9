@@ -13,14 +13,12 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('contacts', function (Blueprint $table) {
+        Schema::create('tags', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('email');
-            $table->text('message');
-            $table->text('response')->nullable()->after('message');
-            $table->timestamp('response_date')->nullable()->change();;
+            $table->unsignedBigInteger('blog_id')->nullable();
             $table->timestamps();
+            $table->foreign('blog_id')->references('id')->on('blogs')->onDelete('cascade');
         });
     }
 
@@ -31,6 +29,9 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('contacts');
+        Schema::table('tags', function (Blueprint $table) {
+            $table->dropForeign(['blog_id']);
+            $table->dropColumn('blog_id');
+        });
     }
 };

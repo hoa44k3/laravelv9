@@ -43,6 +43,15 @@
                             <label for="description">Description</label>
                             <textarea class="form-control" name="description" id="description" rows="4"></textarea>
                         </div>
+                        <div class="form-group">
+                            <label for="role">Vai trò:</label>
+                            <select name="role" id="role" class="form-control" required>
+                                <option value="user">User</option>
+                                <option value="ctv">Cộng Tác Viên</option>
+                                <option value="admin">Admin</option>
+                            </select>
+                        </div>
+                        
                         <button type="submit" class="btn btn-primary">Thêm người dùng</button>
                     </form>
                 </div>

@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Hash;
 use App\Models\User;
+use Illuminate\Support\Facades\Validator;
 
 class AuthController extends Controller
 {
@@ -24,29 +25,38 @@ class AuthController extends Controller
     }
 
     // Xử lý đăng ký
-    public function register(AuthRequest $request)
+    public function register(Request $request)
     {
-        
-        // Validate dữ liệu
-        $request->validate([
-           'email' => 'required|email|unique:users,email|max:255',
-            'password' => 'required|min:8|confirmed',
+        // Xác thực dữ liệu đầu vào
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:users',
+            'password' => 'required|string|min:6|confirmed',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
-        // Kiểm tra email tồn tại
-        // if (User::where('email', $request->input('email'))->exists()) {
-        //     return redirect()->back()->with('error', 'Email đã tồn tại');
-        // }
+        $imagePath = null;
 
-        // Tạo người dùng mới
-        $user = new User();
-        $user->name = $request->input('name','Người dùng'); // Nếu có trường 'name' trong form
-        $user->email = $request->input('email');
-        $user->password = Hash::make($request->input('password'));
-        $user->role = 'user'; // Mặc định role là 'user'
-        $user->save();
+        if ($request->hasFile('image')) {
+            $imagePath = $request->file('image')->store('users', 'public'); // Lưu ảnh vào thư mục public/storage/users
+        }
+        if ($validator->fails()) {
+            return redirect()->route('auth.register')
+                ->withErrors($validator)
+                ->withInput();
+        }
 
-        return redirect()->route('auth.login')->with('success', 'Đăng ký thành công');
+        // Tạo tài khoản mới
+        User::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => Hash::make($request->password),
+            'image' => $imagePath,
+        ]);
+
+        // Chuyển hướng đến trang đăng nhập hoặc dashboard
+        return redirect()->route('auth.login')->with('success', 'Đăng ký thành công! Hãy đăng nhập.');
     }
+    
 
     // Xử lý đăng nhập
     public function login(Request $request)

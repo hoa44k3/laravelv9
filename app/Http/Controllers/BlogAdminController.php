@@ -8,6 +8,7 @@ use App\Models\Category;
 use App\Models\Comment;
 use App\Models\User;
 use App\Models\Like;
+use App\Models\Tag;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -16,19 +17,14 @@ class BlogAdminController extends Controller
 {
     public function home()
     {
-       // Lấy danh sách bài viết kèm số lượt thích và bình luận
-            $blogs = Blog::with('user', 'category') // Lấy quan hệ với user và category
-            ->withCount(['likes', 'comments'])  // Đếm số lượt thích và bình luận
+            $blogs = Blog::with('user', 'category','tags') 
+            ->withCount(['likes', 'comments'])  
             ->get()
             ->sortByDesc(function ($blog) {
-                // Tính tổng điểm nổi bật (lượt thích + bình luận)
                 return $blog->likes_count + $blog->comments_count;
             });
-
-        // Lấy bài viết nổi bật nhất
-        $featuredBlog = $blogs->first(); // Bài viết có điểm cao nhất
-        $otherBlogs = $blogs->skip(1);   // Các bài viết khác
-
+        $featuredBlog = $blogs->first(); 
+        $otherBlogs = $blogs->skip(1);   
         return view('blogs.home', compact('featuredBlog', 'otherBlogs'));
                 
     }
@@ -42,7 +38,7 @@ class BlogAdminController extends Controller
     
     public function store(Request $request)
     {
-        // dd($request->all());
+         //dd($request->all());
         $request->validate([
             'title' => 'required|string|max:255',
             'content' => 'required',
@@ -76,21 +72,10 @@ class BlogAdminController extends Controller
         $blog = Blog::findOrFail($id);
         $categories = Category::all();
         $users = User::all();
-        return view('blogs.edit', compact('blog', 'categories','users'));
+        $tags = Tag::all();
+        return view('blogs.edit', compact('blog', 'categories','users','tags'));
     }
-    public function destroy($id)
-    {
-        $blog = Blog::findOrFail($id);
-
-            if ($blog->image_path) {
-              
-                Storage::disk('public')->delete(' main/' . $blog->image_path);
-             }
-
-            $blog->delete();
-            return response()->json(['status' => 'success']);
-           
-    }
+    
 
     public function update(Request $request, $id)
     {
@@ -111,10 +96,14 @@ class BlogAdminController extends Controller
             $imagePath = $request->file('image_path')->store('main', 'public');
             $edit->image_path = $imagePath;
         }
+        if ($request->has('tag_ids')) {
+                $edit->tags()->sync($request->tag_ids); // Đồng bộ các thẻ tag
+         }
 
         $edit->save();
         return redirect()->route('blogs.home')->with('success', 'Bài viết đã được cập nhật thành công!');
     }
+    
     public function show($id)
     {
         $blog = Blog::findOrFail($id);

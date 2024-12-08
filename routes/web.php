@@ -11,6 +11,7 @@ use App\Http\Controllers\CategoryAdminController;
 use App\Http\Controllers\LikeAdminController;
 use App\Http\Controllers\Customer\HomeController;
 use App\Http\Controllers\ContactController;
+use App\Http\Controllers\TagController;
 
 Route::post('/logout', function () {
     Auth::logout();
@@ -97,10 +98,23 @@ Route::prefix('comments')->name('comment.')->group(function () {
     Route::delete('/delete/{comment}', [CommentController::class, 'destroy'])->name('destroy');
     Route::post('/reply/{comment}', [CommentController::class, 'reply'])->name('reply');
 });
-Route::middleware('auth')->post('/comment/store', [CommentController::class, 'store'])->name('comment.store');
+//Route::middleware('auth')->post('/comment/store', [CommentController::class, 'store'])->name('comment.store');
+Route::post('/comment/store', [CommentController::class, 'store'])->middleware('auth')->name('comment.store');
 
 Route::get('/contacts', [ContactController::class, 'index'])->name('contacts.index');
 Route::post('/contacts/reply', [ContactController::class, 'reply'])->name('contacts.reply');
+Route::post('/contacts/edit-response', [ContactController::class, 'editResponse'])->name('contacts.editResponse');
 
+
+Route::resource('tags', TagController::class);
+use App\Http\Controllers\CtvPostController;
+
+Route::prefix('ctv')->name('ctv.')->middleware(['auth', 'role:ctv'])->group(function () {
+    Route::resource('posts', CtvPostController::class);
+});
+
+// Route::middleware(['auth', 'ctv'])->group(function () {
+//     Route::resource('ctv/posts', CtvPostController::class);
+// });
 
 

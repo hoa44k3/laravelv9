@@ -91,14 +91,23 @@
         <h1>GeeksforGeeks</h1>
         <h3>Nhập thông tin để tạo tài khoản</h3>
 
-            @if($errors->has('email'))
-            <div class="alert alert-danger">
-                {{ $errors->first('email') }}
-            </div>
+                @if (session('success'))
+                <div class="alert alert-success">
+                    {{ session('success') }}
+                </div>
+            @endif
+            
+            @if ($errors->any())
+                <div class="alert alert-danger">
+                    <ul>
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
             @endif
     
-
-        <form method="POST" action="{{ route('auth.register.submit') }}">
+        <form method="POST" action="{{ route('auth.register.submit') }}" enctype="multipart/form-data">
             @csrf
             <label for="name">Tên:</label>
             <input type="text" id="name" name="name" placeholder="Nhập tên của bạn" value="{{ old('name') }}">
@@ -111,7 +120,9 @@
 
             <label for="password_confirmation">Nhập lại mật khẩu:</label>
             <input type="password" id="password_confirmation" name="password_confirmation" placeholder="Nhập lại mật khẩu">
-
+            <label for="image">Ảnh đại diện:</label>
+            <input type="file" id="image" name="image" accept="image/*">
+            
             <button type="submit">Đăng Ký</button>
         </form>
 

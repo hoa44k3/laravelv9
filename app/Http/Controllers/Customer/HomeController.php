@@ -14,7 +14,7 @@ class HomeController extends Controller
 {
     public function index(){
         $categories = Category::all();
-        $featuredBlog = Blog::withCount(['likes', 'comments'])
+        $featuredBlog = Blog::withCount(['likes', 'comments','tags'])
             ->with('user', 'comments.user')
             ->latest() 
             ->first();
@@ -27,30 +27,28 @@ class HomeController extends Controller
         return view('site.index', compact('categories', 'blogs', 'featuredBlog'));
     }
     public function toggleLike(Request $request, $id)
-{
-    if (!auth()->check()) {
-        return response()->json(['success' => false, 'message' => 'Bạn phải đăng nhập để thực hiện hành động này.']);
+    {
+        if (!auth()->check()) {
+            return response()->json(['success' => false, 'message' => 'Bạn phải đăng nhập để thực hiện hành động này.']);
+        }
+
+        $blog = Blog::findOrFail($id);
+
+        if ($blog->likes()->where('user_id', auth()->id())->exists()) {
+            $blog->likes()->where('user_id', auth()->id())->delete();
+            $like = false;
+        } else {
+            $blog->likes()->create(['user_id' => auth()->id()]);
+            $like = true;
+        }
+
+        return response()->json([
+            'success' => true,
+            'like' => $like,
+            'likes_count' => $blog->likes()->count(),
+        ]);
     }
 
-    $blog = Blog::findOrFail($id);
-
-    if ($blog->likes()->where('user_id', auth()->id())->exists()) {
-        $blog->likes()->where('user_id', auth()->id())->delete();
-        $like = false;
-    } else {
-        $blog->likes()->create(['user_id' => auth()->id()]);
-        $like = true;
-    }
-
-    return response()->json([
-        'success' => true,
-        'like' => $like,
-        'likes_count' => $blog->likes()->count(),
-    ]);
-}
-
-
-    
     public function contact(){
         $blog = Blog::first();
         return view('site.contact',compact('blog'));
@@ -152,5 +150,18 @@ class HomeController extends Controller
 
         return view('site.search', compact('blogs', 'query'));
     }
-
+    public function reply(Request $request, Comment $comment)
+    {
+        $request->validate([
+            'content' => 'required|max:255',
+        ]);
+    
+        $comment->replies()->create([
+            'content' => $request->input('content'),
+            'user_id' => auth()->id(),
+        ]);
+    
+        return redirect()->back()->with('success', 'Trả lời đã được thêm.');
+    }
+    
 }
