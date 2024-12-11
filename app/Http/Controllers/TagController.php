@@ -8,14 +8,12 @@ use App\Models\Tag;
 use App\Models\Blog;
 class TagController extends Controller
 {
-    // Hiển thị danh sách tags
     public function index()
     {
         $tags = Tag::all();
         return view('tags.index', compact('tags'));
     }
 
-    // Hiển thị form tạo tag
     public function create()
     {
         $blogs = Blog::select('id', 'title')->get();
@@ -23,7 +21,6 @@ class TagController extends Controller
         // return view('tags.create');
     }
 
-    // Lưu tag mới vào cơ sở dữ liệu
     public function store(Request $request)
     {
         $request->validate([
@@ -35,21 +32,18 @@ class TagController extends Controller
         return redirect()->route('tags.index')->with('success', 'Tag created successfully.');
     }
 
-    // Hiển thị chi tiết tag
     public function show($id)
     {
         $tag = Tag::findOrFail($id);
         return view('tags.show', compact('tag'));
     }
 
-    // Hiển thị form sửa tag
     public function edit($id)
     {
         $tag = Tag::findOrFail($id);
         return view('tags.edit', compact('tag'));
     }
 
-    // Cập nhật tag trong cơ sở dữ liệu
     public function update(Request $request, $id)
     {
         $request->validate([
@@ -62,7 +56,6 @@ class TagController extends Controller
         return redirect()->route('tags.index')->with('success', 'Tag updated successfully.');
     }
 
-    // Xóa tag
     public function destroy($id)
     {
         $tag = Tag::findOrFail($id);

@@ -24,8 +24,6 @@ class ContactController extends Controller
 
         // Lấy thông tin liên hệ từ ID
         $contact = Contact::find($request->contact_id);
-
-        // Lưu thông tin phản hồi vào cơ sở dữ liệu
         $contact->response = $request->response;
         $contact->response_date = now();
         $contact->save();
@@ -44,14 +42,10 @@ class ContactController extends Controller
         ]);
 
         $contact = Contact::findOrFail($request->contact_id);
-
-        // Cập nhật phản hồi
         $contact->update([
             'response' => $request->response,
             'response_date' => now(),
         ]);
-
-        // Gửi email phản hồi
         Mail::to($contact->email)->send(new ContactReplyMail($request->response));
 
         return back()->with('success', 'Phản hồi đã được gửi và lưu thành công.');
@@ -64,8 +58,6 @@ class ContactController extends Controller
     ]);
 
     $contact = Contact::findOrFail($request->contact_id);
-
-    // Cập nhật phản hồi
     $contact->update([
         'response' => $request->response,
         'response_date' => now(),

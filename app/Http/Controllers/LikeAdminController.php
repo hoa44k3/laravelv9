@@ -65,21 +65,16 @@ class LikeAdminController extends Controller
 {
     $user = auth()->user();
     $blog = Blog::findOrFail($blogId);
-
-    // Kiểm tra nếu user đã thích blog
     $existingLike = $blog->likes()->where('user_id', $user->id)->first();
 
     if ($existingLike) {
-        // Hủy thích
         $existingLike->delete();
         $isLiked = false;
     } else {
-        // Thêm thích
+       
         $blog->likes()->create(['user_id' => $user->id]);
         $isLiked = true;
     }
-
-    // Lấy số lượt thích mới
     $likesCount = $blog->likes()->count();
 
     return response()->json([

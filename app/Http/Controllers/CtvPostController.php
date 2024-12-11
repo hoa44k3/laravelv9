@@ -7,20 +7,17 @@ use Illuminate\Http\Request;
 use App\Models\Blog;
 class CtvPostController extends Controller
 {
-     // Danh sách bài viết
      public function index()
      {
          $posts = Blog::where('user_id', auth()->id())->get();
          return view('ctv.posts.index', compact('posts'));
      }
- 
-     // Hiển thị form tạo bài viết
+
      public function create()
      {
          return view('ctv.posts.create');
      }
  
-     // Lưu bài viết
      public function store(Request $request)
      {
          $request->validate([
@@ -32,20 +29,18 @@ class CtvPostController extends Controller
              'title' => $request->title,
              'content' => $request->content,
              'user_id' => auth()->id(),
-             'status' => 'pending', // Mặc định chờ duyệt
+             'status' => 'pending', 
          ]);
  
          return redirect()->route('ctv.posts.index')->with('success', 'Bài viết đã được gửi duyệt.');
      }
  
-     // Hiển thị form sửa bài viết
      public function edit($id)
      {
          $post = Blog::where('user_id', auth()->id())->findOrFail($id);
          return view('ctv.posts.edit', compact('post'));
      }
  
-     // Cập nhật bài viết
      public function update(Request $request, $id)
      {
          $request->validate([
@@ -59,7 +54,6 @@ class CtvPostController extends Controller
          return redirect()->route('ctv.posts.index')->with('success', 'Bài viết đã được cập nhật.');
      }
  
-     // Xóa bài viết
      public function destroy($id)
      {
          $post = Blog::where('user_id', auth()->id())->findOrFail($id);
