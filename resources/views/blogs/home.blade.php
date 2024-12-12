@@ -139,7 +139,6 @@
                                         <td>
                                             <img src="{{ asset('storage/' . ltrim($blog->image_path, 'http://127.0.0.1:8000/')) }}" 
                                             alt="Image" style="width: 90px; height: 70px; object-fit: cover;">
-                                       
                                         </td>
                                         <td>{{ $blog->category ? $blog->category->name : 'Không có danh mục' }}</td>    
                                         <td>{{ $blog->likes_count }}</td>

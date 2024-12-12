@@ -59,6 +59,9 @@ class BlogAdminController extends Controller
                 $blog->image_path = $path;
             }
             $blog->save();
+            if ($request->has('tag_ids')) {
+                $blog->tags()->sync($request->tag_ids); // Đồng bộ tag
+            }
             return redirect()->route('blogs.home')->with('success', 'Bài viết đã được tạo thành công!');
         } catch (\Exception $e) {
             Log::error('Lỗi khi tạo bài viết: ' . $e->getMessage());
@@ -90,10 +93,14 @@ class BlogAdminController extends Controller
 
         if ($request->hasFile('image_path')) {
 
-            if ($edit->image_path) {
-                Storage::delete('public/' . $edit->image_path);
+            // if ($edit->image_path) {
+            //     Storage::delete('public/' . $edit->image_path);
+            // }
+            if ($edit->image_path && Storage::exists("storage/" . $edit->image_path)) {
+                Storage::delete("storage/" . $edit->image_path);
             }
-            $imagePath = $request->file('image_path')->store('main', 'public');
+            
+            $imagePath = $request->file('image_path')->store('storage/main', 'public');
             $edit->image_path = $imagePath;
         }
         if ($request->has('tag_ids')) {
