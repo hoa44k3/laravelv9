@@ -8,7 +8,7 @@ use Illuminate\Support\Str;
 class Blog extends Model
 {
     use HasFactory;
-    protected $fillable = ['title', 'content', 'image_path', 'user_id', 'status','likes', 'comment_count','category_id'];
+    protected $fillable = ['title', 'content', 'image_path', 'user_id', 'status','likes', 'comment_count','category_id','tag_id'];
 
     public function user()
     {

@@ -12,6 +12,10 @@ use App\Http\Controllers\LikeAdminController;
 use App\Http\Controllers\Customer\HomeController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\TagController;
+use App\Http\Controllers\GuideController;
+use App\Http\Controllers\CtvController;
+use App\Http\Controllers\EventController;
+use App\Http\Controllers\JobController;
 
 Route::post('/logout', function () {
     Auth::logout();
@@ -35,7 +39,13 @@ Route::get('/', [HomeController::class, 'index'])->name('index');
 Route::post('/like/{id}', [HomeController::class, 'toggleLike'])->name('like')->middleware('auth');
 Route::get('/blog', [HomeController::class, 'blog'])->name('blog');
 Route::get('/contact', [HomeController::class, 'contact'])->name('contact');
+Route::get('/guides', [HomeController::class, 'guides'])->name('guides');
+Route::get('/event', [HomeController::class, 'event'])->name('event');
+Route::get('/job', [HomeController::class, 'job'])->name('job');
 Route::get('/post/{id}', [HomeController::class, 'post'])->name('site.post');
+Route::get('/guidesdetail/{id}', [HomeController::class, 'guidesdetail'])->name('guidesdetail');
+Route::get('/eventdetail/{id}', [HomeController::class, 'eventdetail'])->name('eventdetail');
+Route::get('/jobdetail/{id}', [HomeController::class, 'jobdetail'])->name('jobdetail');
 Route::post('/contact', [HomeController::class, 'sendContact'])->name('contact.send');
 Route::get('/category', [HomeController::class, 'category'])->name('category');
 Route::get('/search', [HomeController::class, 'search'])->name('site.search');
@@ -69,7 +79,6 @@ Route::prefix('admin')->group(function () {
 
 Route::prefix('admin')->group(function () {
     Route::get('categories', [CategoryAdminController::class, 'home'])->name('category.home');
- 
     Route::get('category/create', [CategoryAdminController::class, 'create'])->name('category.create');
     Route::get('category/{id}/edit', [CategoryAdminController::class, 'edit'])->name('category.edit');
     Route::put('category/{id}', [CategoryAdminController::class, 'update'])->name('category.update'); 
@@ -107,14 +116,48 @@ Route::post('/contacts/edit-response', [ContactController::class, 'editResponse'
 
 
 Route::resource('tags', TagController::class);
-use App\Http\Controllers\CtvPostController;
 
-Route::prefix('ctv')->name('ctv.')->middleware(['auth', 'role:ctv'])->group(function () {
-    Route::resource('posts', CtvPostController::class);
+
+
+Route::middleware('auth')->prefix('ctvien')->group(function () {
+    Route::get('/', [CtvController::class, 'index'])->name('ctvien.index');
+    Route::get('/create', [CtvController::class, 'create'])->name('ctvien.create');
+    Route::post('/store', [CtvController::class, 'store'])->name('ctvien.store');
+    Route::get('/edit/{blog}', [CtvController::class, 'edit'])->name('ctvien.edit');
+    Route::put('/update/{blog}', [CtvController::class, 'update'])->name('ctvien.update');
+    Route::delete('/delete/{blog}', [CtvController::class, 'destroy'])->name('ctvien.destroy');
+    Route::put('/{id}/approve', [CtvController::class, 'approve'])->name('ctvien.approve');
+    Route::put('/{id}/reject', [CtvController::class, 'reject'])->name('ctvien.reject');
+
 });
 
-// Route::middleware(['auth', 'ctv'])->group(function () {
-//     Route::resource('ctv/posts', CtvPostController::class);
-// });
 
+Route::prefix('admin')->group(function () {
+    Route::get('guides', [GuideController::class, 'index'])->name('guides.index');
+    Route::get('guide/create', [GuideController::class, 'create'])->name('guides.create');
+    Route::get('guide/{id}/edit', [GuideController::class, 'edit'])->name('guides.edit');
+    Route::put('guide/{id}', [GuideController::class, 'update'])->name('guides.update'); 
+    Route::post('guide/store', [GuideController::class, 'store'])->name('guides.store');
+    Route::delete('/guide/{id}', [GuideController::class, 'destroy'])->name('guides.destroy');
+    Route::get('guide/{id}', [GuideController::class, 'show'])->name('guides.show'); 
+});
 
+Route::prefix('admin')->group(function () {
+    Route::get('events', [EventController::class, 'index'])->name('events.index');
+    Route::get('event/create', [EventController::class, 'create'])->name('events.create');
+    Route::get('event/{id}/edit', [EventController::class, 'edit'])->name('events.edit');
+    Route::put('event/{id}', [EventController::class, 'update'])->name('events.update'); 
+    Route::post('event/store', [EventController::class, 'store'])->name('events.store');
+    Route::delete('/event/{id}', [EventController::class, 'destroy'])->name('events.destroy');
+    Route::get('event/{id}', [EventController::class, 'show'])->name('events.show'); 
+});
+
+Route::prefix('admin')->group(function () {
+    Route::get('jobs', [JobController::class, 'index'])->name('jobs.index');
+    Route::get('job/create', [JobController::class, 'create'])->name('jobs.create');
+    Route::get('job/{id}/edit', [JobController::class, 'edit'])->name('jobs.edit');
+    Route::put('job/{id}', [JobController::class, 'update'])->name('jobs.update'); 
+    Route::post('job/store', [JobController::class, 'store'])->name('jobs.store');
+    Route::delete('/job/{id}', [JobController::class, 'destroy'])->name('jobs.destroy');
+    Route::get('job/{id}', [JobController::class, 'show'])->name('jobs.show'); 
+});

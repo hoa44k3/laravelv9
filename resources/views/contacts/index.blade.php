@@ -150,17 +150,5 @@
         modal.show();
     });
 });
-//sửa phản hồi
-// document.querySelectorAll('.btn-edit').forEach(button => {
-//         button.addEventListener('click', function () {
-//             const id = this.getAttribute('data-id');
-//             const response = this.getAttribute('data-response');
 
-//             document.getElementById('edit_contact_id').value = id;
-//             document.getElementById('edit_response').value = response;
-
-//             const modal = new bootstrap.Modal(document.getElementById('editResponseModal'));
-//             modal.show();
-//         });
-//     });
 </script>

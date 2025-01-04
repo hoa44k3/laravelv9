@@ -12,13 +12,14 @@ use App\Models\Tag;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
-
+use App\Events\NewBlogCreated;
 class BlogAdminController extends Controller
 {
     public function home()
     {
             $blogs = Blog::with('user', 'category','tags') 
-            ->withCount(['likes', 'comments'])  
+            ->withCount(['likes', 'comments'])
+            ->where('status', 'approved') // Chỉ lấy bài viết có trạng thái "approved"  
             ->get()
             ->sortByDesc(function ($blog) {
                 return $blog->likes_count + $blog->comments_count;
@@ -62,6 +63,8 @@ class BlogAdminController extends Controller
             if ($request->has('tag_ids')) {
                 $blog->tags()->sync($request->tag_ids); // Đồng bộ tag
             }
+             // Kích hoạt sự kiện
+             event(new NewBlogCreated($blog));
             return redirect()->route('blogs.home')->with('success', 'Bài viết đã được tạo thành công!');
         } catch (\Exception $e) {
             Log::error('Lỗi khi tạo bài viết: ' . $e->getMessage());

@@ -19,8 +19,6 @@
                       
                             <p>Không có bài viết, không thể thêm bình luận.</p>
                         @endif
-
-
                 </div>
                 <div class="card-body">
                     <table class="table table-bordered">

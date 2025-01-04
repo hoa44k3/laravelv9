@@ -244,32 +244,45 @@
                                 <li class="nav-item active">
                                     <a class="nav-link" href="{{route('index')}}">Home <span class="sr-only">(current)</span></a>
                                 </li>
-                                <li class="nav-item dropdown">
-                                    <a class="nav-link dropdown-toggle" href="#" id="yummyDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Pages</a>
+                                {{-- <li class="nav-item dropdown">
+                                    <a class="nav-link dropdown-toggle" href="#" id="yummyDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Chuyên mục</a>
                                     <div class="dropdown-menu" aria-labelledby="yummyDropdown">
-                                        <a class="dropdown-item" href="{{ route('index') }}">Trang chủ</a>
-                                        <a class="dropdown-item" href="{{ route('blog') }}">Bài viết</a>
+                                        <a class="dropdown-item" href="{{route('guides')}}">Hướng dẫn</a>
+                                        <a class="dropdown-item" href="#">Sự kiện</a>
              
-                                        <a class="dropdown-item" href="{{ route('site.post', ['id' => $blog->id]) }}">Nội dung bài viết</a> 
+                                        <a class="dropdown-item" href="#">Tuyển dụng</a> 
                                     
-                                        <a class="dropdown-item" href="{{ route('contact') }}">Liên hệ</a>
-                                    </div>
-                                    
-                                </li>
-                                {{-- <li class="nav-item">
-                                    <a class="nav-link" href="{{route('category')}}">Categories</a>
+                                        <a class="dropdown-item" href="#">Diễn dàn</a>
+                                    </div> 
                                 </li> --}}
                                 <li class="nav-item">
-                                    <a class="nav-link" href="{{route('blog')}}">Blog</a>
+                                    <a class="nav-link" href="{{route('event')}}">Sự kiện</a>
                                 </li>
                                 <li class="nav-item">
-                                    
-                                    <a class="nav-link" href="{{ route('site.post', ['id' => $blog->id]) }}">Post</a>
-                                    
+                                    <a class="nav-link" href="{{route('blog')}}">Bài viết</a>
                                 </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{{route('guides')}}">Hướng dẫn</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{{route('job')}}">Tuyển dụng</a>
+                                </li>
+                                {{-- <li class="nav-item"> 
+                                    <a class="nav-link" href="{{ route('site.post', ['id' => $blog->id]) }}">Post</a> 
+                                </li> --}}
+                                <!-- site.master -->
+                                {{-- <li class="nav-item">
+                                    @if(isset($blog)) <!-- Kiểm tra sự tồn tại của biến $blog -->
+                                        <a class="nav-link" href="{{ route('site.post', ['id' => $blog->id]) }}">Post</a>
+                                    @else
+                                        <span class="nav-link">Không có bài viết</span>
+                                    @endif
+                                </li> --}}
+
                                 <li class="nav-item">
                                     <a class="nav-link" href="{{route('contact')}}">Contact</a>
                                 </li>
+                                
                             </ul>
                             
                         </div>

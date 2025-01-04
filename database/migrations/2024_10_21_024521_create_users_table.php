@@ -23,7 +23,6 @@ return new class extends Migration
             $table->text('description')->nullable();
             $table->string('email')->nullable();
             $table->string('password');
-            //$table->string('role')->default('user')->after('password'); 
             $table->enum('role', ['admin', 'user', 'ctv'])->default('user');
             $table->rememberToken();
             $table->timestamps();

@@ -1,3 +1,4 @@
+
 @include('backend.dashboard.component.head')
 @include('backend.dashboard.component.sidebar')
 <script src="https://cdn.ckeditor.com/ckeditor5/39.0.0/classic/ckeditor.js"></script>
@@ -65,9 +66,7 @@
                 <div class="card-header">
                     <div class="d-flex align-items-center justify-content-between">
                         <h4 class="card-title">Danh sách bài viết</h4>
-                        <a href="{{ route('blogs.create') }}" class="btn btn-primary btn-round ms-auto">
-                            <i class="fa fa-plus"></i> Thêm Bài Viết
-                        </a>
+                        
                     </div>
                 </div>
                 <div class="card-body">
@@ -82,7 +81,7 @@
                                         <th>Danh mục</th>
                                         <th>Lượt thích</th>
                                         <th>Lượt bình luận</th>
-                                        <th>Trạng thái</th>
+                                  
                                         <th>Ngày tạo</th>
                                         <th>Thẻ bài viết</th>
                                         <th style="width: 10%">Hành động</th>
@@ -107,7 +106,7 @@
                                                 {{ $featuredBlog->comments_count }}
                                             </button>
                                         </td>
-                                        <td id="status-{{ $featuredBlog->id }}">{{ $featuredBlog->status == 'approved' ? 'Đã phê duyệt' : 'Chờ phê duyệt' }}</td>
+                                       
                                         <td>{{ $featuredBlog->created_at->format('d/m/Y H:i') }}</td>
                                         <td>
                                             @foreach ($featuredBlog->tags as $tag)
@@ -125,10 +124,6 @@
                                                 <button type="button" class="btn btn-link btn-danger" onclick="deleteBlog({{ $featuredBlog->id }})">
                                                     <i class="fa fa-times"></i>
                                                 </button>
-                                                <button type="button" class="btn btn-link btn-success" onclick="toggleApproval({{ $featuredBlog->id }})">
-                                                     {{ $featuredBlog->status == 'approved' ? 'Bỏ duyệt' : 'Duyệt' }}
-                                                </button>
-                                            </div>
                                         </td>
                                     </tr>
                                     @endif
@@ -147,7 +142,7 @@
                                                 {{ $blog->comments_count }}
                                             </a>
                                         </td>
-                                        <td id="status-{{ $blog->id }}">{{ $blog->status == 'approved' ? 'Đã phê duyệt' : 'Chờ phê duyệt' }}</td>
+                                        
                                         <td>{{ $blog->created_at->format('d/m/Y H:i') }}</td>
                                         <td>
                                             @foreach ($blog->tags as $tag)
@@ -165,9 +160,7 @@
                                                 <button type="button" class="btn btn-link btn-danger" onclick="deleteBlog({{ $blog->id }})">
                                                     <i class="fa fa-times"></i>
                                                 </button>
-                                                <button type="button" class="btn btn-link btn-success" onclick="toggleApproval({{ $blog->id }})">
-                                                    {{ $blog->status == 'approved' ? 'Bỏ duyệt' : 'Duyệt' }}
-                                                </button>
+                                               
                                             </div>
                                         </td>
                                     </tr>
