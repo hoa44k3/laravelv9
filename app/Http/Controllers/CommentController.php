@@ -100,14 +100,14 @@ class CommentController extends Controller
 }
     public function showComments()
     {
-        // Lấy danh sách các categories từ cơ sở dữ liệu cùng với blogs và comments của từng category
-        $categories = Category::with('blogs.comments.user')->get(); // Eager load blogs, comments và user
+        
+        $categories = Category::with('blogs.comments.user')->get(); 
 
-        // Trả về view và truyền biến categories vào
+       
         return view('comment.index', compact('categories'));
     }
     public function reply(Request $request, Comment $comment) {
-        // Xử lý lưu câu trả lời bình luận vào cơ sở dữ liệu
+      
         $request->validate([
             'content' => 'required|string|max:255',
         ]);
@@ -115,22 +115,20 @@ class CommentController extends Controller
         $reply = new Comment();
         $reply->content = $request->content;
         $reply->user_id = auth()->id();
-        $reply->parent_id = $comment->id; // Lưu id của bình luận cha
+        $reply->parent_id = $comment->id; 
         $reply->save();
     
         return redirect()->back();
     }
     public function show($commentId)
     {
-        // Lấy bình luận và các bình luận con của nó
+        
         $comment = Comment::with('replies.user')->find($commentId);
 
-        // Kiểm tra nếu bình luận không tồn tại
+       
         if (!$comment) {
             return redirect()->back()->with('error', 'Bình luận không tồn tại!');
-        }
-
-        // Trả về view với dữ liệu
+        } 
         return view('comments.show', compact('comment'));
     }
 

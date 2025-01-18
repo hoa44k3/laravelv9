@@ -207,7 +207,7 @@ function toggleApproval(id) {
         success: function(response) {
             if (response.success) {
                 alert(response.message);
-                location.reload(); // Tải lại trang để cập nhật trạng thái mới
+                location.reload(); 
             } else {
                 alert(response.error || 'Có lỗi xảy ra');
             }

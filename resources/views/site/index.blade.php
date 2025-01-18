@@ -2,11 +2,11 @@
 
 @section('title','Trang chủ')
 @section('body')
-<!-- Thêm CSS của Slick Carousel -->
+
 <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.css">
 <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick-theme.min.css">
 <meta name="csrf-token" content="{{ csrf_token() }}">
-<!-- Thêm JS của Slick Carousel -->
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.js"></script>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.css">
@@ -161,7 +161,7 @@
 <section class="blog_area section_padding_80">
     <div class="container">
         <div class="row justify-content-center">
-            <!-- Phần bài viết nổi bật nằm bên trái -->
+           
             <div class="col-12 col-lg-8 mb-4">
                 <div class="row">
                     @if($featuredBlog)
@@ -178,16 +178,16 @@
                                 <div class="post-content">
                                     <div class="post-meta d-flex justify-content-between mb-3">
                                         <div class="post-author-date-area d-flex">
-                                            <!-- Post Author -->
+                                           
                                             <div class="post-author mr-4">
                                                 <a href="#" class="text-muted">{{ $featuredBlog->user->name ?? 'Không có tác giả' }}</a>
                                             </div>
-                                            <!-- Post Date -->
+                                          
                                             <div class="post-date">
                                                 <a href="#" class="text-muted">{{ $featuredBlog->created_at->format('d/m/Y H:i') }}</a>
                                             </div>
                                         </div>
-                                        <!-- Post Comment & Share Area -->
+                                      
                                         <div class="post-comment-share-area d-flex">
                                             <div class="post-favourite">
                                                 <a href="#" id="toggle-like">
@@ -219,20 +219,20 @@
                         </div>
                     @endif
                 </div>
-                {{-- Tất cả bài viết --}}
+               
                     <div class="row">
-                        <!-- Single Post -->
+                        
                         @foreach ($blogs->take(5) as $blog)
                             <div class="col-md-6 mb-4">
                                 <div class="single-post wow fadeInUp" data-wow-delay="0.1s">
-                                    <!-- Post Thumb -->
+                                   
                                     <div class="post-thumb">
                                         <img src="{{ asset('storage/' . ltrim($blog->image_path, 'http://127.0.0.1:8000/')) }}" 
                                             alt="Image" 
                                             class="img-fluid rounded" 
                                             style="object-fit: cover; height: 200px;">
                                     </div>
-                                    <!-- Post Content -->
+                                   
                                     <div class="post-content">
                                         <div class="post-meta d-flex justify-content-between align-items-center">
                                             <div class="post-author">
@@ -242,14 +242,14 @@
                                                 <span>{{ $blog->created_at->format('d/m/Y') }}</span>
                                             </div>
                                         </div>
-                                        <!-- Post Title -->
+                                       
                                         <a href="{{ route('site.post', $blog->id) }}" class="post-title">
                                             <h4 class="post-headline mt-3">{{ $blog->title }}</h4>           
                                          
                                             {!! \Illuminate\Support\Str::limit(strip_tags($blog->content, '<p><br><strong><em>'), 100) !!}
 
                                         </a>
-                                        <!-- Post Stats -->
+                                 
                                         <div class="post-stats mt-3 d-flex justify-content-between align-items-center">
                                              <div class="post-favourite">
                                                 <a href="#"><i class="fa fa-heart-o" aria-hidden="true"></i> {{ $blog->likes_count }}</a>
@@ -272,18 +272,18 @@
                  <div class="leave-comment-area section_padding_50 clearfix">
                     <div class="comment-form">
                         <hr>
-                        <!-- Hiển thị bình luận -->
+                       
                         <ol>
                             @foreach ($featuredBlog->comments as $comment)
                             <li class="single_comment_area">
                                 <div class="comment-wrapper d-flex">
-                                    <!-- Comment Meta -->
+                                 
                                     <div class="comment-author">
                                         <img src="{{ asset('storage/' . ltrim($comment->user->image ?? 'default-avatar.jpg', 'http://127.0.0.1:8000/')) }}" 
                                         alt="Image" 
                                         style="width: 100%; height: auto; object-fit: cover;">
                                     </div>
-                                    <!-- Comment Content -->
+                                   
                                     <div class="comment-content">
                                         <span class="comment-date text-muted">
                                             <a href="#">{{ $comment->created_at ? $comment->created_at->format('d/m/Y H:i') : 'N/A' }}</a>
@@ -292,7 +292,7 @@
                                         <h5>{{ $comment->user->name ?? 'Không có tên' }}</h5>
                                         <p>{{ $comment->content }}</p>
                         
-                                        <!-- Nút trả lời -->
+                                     
                                         @if (auth()->check())
                                         <button 
                                             class="btn btn-link btn-sm text-primary reply-toggle" 
@@ -303,7 +303,7 @@
                                     </div>
                                 </div>
                         
-                                <!-- Form trả lời bình luận, ẩn mặc định -->
+                               
                                 @if (auth()->check())
                                 <form id="reply-form-{{ $comment->id }}" method="POST" action="{{ route('comment.reply', $comment->id) }}" style="display: none; margin-left: 60px;">
                                     @csrf
@@ -314,7 +314,7 @@
                                 </form>
                                 @endif
                 
-                                <!-- Các câu trả lời -->
+                            
                                 @foreach ($comment->replies as $reply)
                                 <div class="comment-wrapper d-flex ml-4">
                                     <div class="comment-author">
@@ -333,11 +333,11 @@
                             @endforeach
                         </ol>
                 
-                        <!-- Biểu mẫu bình luận -->
+                   
                         @if (auth()->check())
                         <form method="POST" action="{{ route('comment.store') }}">
                             @csrf
-                            <!-- Đảm bảo blog_id được gửi -->
+                         
                             <input type="hidden" name="blog_id" value="{{ $featuredBlog->id }}">
                             <div class="form-group mt-3">
                                 <textarea class="form-control" name="content" rows="3" placeholder="Viết bình luận..."></textarea>

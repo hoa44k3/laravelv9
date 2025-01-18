@@ -1,10 +1,10 @@
-<!-- resources/views/events/edit.blade.php -->
+
 @include('backend.dashboard.component.head')
 @include('backend.dashboard.component.sidebar')
 
 <div class="container-fluid">
     <div class="row">
-        <div class="col-md-6 offset-md-2">
+        <div class="col-md-10 offset-md-2">
             <div class="card">
                 <div class="card-header">
                     <h4 class="card-title">Sửa sự kiện</h4>
@@ -15,13 +15,17 @@
                         @csrf
                         @method('PUT')
                         <div class="form-group">
+                            <label for="user_id">Người tạo</label>
+                            <select name="user_id" id="user_id" class="form-control" required>
+                                @foreach($users as $user)
+                                    <option value="{{ $user->id }}" {{ $event->user_id == $user->id ? 'selected' : '' }}>{{ $user->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="form-group">
                             <label for="title">Tiêu đề</label>
                             <input type="text" name="title" id="title" class="form-control" value="{{ $event->title }}" required>
                         </div>
-                        {{-- <div class="form-group">
-                            <label for="description">Mô tả</label>
-                            <textarea name="description" id="description" class="form-control" required>{{ $event->description }}</textarea>
-                        </div> --}}
                         <div class="form-group">
                             <label for="description">Nội Dung</label>
                             <textarea name="description" id="editor" rows="10" class="form-control">{{ old('description', $event->description) }}</textarea>
@@ -38,8 +42,6 @@
                                 <img src="{{ asset('storage/' . $event->image) }}" alt="Hình ảnh hiện tại" width="100">
                             @endif
                         </div>
-                       
-
                         <button type="submit" class="btn btn-success">Cập nhật</button>
                     </form>
                 </div>

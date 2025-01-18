@@ -18,7 +18,7 @@ class TagController extends Controller
     {
         $blogs = Blog::select('id', 'title')->get();
         return view('tags.create', compact('blogs'));
-        // return view('tags.create');
+       
     }
 
     public function store(Request $request)
@@ -29,7 +29,7 @@ class TagController extends Controller
         ]);
 
         Tag::create($request->all());
-        return redirect()->route('tags.index')->with('success', 'Tag created successfully.');
+        return redirect()->route('tags.index')->with('success', 'thêm thành công.');
     }
 
     public function show($id)
@@ -53,13 +53,13 @@ class TagController extends Controller
 
         $tag = Tag::findOrFail($id);
         $tag->update($request->all());
-        return redirect()->route('tags.index')->with('success', 'Tag updated successfully.');
+        return redirect()->route('tags.index')->with('success', 'sửa thành công.');
     }
 
     public function destroy($id)
     {
         $tag = Tag::findOrFail($id);
         $tag->delete();
-        return redirect()->route('tags.index')->with('success', 'Tag deleted successfully.');
+        return redirect()->route('tags.index')->with('success', 'xóa thành công.');
     }
 }

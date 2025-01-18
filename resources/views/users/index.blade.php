@@ -26,7 +26,7 @@
 .password-field {
     flex: 1;
     margin-right: 5px;
-    max-width: 150px; /* Giới hạn chiều rộng nếu cần */
+    max-width: 150px; 
 }
 
 .toggle-password {
@@ -67,7 +67,8 @@
                                     <th>Address</th>
                                     <th>Birthday</th>
                                     <th>Description</th>
-                                    <th>Thao tác</th>
+                                    <th>Chức năng</th>
+                                    <th>Hành động</th>
                                 </tr>
                             </thead>
                             <tbody>

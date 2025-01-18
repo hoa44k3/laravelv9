@@ -12,6 +12,14 @@
                     <form action="{{ route('jobs.store') }}" method="POST" enctype="multipart/form-data">
                         @csrf
                         <div class="form-group">
+                            <label for="user_id">Người tạo</label>
+                            <select name="user_id" id="user_id" class="form-control" required>
+                                @foreach($users as $user)
+                                    <option value="{{ $user->id }}">{{ $user->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="form-group">
                             <label for="title">Tiêu đề</label>
                             <input type="text" name="title" id="title" class="form-control" required>
                         </div>

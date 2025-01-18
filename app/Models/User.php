@@ -49,10 +49,10 @@ class User extends Authenticatable
     {
         return $this->hasMany(Like::class);
     }
-    // app/Models/User.php
-public function searchHistories()
-{
-    return $this->hasMany(SearchHistory::class);
-}
+   
+    public function searchHistories()
+    {
+        return $this->hasMany(SearchHistory::class);
+    }
 
 }

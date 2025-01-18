@@ -21,8 +21,7 @@
                                     <th>Nội dung</th>
                                     <th>Danh mục</th>
                                     <th>Trạng thái</th>
-                                    {{-- <th>Lượt thích</th>
-                                    <th>Bình luận</th> --}}
+                                
                                     <th>CTV</th>
                                     <th>Ảnh đại diện</th>
                                     <th>Công việc</th>
@@ -33,11 +32,7 @@
                                 @foreach ($blogs as $blog)
                                     <tr>
                                         <td>{{ $blog->title }}</td>
-                                    
-                                        <td>
-                                            {{ \Illuminate\Support\Str::limit($blog->content, 30, '...') }}
-                                        </td>
-                                       
+                                        <td>{{ Str::limit($blog->content, 100) }}</td>
                                         <td>{{ $blog->category->name }}</td>
                                         <td>
                                             @if ($blog->status === 'pending')
@@ -48,14 +43,9 @@
                                                 <span class="badge bg-danger">Bị từ chối</span>
                                             @endif
                                         </td>
-                                        {{-- <td>{{ $blog->likes }}</td>
-                                        <td>{{ $blog->comment_count }}</td> --}}
+                                    
                                         <td>{{ $blog->user->name }}</td>
-                                        {{-- <td>
-                                            <img src="{{ $blog->image_path ? asset('storage/' . $blog->image_path) : asset('assets/img/default-avatar.jpg') }}" 
-                                                 alt="Avatar" 
-                                                 style="width: 50px; height: 50px; border-radius: 50%;">
-                                        </td> --}}
+                                    
                                         <td>
                                             <img src="{{ $blog->user->image ? asset('storage/' . $blog->user->image) : asset('assets/img/default-avatar.jpg') }}" 
                                                  alt="Avatar" 
@@ -63,25 +53,32 @@
                                         </td>
                                         <td>Quản lý bài viết</td>
                                         <td>
-                                         
-                                            <form action="{{ route('ctvien.approve', $blog->id) }}" method="POST" class="d-inline">
-                                                @csrf
-                                                @method('PUT')
-                                                <button class="btn btn-success btn-sm">Duyệt</button>
-                                            </form>
-                                            
-                                            <form action="{{ route('ctvien.reject', $blog->id) }}" method="POST" class="d-inline">
-                                                @csrf
-                                                @method('PUT')
-                                                <button class="btn btn-danger btn-sm">Không duyệt</button>
-                                            </form>
+                                            @if ($blog->status === 'approved')
+                                                <form action="{{ route('ctvien.reject', $blog->id) }}" method="POST" class="d-inline">
+                                                    @csrf
+                                                    @method('PUT')
+                                                    <button class="btn btn-danger btn-sm">Bỏ duyệt</button>
+                                                </form>
+                                            @else
+                                                <form action="{{ route('ctvien.approve', $blog->id) }}" method="POST" class="d-inline">
+                                                    @csrf
+                                                    @method('PUT')
+                                                    <button class="btn btn-success btn-sm">Duyệt</button>
+                                                </form>
+                                                
+                                                <form action="{{ route('ctvien.reject', $blog->id) }}" method="POST" class="d-inline">
+                                                    @csrf
+                                                    @method('PUT')
+                                                    <button class="btn btn-danger btn-sm">Không duyệt</button>
+                                                </form>
+                                            @endif
                                             <a href="{{ route('ctvien.edit', $blog->id) }}" class="btn btn-warning btn-sm">Sửa</a>
                                             <form action="{{ route('ctvien.destroy', $blog->id) }}" method="POST" class="d-inline">
                                                 @csrf
                                                 @method('DELETE')
                                                 <button class="btn btn-secondary btn-sm">Xóa</button>
                                             </form>
-                                        </td>
+                                        </td> 
                                     </tr>
                                 @endforeach
                             </tbody>

@@ -9,7 +9,6 @@ use App\Models\Category;
 use App\Models\Blog;
 use App\Models\Comment;
 use App\Models\Contact;
-use Illuminate\Support\Facades\Log;
 use App\Models\Guide;
 use App\Models\Event;
 use App\Models\job;
@@ -113,7 +112,6 @@ class HomeController extends Controller
         return back()->with('success', 'Bình luận của bạn đã được gửi thành công!');
     }
     
-
     public function sendContact(Request $request)
     {
         $request->validate([
@@ -141,16 +139,12 @@ class HomeController extends Controller
     public function search(Request $request)
     {
         $query = $request->input('query'); 
-
-        // Tìm kiếm bài viết theo tên
         $blogs = Blog::where('title', 'LIKE', '%' . $query . '%')
         ->orWhere('content', 'LIKE', '%' . $query . '%')
         ->orWhereHas('user', function ($q) use ($query) {
             $q->where('name', 'LIKE', '%' . $query . '%');
         })
         ->paginate(10);
-    
-
         return view('site.search', compact('blogs', 'query'));
     }
     public function reply(Request $request, Comment $comment)
@@ -173,42 +167,28 @@ class HomeController extends Controller
     }
     public function guidesdetail($id)
     {
-        // Lấy chi tiết hướng dẫn theo ID
+        
         $guide = Guide::findOrFail($id);
-
-        // Trả về view với dữ liệu hướng dẫn
         return view('site.guidesdetail', compact('guide'));
     }
     public function event()
     {
-        // Lấy tất cả sự kiện
         $events = Event::all();
-
-        // Trả về view với dữ liệu sự kiện
         return view('site.event', compact('events'));
     }
     public function eventdetail($id)
     {
-      // Lấy chi tiết sự kiện theo ID
-    $event = Event::findOrFail($id);
-
-    // Trả về view với dữ liệu sự kiện
-    return view('site.eventdetail', compact('event'));
+         $event = Event::findOrFail($id);
+        return view('site.eventdetail', compact('event'));
     }
     public function job()
-    {
-        // Lấy tất cả công việc
+    {  
         $jobs = Job::all();
-
-        // Trả về view với dữ liệu công việc
         return view('site.job', compact('jobs'));
     }
     public function jobdetail($id)
     {
-      // Lấy chi tiết công việc theo ID
         $job = Job::findOrFail($id);
-
-        // Trả về view với dữ liệu công việc
         return view('site.jobdetail', compact('job'));
     }
 }

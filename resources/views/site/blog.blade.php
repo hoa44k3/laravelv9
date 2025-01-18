@@ -2,7 +2,7 @@
 @section('title','Bài viết')
 @section('body')
 <style>
-    /* Tạo hiệu ứng hover cho bài viết */
+ 
 .single-post {
     background-color: #fff;
     border-radius: 10px;
@@ -11,27 +11,25 @@
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-/* Hiệu ứng hover */
 .single-post:hover {
     transform: translateY(-5px);
     box-shadow: 0 12px 20px rgba(0, 0, 0, 0.1);
 }
 
-/* Tùy chỉnh ảnh */
+
 .post-thumb img {
     width: 100%;
-    height: 200px; /* Fix chiều cao ảnh */
+    height: 200px; 
     object-fit: cover;
     border-radius: 8px;
 }
 
-/* Meta info */
+
 .post-meta {
     font-size: 14px;
     color: #999;
 }
 
-/* Tùy chỉnh tiêu đề bài viết */
 .post-headline {
     font-size: 18px;
     font-weight: 600;
@@ -44,7 +42,6 @@
     color: #007bff;
 }
 
-/* Tùy chỉnh thống kê (số lượt thích và bình luận) */
 .post-stats {
     font-size: 14px;
     color: #999;
@@ -54,7 +51,6 @@
     color: #6c757d;
 }
 
-/* Chỉnh sửa tên tác giả */
 .author-name {
     font-weight: 600;
     color: #007bff;
@@ -63,39 +59,34 @@
 .author-name:hover {
     color: #0056b3;
 }
-/* bo tròn */
-/* Bo tròn ảnh bài viết */
+
 .single-post .post-thumb img {
-    border-radius: 10px; /* Độ bo góc, bạn có thể thay đổi giá trị */
+    border-radius: 10px;
     overflow: hidden;
 }
 
-/* Bo tròn khung bài viết */
 .single-post {
-    border-radius: 30px; /* Bo góc cho khung bài viết */
+    border-radius: 30px; 
     overflow: hidden;
-    border: 1px solid #ddd; /* Thêm viền mỏng */
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1); /* Thêm đổ bóng nhẹ */
-    transition: transform 0.3s, box-shadow 0.3s; /* Hiệu ứng hover */
+    border: 1px solid #ddd; 
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s, box-shadow 0.3s;
 }
 
-/* Hiệu ứng hover bài viết */
 .single-post:hover {
-    transform: translateY(-5px); /* Đẩy lên trên một chút khi hover */
-    box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.2); /* Đổ bóng đậm hơn */
+    transform: translateY(-5px); 
+    box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.2); 
 }
 
-/* Bo tròn khung nội dung */
 .single-post .post-content {
-    border-radius: 0 0 15px 15px; /* Bo tròn chỉ phía dưới */
-    background-color: #fff; /* Màu nền */
+    border-radius: 0 0 15px 15px; 
+    background-color: #fff; 
     padding: 20px;
 }
 
-/* Bo tròn góc cho avatar hoặc thông tin tác giả */
 .post-meta .author-name {
     border-radius: 5px;
-    background-color: #f8f9fa; /* Màu nền nhạt */
+    background-color: #f8f9fa; 
     padding: 5px 10px;
     display: inline-block;
 }
@@ -144,7 +135,7 @@
                                  alt="Image" 
                                  class="img-fluid rounded">
                         </div>
-                        <!-- Post Content -->
+                       
                         <div class="post-content">
                             <div class="post-meta d-flex justify-content-between align-items-center">
                                 <div class="post-author">
@@ -154,13 +145,13 @@
                                     <span>{{ $blog->created_at->format('d/m/Y') }}</span>
                                 </div>
                             </div>
-                            <!-- Post Title -->
+                            
                             <a href="{{ route('site.post', $blog->id) }}" class="post-title">
                                 <h4 class="post-headline mt-3">{{ $blog->title }}</h4>
                                 {!! \Illuminate\Support\Str::limit(strip_tags($blog->content, '<p><br><strong><em>'), 100) !!}
 
                             </a>
-                            <!-- Post Stats -->
+                           
                             <div class="post-stats mt-3 d-flex justify-content-between align-items-center">
                                 <div class="post-favourite">
                                     <a href="#" class="text-muted"><i class="fa fa-heart-o" aria-hidden="true"></i> {{ $blog->likes_count }}</a>

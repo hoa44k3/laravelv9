@@ -16,10 +16,7 @@ class Comment extends Model
         'blog_id',
         'category_id',
         'user_id',
-         'parent_id',
-   
-        
-        
+        'parent_id',
     ];
     public $timestamps = true; 
 
@@ -36,13 +33,12 @@ class Comment extends Model
         return $this->belongsTo(Blog::class);
     }
 
-    // Mối quan hệ với bình luận cha (parent)
     public function parent()
     {
         return $this->belongsTo(Comment::class, 'parent_id');
     }
 
-    // Mối quan hệ với các bình luận con (replies)
+ 
     public function replies()
     {
         return $this->hasMany(Comment::class, 'parent_id');

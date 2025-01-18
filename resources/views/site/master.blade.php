@@ -123,7 +123,7 @@
 }
 
 .search-hidden-form {
-    display: none; /* Ban đầu ẩn */
+    display: none; 
     position: absolute;
     top: 100%;
     right: 0;
@@ -135,11 +135,50 @@
 }
 
 .search-hidden-form.active {
-    display: block; /* Hiển thị khi nhấn vào biểu tượng tìm kiếm */
+    display: block; 
 }
 
 .search_button {
     cursor: pointer;
+}
+
+
+/* #tìm */
+
+.search-container {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+}
+
+#search-anything {
+    border: 1px solid #ccc;
+    padding: 5px 15px;
+    border-radius: 20px;
+    font-size: 14px;
+    width: 200px;
+    transition: width 0.3s ease;
+}
+
+
+.btn-search {
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    color: #007bff;
+}
+
+.searchBtn {
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    transform: translateY(-50%);
+    cursor: pointer;
+    display: none; 
+}
+
+.nav-item .nav-link {
+    margin-right: 10px;
 }
 
 </style>
@@ -198,7 +237,7 @@
                             <a class="searchBtn" href="#" aria-label="Tìm kiếm"><i class="fa fa-search" aria-hidden="true"></i></a>
                         </div>
     
-                        <!-- Search Form -->
+                        {{-- <!-- Search Form -->
                         <div class="search-hidden-form">
                             <form action="{{ route('site.search') }}" method="GET">
                                 <input type="search" name="query" id="search-anything" 
@@ -207,7 +246,7 @@
                                 <button type="submit" aria-label="Tìm kiếm">Tìm kiếm</button>
                                 <span class="searchBtn"><i class="fa fa-times" aria-hidden="true"></i></span>
                             </form>
-                        </div>
+                        </div> --}}
                     </div>
                 </div>
             </div>
@@ -244,17 +283,6 @@
                                 <li class="nav-item active">
                                     <a class="nav-link" href="{{route('index')}}">Home <span class="sr-only">(current)</span></a>
                                 </li>
-                                {{-- <li class="nav-item dropdown">
-                                    <a class="nav-link dropdown-toggle" href="#" id="yummyDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Chuyên mục</a>
-                                    <div class="dropdown-menu" aria-labelledby="yummyDropdown">
-                                        <a class="dropdown-item" href="{{route('guides')}}">Hướng dẫn</a>
-                                        <a class="dropdown-item" href="#">Sự kiện</a>
-             
-                                        <a class="dropdown-item" href="#">Tuyển dụng</a> 
-                                    
-                                        <a class="dropdown-item" href="#">Diễn dàn</a>
-                                    </div> 
-                                </li> --}}
                                 <li class="nav-item">
                                     <a class="nav-link" href="{{route('event')}}">Sự kiện</a>
                                 </li>
@@ -267,21 +295,17 @@
                                 <li class="nav-item">
                                     <a class="nav-link" href="{{route('job')}}">Tuyển dụng</a>
                                 </li>
-                                {{-- <li class="nav-item"> 
-                                    <a class="nav-link" href="{{ route('site.post', ['id' => $blog->id]) }}">Post</a> 
-                                </li> --}}
-                                <!-- site.master -->
-                                {{-- <li class="nav-item">
-                                    @if(isset($blog)) <!-- Kiểm tra sự tồn tại của biến $blog -->
-                                        <a class="nav-link" href="{{ route('site.post', ['id' => $blog->id]) }}">Post</a>
-                                    @else
-                                        <span class="nav-link">Không có bài viết</span>
-                                    @endif
-                                </li> --}}
-
                                 <li class="nav-item">
-                                    <a class="nav-link" href="{{route('contact')}}">Contact</a>
+                                    <a class="nav-link" href="{{route('contact')}}">Liên hệ</a>
                                 </li>
+                                <li class="nav-item">
+                                    <form action="{{ route('site.search') }}" method="GET" class="d-flex search-container">
+                                        <input type="search" name="query" id="search-anything" placeholder="Tìm bài viết..." aria-label="Tìm kiếm bài viết">
+                                        <button type="submit" aria-label="Tìm kiếm" class="btn-search"><i class="fa fa-search" aria-hidden="true"></i></button>
+                                        <span class="searchBtn"><i class="fa fa-times" aria-hidden="true"></i></span>
+                                    </form>
+                                </li>
+                                
                                 
                             </ul>
                             
@@ -353,11 +377,8 @@
 </body>
 <script>
     document.addEventListener("DOMContentLoaded", function () {
-    // Bắt sự kiện khi nhấn vào tên người dùng
         document.getElementById("viewUserDetail").addEventListener("click", function () {
             const userId = this.getAttribute("data-id");
-
-            // Hiển thị modal và thêm loader
             const modal = new bootstrap.Modal(document.getElementById("userDetailModal"));
             document.getElementById("userDetailContent").innerHTML = `
                 <div class="text-center">
@@ -367,8 +388,6 @@
                 </div>
             `;
             modal.show();
-
-            // Gửi request AJAX để lấy dữ liệu người dùng
             fetch(`/users/${userId}/profile`, {
                 method: "GET",
                 headers: {
@@ -379,7 +398,7 @@
                 .then((response) => response.json())
                 .then((data) => {
                     if (data.success) {
-                        // Cập nhật nội dung modal
+                       
                         document.getElementById("userDetailContent").innerHTML = `
                             <div class="text-center mb-3">
                                 <img 

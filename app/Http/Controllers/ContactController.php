@@ -16,13 +16,13 @@ class ContactController extends Controller
     }
     public function reply(Request $request)
     {
-        // Kiểm tra thông tin phản hồi
+       
         $request->validate([
             'contact_id' => 'required|exists:contacts,id',
             'response' => 'required|string',
         ]);
 
-        // Lấy thông tin liên hệ từ ID
+       
         $contact = Contact::find($request->contact_id);
         $contact->response = $request->response;
         $contact->response_date = now();
@@ -30,7 +30,7 @@ class ContactController extends Controller
 
         Mail::to($contact->email)->send(new ContactReplyMail($request->response));
 
-        // Trả về phản hồi
+       
         return redirect()->back()->with('success', 'Phản hồi đã được gửi thành công!');
     }
 

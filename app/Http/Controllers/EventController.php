@@ -5,8 +5,10 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Event;
+use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Auth;
 class EventController extends Controller
 {
     public function index()
@@ -20,7 +22,8 @@ class EventController extends Controller
 
     public function create()
     {
-        return view('events.create');
+        $users = User::all();
+        return view('events.create',compact('users'));
     }
 
     public function store(Request $request)
@@ -42,6 +45,7 @@ class EventController extends Controller
             'description' => $request->description,
             'event_date' => $request->event_date,
             'image' =>  $imagePath,
+            'user_id' => Auth::id(),
         ]);
 
         return redirect()->route('events.index')->with('success', 'Sự kiện đã được tạo thành công.');
@@ -50,7 +54,8 @@ class EventController extends Controller
     public function edit($id)
     {
         $event = Event::findOrFail($id);
-        return view('events.edit', compact('event'));
+        $users = User::all();
+        return view('events.edit', compact('event','users'));
     }
 
     public function update(Request $request, $id)
@@ -64,20 +69,20 @@ class EventController extends Controller
 
         $event = Event::findOrFail($id);
         if ($request->hasFile('image')) {
-            // Xóa ảnh cũ nếu có
+           
             if ($event->image) {
                 Storage::disk('public')->delete($event->image);
             }
-            // Lưu ảnh mới
+           
             $imagePath = $request->file('image')->store('event_images', 'public');
-            $event->image = $imagePath;  // Gán đường dẫn mới cho đối tượng
+            $event->image = $imagePath; 
         }
         
         $event->update([
             'title' => $request->title,
             'description' => $request->description,
             'event_date' => $request->event_date,
-            
+            'user_id' => Auth::id(),
             'image' => $event->image,
         ]);
       

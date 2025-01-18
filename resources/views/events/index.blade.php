@@ -17,6 +17,7 @@
                         <table id="guides-table" class="display table table-striped table-hover">
                             <thead>
                                 <tr>
+                                    <th>Người tổ chức</th>
                                     <th>Tiêu đề</th>
                                     <th>Hình ảnh</th>
                                     <th>Nội dung</th>
@@ -27,6 +28,9 @@
                             <tbody>
                                 @foreach($events as $event)
                                     <tr>
+                                        <td>
+                                            {{ $event->user ? $event->user->name : 'Không xác định' }} <!-- Hiển thị tên tác giả -->
+                                        </td>
                                         <td>
                                             <a href="{{ route('events.show', $event->id) }}">{{ $event->title }}</a>
                                         </td>

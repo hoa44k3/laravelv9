@@ -12,22 +12,22 @@ use Illuminate\Support\Facades\Validator;
 
 class AuthController extends Controller
 {
-    // Hiển thị form đăng nhập
+    
     public function index()
     {
         return view('auth.login');
     }
 
-    // Hiển thị form đăng ký
+    
     public function showRegisterForm()
     {
         return view('auth.register'); 
     }
 
-    // Xử lý đăng ký
+    
     public function register(Request $request)
     {
-        // Xác thực dữ liệu đầu vào
+       
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
@@ -37,7 +37,7 @@ class AuthController extends Controller
         $imagePath = null;
 
         if ($request->hasFile('image')) {
-            $imagePath = $request->file('image')->store('users', 'public'); // Lưu ảnh vào thư mục public/storage/users
+            $imagePath = $request->file('image')->store('users', 'public'); 
         }
         if ($validator->fails()) {
             return redirect()->route('auth.register')
@@ -45,7 +45,7 @@ class AuthController extends Controller
                 ->withInput();
         }
 
-        // Tạo tài khoản mới
+        
         User::create([
             'name' => $request->name,
             'email' => $request->email,
@@ -53,12 +53,12 @@ class AuthController extends Controller
             'image' => $imagePath,
         ]);
 
-        // Chuyển hướng đến trang đăng nhập hoặc dashboard
+        
         return redirect()->route('auth.login')->with('success', 'Đăng ký thành công! Hãy đăng nhập.');
     }
     
 
-    // Xử lý đăng nhập
+    
     public function login(Request $request)
     {
        Log::info('Email:', ['email' => $request->email]);

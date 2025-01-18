@@ -13,6 +13,12 @@ class Job extends Model
         'description',
         'job_date',
         'image',
+        'user_id'
     ];
     protected $dates = ['job_date'];
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+    
 }

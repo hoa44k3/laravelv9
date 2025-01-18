@@ -75,16 +75,16 @@
                                 </div>
                             </div>
     
-                            <!-- Hiển thị số lượng bình luận -->
+                          
                             <div class="comments-count mt-4">
                                 <h4>{{ $featuredBlog->comments_count }} Bình luận</h4>
                             </div>
     
-                            <!-- Các bình luận -->
+                            
                             <div class="leave-comment-area section_padding_50 clearfix">
                                 <div class="comment-form">
                                     <hr>
-                                    <!-- Hiển thị bình luận -->
+                                 
                                     <ol>
                                         @foreach ($featuredBlog->comments as $comment)
                                         <li class="single_comment_area">
@@ -104,7 +104,7 @@
                                                     <h5>{{ $comment->user->name ?? 'Không có tên' }}</h5>
                                                     <p>{{ $comment->content }}</p>
                                     
-                                                    <!-- Nút trả lời -->
+                                              
                                                     @if (auth()->check())
                                                     <button 
                                                         class="btn btn-link btn-sm text-primary reply-toggle" 
@@ -115,7 +115,6 @@
                                                 </div>
                                             </div>
                                     
-                                            <!-- Form trả lời bình luận, ẩn mặc định -->
                                             @if (auth()->check())
                                             <form id="reply-form-{{ $comment->id }}" method="POST" action="{{ route('comment.reply', $comment->id) }}" style="display: none; margin-left: 60px;">
                                                 @csrf
@@ -126,7 +125,6 @@
                                             </form>
                                             @endif
                             
-                                            <!-- Các câu trả lời -->
                                             @foreach ($comment->replies as $reply)
                                             <div class="comment-wrapper d-flex ml-4">
                                                 <div class="comment-author">
@@ -145,7 +143,6 @@
                                         @endforeach
                                     </ol>
                             
-                                    <!-- Biểu mẫu bình luận -->
                                     @if (auth()->check())
                                     <form method="POST" action="{{ route('comment.store') }}">
                                         @csrf
@@ -165,7 +162,7 @@
                         </div>
                         @endif
     
-                        <!-- Các bài viết khác -->
+             
                         <div class="col-lg-4">
                             <h4 class="mb-4">Các bài viết khác</h4>
                             @foreach ($otherBlogs as $blog)
@@ -211,7 +208,7 @@
 <script>
  document.addEventListener('DOMContentLoaded', () => {
 
-    // Bình luận và trả lời bình luận
+    
     const replyButtons = document.querySelectorAll(".reply-toggle");
 
     replyButtons.forEach((button) => {
@@ -220,7 +217,7 @@
             const replyForm = document.getElementById(`reply-form-${replyId}`);
 
             if (replyForm) {
-                // Toggle hiện/ẩn form trả lời
+                
                 if (replyForm.style.display === "none" || replyForm.style.display === "") {
                     replyForm.style.display = "block";
                 } else {
@@ -254,7 +251,6 @@
             } else {
                 const comment = data.comment;
 
-                // Tạo phần tử bình luận mới
                 const commentList = document.querySelector('ol');
                 const newComment = document.createElement('li');
                 newComment.innerHTML = `
@@ -271,7 +267,7 @@
                 `;
                 commentList.appendChild(newComment);
 
-                // Xóa nội dung form
+               
                 commentForm.reset();
             }
         })

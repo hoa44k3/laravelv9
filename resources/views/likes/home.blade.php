@@ -72,14 +72,14 @@ $(document).on('click', '.deleteLike', function() {
     let likeId = $(this).data('id');
     if (confirm('Bạn có chắc chắn muốn xóa lượt thích này?')) {
         $.ajax({
-            url: '/admin/like/' + likeId, // Đảm bảo URL chính xác
+            url: '/admin/like/' + likeId, 
             type: 'DELETE',
             data: { 
                 _token: '{{ csrf_token() }}' 
             },
             success: function(response) {
                 alert(response.success);
-                $('#like-' + likeId).remove(); // Xóa hàng khỏi bảng
+                $('#like-' + likeId).remove(); 
             },
             error: function() {
                 alert('Có lỗi xảy ra, vui lòng thử lại.');

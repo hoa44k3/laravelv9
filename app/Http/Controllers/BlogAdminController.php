@@ -19,7 +19,7 @@ class BlogAdminController extends Controller
     {
             $blogs = Blog::with('user', 'category','tags') 
             ->withCount(['likes', 'comments'])
-            ->where('status', 'approved') // Chỉ lấy bài viết có trạng thái "approved"  
+            ->where('status', 'approved') 
             ->get()
             ->sortByDesc(function ($blog) {
                 return $blog->likes_count + $blog->comments_count;
@@ -61,9 +61,9 @@ class BlogAdminController extends Controller
             }
             $blog->save();
             if ($request->has('tag_ids')) {
-                $blog->tags()->sync($request->tag_ids); // Đồng bộ tag
+                $blog->tags()->sync($request->tag_ids); 
             }
-             // Kích hoạt sự kiện
+             
              event(new NewBlogCreated($blog));
             return redirect()->route('blogs.home')->with('success', 'Bài viết đã được tạo thành công!');
         } catch (\Exception $e) {
@@ -96,9 +96,7 @@ class BlogAdminController extends Controller
 
         if ($request->hasFile('image_path')) {
 
-            // if ($edit->image_path) {
-            //     Storage::delete('public/' . $edit->image_path);
-            // }
+           
             if ($edit->image_path && Storage::exists("storage/" . $edit->image_path)) {
                 Storage::delete("storage/" . $edit->image_path);
             }
@@ -107,7 +105,7 @@ class BlogAdminController extends Controller
             $edit->image_path = $imagePath;
         }
         if ($request->has('tag_ids')) {
-                $edit->tags()->sync($request->tag_ids); // Đồng bộ các thẻ tag
+                $edit->tags()->sync($request->tag_ids);
          }
 
         $edit->save();
@@ -150,7 +148,6 @@ class BlogAdminController extends Controller
             return response()->json(['error' => 'Không tìm thấy bài viết'], 404);
         }
 
-        // Đổi trạng thái phê duyệt
         $blog->status = $blog->status === 'approved' ? 'pending' : 'approved';
         $blog->save();
 

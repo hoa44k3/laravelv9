@@ -28,6 +28,21 @@
     </div>
 </div>
 <!-- ****** Breadcumb Area End ****** -->
+<!-- ****** Search Bar Start ****** -->
+{{-- <section class="search_area section_padding_80">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-12 col-md-8 text-center">
+                <h2 class="section-title">Tìm kiếm bài viết</h2>
+                <form action="#" method="GET">
+                    <input type="text" name="query" placeholder="Tìm kiếm bài viết..." class="form-control" required>
+                    <button type="submit" class="btn btn-primary mt-3">Tìm kiếm</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</section> --}}
+<!-- ****** Search Bar End ****** -->
 
 <!-- ****** Archive Area Start ****** -->
 <section class="archive-area section_padding_80">

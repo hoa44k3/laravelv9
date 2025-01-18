@@ -6,13 +6,14 @@
         <div class="col-md-10 offset-md-2">
             <div class="card">
                 <div class="card-header">
-                    <h4 class="card-title">Danh sách công việc</h4>
-                    <a href="{{ route('jobs.create') }}" class="btn btn-primary btn-round ms-auto">Tạo công việc mới</a>
+                    <h4 class="card-title">Danh sách tuyển dụng</h4>
+                    <a href="{{ route('jobs.create') }}" class="btn btn-primary btn-round ms-auto">Tạo tuyển dụng mới</a>
                 </div>
                 <div class="card-body">
                     <table class="table table-striped">
                         <thead>
                             <tr>
+                                <th>Người tuyển dụng</th>
                                 <th>Tiêu đề</th>
                                 <th>Mô tả</th>
                                 <th>Ngày</th>
@@ -23,6 +24,9 @@
                         <tbody>
                             @foreach($jobs as $job)
                             <tr>
+                                <td>
+                                    {{ $job->user ? $job->user->name : 'Không xác định' }}
+                                </td>
                                 <td>
                                     <a href="{{ route('jobs.show', $job->id) }}">{{ $job->title }}</a>
                                 </td>

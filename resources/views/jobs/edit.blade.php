@@ -12,7 +12,14 @@
                     <form action="{{ route('jobs.update', $job->id) }}" method="POST" enctype="multipart/form-data">
                         @csrf
                         @method('PUT')
-                        
+                        <div class="form-group">
+                            <label for="user_id">Người tạo</label>
+                            <select name="user_id" id="user_id" class="form-control" required>
+                                @foreach($users as $user)
+                                    <option value="{{ $user->id }}" {{ $job->user_id == $user->id ? 'selected' : '' }}>{{ $user->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
                         <!-- Tiêu đề -->
                         <div class="form-group">
                             <label for="title">Tiêu đề</label>

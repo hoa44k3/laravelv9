@@ -46,7 +46,7 @@
                                 <div class="post-author-date-area d-flex">
                                     <!-- Post Author -->
                                     <div class="post-author">
-                                        <a href="#">By Marian</a>
+                                        <a href="#">{{ $job->user->name ?? 'Unknown' }}</a>
                                     </div>
                                     <!-- Post Date -->
                                     <div class="post-date">

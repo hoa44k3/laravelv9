@@ -52,19 +52,19 @@
                     <div class="col-10 col-sm-11">
                         
                             <div class="single-post">
-                                <!-- Post Thumb -->
+                               
                                 <div class="post-thumb">
                                     <img src="{{ asset('storage/' . ltrim($event->image, 'http://127.0.0.1:8000/')) }}" alt="">
                                 </div>
-                                <!-- Post Content -->
+                              
                                 <div class="post-content">
                                     <div class="post-meta d-flex">
                                         <div class="post-author-date-area d-flex">
-                                            <!-- Post Author -->
+                                           
                                             <div class="post-author">
                                                 <a href="#">By Marian</a>
                                             </div>
-                                            <!-- Post Date -->
+                                           
                                             <div class="post-date">
                                                 <a href="#">{{ \Carbon\Carbon::parse($event->event_date)->format('M d, Y') }}</a>
                                             </div>
